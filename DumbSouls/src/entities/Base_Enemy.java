@@ -9,7 +9,7 @@ import java.awt.Graphics;
 
 public class Base_Enemy extends Enemy{
 	
-	private int index, maxIndex = 3, frames, maxFrames = 10;
+	private int index, maxIndex = 3, frames, maxFrames = 10, timer = 0;;
 	
 	public Base_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -17,7 +17,8 @@ public class Base_Enemy extends Enemy{
 		this.getAnimation(0, 80, 16, 16, 3);
 		this.expValue = 10;
 		this.soulValue = 1;
-		this.life = 10;
+		this.maxLife = 10;
+		this.life = maxLife;
 		this.maxSpeed = 1;
 		this.frost = 0;
 		this.speed = this.maxSpeed;
@@ -35,8 +36,9 @@ public class Base_Enemy extends Enemy{
 		}
 	}
 	
-	private void atack() {
-		Game.player.life--;
+	private void attack() {
+		Game.player.life -= 8;
+		timer = 0;
 	}
 	
 	private void die() {
@@ -48,31 +50,19 @@ public class Base_Enemy extends Enemy{
 	public void tick() {
 		animate();
 		
-		int xP = Game.player.getX();
-		int yP = Game.player.getY();
-		
 		if (!isColiding(this, Game.player)) {
-			if (xP < this.getX()) {
-				x -= speed;
-			}
-			else if (xP > this.getX()) {
-				x += speed;
-			}
-			
-			if (yP < this.getY()) {
-				y -= speed;
-			}
-			else if (yP > this.getY()) {
-				y += speed;
-			}
+			this.movement();
 		}
 		else {
-			atack();
+			if (timer % 60 == 0) {
+				attack();
+			}
+			timer += 1;
 		}
 
 		this.frostEffect(0.99);
 		
-		this.shootDamage();
+		this.shotDamage();
 		if (life <= 0) {
 			die();
 		}

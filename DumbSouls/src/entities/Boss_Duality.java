@@ -11,7 +11,6 @@ import java.awt.Graphics;
 public class Boss_Duality extends Enemy{
 	
 	private int frames, maxFrames = 40, index, maxIndex = 3, timeAtk ;
-	private int maxlife = 800;
 	private boolean balance;
 	private BufferedImage aura = Game.sheet.getSprite(16, 160, 16, 16);
 	private BufferedImage spriteAtk = Game.sheet.getSprite(32, 160, 16, 16);
@@ -21,7 +20,8 @@ public class Boss_Duality extends Enemy{
 		this.getAnimation(0, 192, 32, 32, 3);
 		this.expValue = 1500;
 		this.soulValue = 20;
-		this.life = maxlife;
+		this.maxLife = 10;
+		this.life = maxLife;
 		this.speed = 0.8;
 		this.setMask(11, 6, 12, 20);
 	}
@@ -38,10 +38,10 @@ public class Boss_Duality extends Enemy{
 	}
 	
 	private void balanceStatus() {
-		this.maxlife =  (800 * World.wave) / 10;
+		this.maxLife =  (800 * World.wave) / 10;
 		this.expValue = (1500 * World.wave) / 10;
 		this.soulValue = (20 * World.wave) / 10; 
-		this.life = maxlife;
+		this.life = this.maxLife;
 		balance = true;
 	}
 	
@@ -56,7 +56,7 @@ public class Boss_Duality extends Enemy{
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);
 
-			Game.eShoots.add(new Enemy_Shoot(this.getX() + 3, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 5, 2, 30));
+			Game.eShots.add(new Enemy_Shot(this.getX() + 3, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 15, 2, 30));
 			Game.player.mana -= 1;
 		}
 	}
@@ -64,14 +64,14 @@ public class Boss_Duality extends Enemy{
 	private void rangeAtk() {
 		timeAtk++;
 		if (timeAtk % 40 == 0) {
-			Game.entities.add(new BAE_Spike(Game.player.getX(), Game.player.getY(), 16, 16, null, 60, 5));
+			Game.entities.add(new BAE_Spike(Game.player.getX(), Game.player.getY(), 16, 16, null, 60, 60));
 		}
 		if (timeAtk % 60 == 0) {
 			double ang = Math.atan2((Game.player.getY() - Camera.y) - (this.getY() - Camera.y) ,(Game.player.getX() - Camera.x) - (this.getX() - Camera.x));
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);
 
-			Game.eShoots.add(new Enemy_Shoot(this.getX() + 3, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 5, 5, 35));
+			Game.eShots.add(new Enemy_Shot(this.getX() + 3, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 5, 5, 35));
 		}
 		if (timeAtk % 80 == 0) {
 			Game.enemies.add(new Base_Enemy(this.getX() - 25, this.getY(), 16, 16, null));
@@ -87,21 +87,8 @@ public class Boss_Duality extends Enemy{
 			balanceStatus();
 		}
 		
-		
 		if (Entity.calculateDistance(Game.player.getX(), Game.player.getY(), this.getX(), this.getY()) > 40) {
-			if (Game.player.getX() > this.getX()) {
-				x += speed;
-			}
-			else if (Game.player.getX() < this.getX()) {
-				x -= speed;
-			}
-			
-			if (Game.player.getY() > this.getY()) {
-				y += speed;
-			}
-			else if (Game.player.getY() < this.getY()) {
-				y -= speed;
-			}
+			this.movement();
 		}
 		if (this.speed < 0.8) {
 			this.speed = 0.8;
@@ -110,7 +97,7 @@ public class Boss_Duality extends Enemy{
 		closeAtk();
 		rangeAtk();
 		
-		this.shootDamage();
+		this.shotDamage();
 		if (this.life <= 0) {
 			die();
 		}
@@ -128,7 +115,7 @@ public class Boss_Duality extends Enemy{
 		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, 30, 2);
 		
 		g.setColor(new Color(125, 23, 145));
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, (int)((this.life * 30) / maxlife), 2);
+		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, (int)((this.life * 30) / maxLife), 2);
 	}
 	
 }

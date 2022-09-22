@@ -22,9 +22,9 @@ public class Menu_Help {
 		g.drawString("Controls", 120, 20);
 		
 		g.setFont(new Font("arial", Font.BOLD, 10));
-		g.drawString("Moviment Controls: wasd / also in menus", 40, 36);
+		g.drawString("Movement Controls: wasd / also in menus", 40, 36);
 		g.drawString("Dash Key : space", 40, 51);
-		g.drawString("Basic Atack : click on any mouse's buttons", 40, 66);
+		g.drawString("Basic Attack : click on any mouse's buttons", 40, 66);
 		g.drawString("Skill : 1", 40, 81);
 		g.drawString("Select : enter", 40, 96);
 		g.drawString("> Back", 10, 140);

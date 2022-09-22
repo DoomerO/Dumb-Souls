@@ -7,7 +7,7 @@ import main.Game;
 import java.awt.Graphics;
 import world.Camera;
 
-public class AE_Fire2 extends Atack_Entity{
+public class AE_Fire2 extends Attack_Entity{
 	
 	private double speed;
 	private double dx, dy, damage;

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
 
-public class AE_IceDs extends Atack_Entity {
+public class AE_IceDs extends Attack_Entity {
 	
 	public int damage;
 	private int time = 0;

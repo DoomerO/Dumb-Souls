@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
 
-public class AE_WindDS extends Atack_Entity {
+public class AE_WindDS extends Attack_Entity {
 	
 	private int time;
 	

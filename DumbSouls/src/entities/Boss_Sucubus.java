@@ -9,7 +9,6 @@ import world.World;
 
 public class Boss_Sucubus extends Enemy {
 	private int frames, maxFrames = 40, index, maxIndex = 2, timeAtk ;
-	private int maxlife = 600;
 	private boolean balance, showAura;
 	private BufferedImage spriteAtk = Game.sheet.getSprite(64, 160, 16, 16);
 	private BufferedImage spriteAtk2 = Game.sheet.getSprite(96, 160, 16, 16);
@@ -20,8 +19,10 @@ public class Boss_Sucubus extends Enemy {
 		this.getAnimation(96, 192, 32, 32, 2);
 		this.expValue = 1500;
 		this.soulValue = 20;
-		this.life = maxlife;
-		this.speed = 1.2;
+		this.maxLife = 800;
+		this.life = maxLife;
+		this.maxSpeed = 0.6;
+		this.speed = this.maxSpeed;
 		this.setMask(2, 0, 30, 32);
 	}
 	
@@ -37,10 +38,10 @@ public class Boss_Sucubus extends Enemy {
 	}
 	
 	private void balanceStatus() {
-		this.maxlife =  (800 * World.wave) / 10;
+		this.maxLife =  (800 * World.wave) / 10;
 		this.expValue = (1500 * World.wave) / 10;
 		this.soulValue = (20 * World.wave) / 10; 
-		this.life = maxlife;
+		this.life = maxLife;
 		balance = true;
 	}
 	
@@ -50,15 +51,15 @@ public class Boss_Sucubus extends Enemy {
 		Game.player.souls +=  this.soulValue;
 	}
 	
-	private void atack1() {
+	private void attack1() {
 		double ang = Math.atan2((Game.player.getY() - Camera.y) - (this.getY() - Camera.y) ,(Game.player.getX() - Camera.x) - (this.getX() - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 
-		Game.eShoots.add(new Enemy_Shoot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 20, 5, 50));
+		Game.eShots.add(new Enemy_Shot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 50, 5, 50));
 	}
 	
-	private void atack2() {
+	private void attack2() {
 		int prop;
 		int prop2;
 		
@@ -82,7 +83,7 @@ public class Boss_Sucubus extends Enemy {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.eShoots.add(new Enemy_Shoot(Game.player.getX() + distance, Game.player.getY() + distance2, 6, 3, spriteAtk2, dx, dy, 50, 7, 30));
+		Game.eShots.add(new Enemy_Shot(Game.player.getX() + distance, Game.player.getY() + distance2, 6, 3, spriteAtk2, dx, dy, 10, 7, 30));
 	}
 	
 	private void renderAura() {
@@ -95,8 +96,8 @@ public class Boss_Sucubus extends Enemy {
 	}
 	
 	private void cure() {
-		if (timeAtk % 200 == 0 && this.life < ((this.maxlife / 100) * 20)) {
-			this.life += (this.maxlife / 100) * 10;
+		if (timeAtk % 200 == 0 && this.life < ((this.maxLife / 100) * 20)) {
+			this.life += (this.maxLife / 100) * 10;
 		}
 	}
 	
@@ -127,49 +128,21 @@ public class Boss_Sucubus extends Enemy {
 		cure();
 		if (Entity.calculateDistance(Game.player.getX(), Game.player.getY(), this.getX(), this.getY()) <= 140) {
 			if (timeAtk % 20 == 0) {
-				atack1();
+				attack1();
 			}
 			if (timeAtk % 100 == 0) {
-				atack2();
+				attack2();
 			}
 		}		
 		
 		if (Entity.calculateDistance(Game.player.getX(), Game.player.getY(), this.getX(), this.getY()) > 120) {
-			if (Game.player.getX() > this.getX()) {
-				x += speed;
-			}
-			else if (Game.player.getX() < this.getX()) {
-				x -= speed;
-			}
-			
-			if (Game.player.getY() > this.getY()) {
-				y += speed;
-			}
-			else if (Game.player.getY() < this.getY()) {
-				y -= speed;
-			}
+			this.movement();
 		}
 		else if (Entity.calculateDistance(Game.player.getX(), Game.player.getY(), this.getX(), this.getY()) < 80) {
-			if (Game.player.getX() > this.getX()) {
-				x -= speed;
-			}
-			else if (Game.player.getX() < this.getX()) {
-				x += speed;
-			}
-			
-			if (Game.player.getY() > this.getY()) {
-				y -= speed;
-			}
-			else if (Game.player.getY() < this.getY()) {
-				y += speed;
-			}
-		}
-		
-		if (this.speed < 0.5) {
-			this.speed = 0.5;
+			this.reverseMovement();
 		}
 		animate();
-		this.shootDamage();
+		this.shotDamage();
 		if (this.life <= 0) {
 			die();
 		}
@@ -186,7 +159,7 @@ public class Boss_Sucubus extends Enemy {
 		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, 30, 2);
 		
 		g.setColor(new Color(125, 23, 145));
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, (int)((this.life * 30) / maxlife), 2);
+		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, (int)((this.life * 30) / maxLife), 2);
 		
 		if (showAura) {
 			g.drawImage(aura, this.getX() - Camera.x,  this.getY() - Camera.y, 32, 32, null);

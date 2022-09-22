@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
 
-public class AE_Rupture extends Atack_Entity {
+public class AE_Rupture extends Attack_Entity {
 	
 	public int time, frames, index, maxFrames = 10, maxIndex = 3;
 	public double dmg;
@@ -37,6 +37,7 @@ public class AE_Rupture extends Atack_Entity {
 	}
 	
 	private void Colision() {
+		if (time == 5)
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(e, this)) {

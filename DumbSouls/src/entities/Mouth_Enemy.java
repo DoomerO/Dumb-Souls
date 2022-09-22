@@ -7,7 +7,7 @@ import world.Camera;
 import main.Game;
 
 public class Mouth_Enemy extends Enemy {
-	private int frames, maxFrames = 10, index, maxIndex = 3;
+	private int frames, maxFrames = 10, index, maxIndex = 3, timer = 0;
 	
 	public Mouth_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -15,7 +15,8 @@ public class Mouth_Enemy extends Enemy {
 		this.getAnimation(96, 80, 16, 16, 3);
 		this.expValue = 20;
 		this.soulValue = 2;
-		this.life = 8;
+		this.maxLife = 8;
+		this.life = maxLife;
 		this.maxSpeed = 1.3;
 		this.frost = 0;
 		this.speed = this.maxSpeed;
@@ -39,47 +40,31 @@ public class Mouth_Enemy extends Enemy {
 		Game.player.souls += this.soulValue;
 	}
 	
-	private void atack() {
-		if (Entity.isColiding(this, Game.player)) {
-			Game.player.life -= 2;
-		}
+	private void attack() {
+		timer = 0;
+		Game.player.life -= 20;
 	}
 	
 	public void tick() {
 		animate();
 		
 		if (Entity.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) >= 100) {
-			if (this.getX() < Game.player.getX()) {
-				this.x += this.speed;
-			}
-			else if (this.getX() > Game.player.getX()) {
-				this.x -= this.speed;
-			}
-			
-			if (this.getY() < Game.player.getY()) {
-				this.y += this.speed;
-			}
-			else if (this.getY() > Game.player.getY()) {
-				this.y -= this.speed;
-			}
+			movement();
+			this.speed = 1.8;
 		}
 		else {
-			if (this.getX() < Game.player.getX()) {
-				this.x += this.speed + 0.5;
-			}
-			else if (this.getX() > Game.player.getX()) {
-				this.x -= this.speed + 0.5;
-			}
-			
-			if (this.getY() < Game.player.getY()) {
-				this.y += this.speed + 0.5;
-			}
-			else if (this.getY() > Game.player.getY()) {
-				this.y -= this.speed + 0.5;
-			}
+			movement();
+			this.speed = this.maxSpeed;
 		}
-		atack();
-		shootDamage();
+
+		if (Entity.isColiding(this, Game.player)) {
+			if (timer % 60 == 0) {
+				attack();
+			}
+			timer += 1;
+		}
+		
+		shotDamage();
 
 		this.frostEffect(0.8);
 		

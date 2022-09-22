@@ -8,8 +8,8 @@ public class Enemy extends Entity{
 	
 	protected BufferedImage[] animation;
 	public static BufferedImage baseSprite = Game.sheet.getSprite(0, 80, 16, 16);
-	public int life, expValue, soulValue;
-	public double speed, maxSpeed, frost;
+	public int maxLife, expValue, soulValue;
+	public double speed, maxSpeed, frost, life;
 	
 	
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
@@ -33,16 +33,34 @@ public class Enemy extends Entity{
 		frost *= measure;
 	}
 	
-	protected void shootDamage() {
-		for (int i = 0;  i < Game.shoots.size(); i++) {
-			Shoot e = Game.shoots.get(i);
+	protected void shotDamage() {
+		for (int i = 0;  i < Game.shots.size(); i++) {
+			Shot e = Game.shots.get(i);
 			if (isColiding(this, e)) {
 				this.life -= e.damage;
-				Game.shoots.remove(e);
+				Game.shots.remove(e);
 				if (Game.player.playerWeapon instanceof Ice_Weapon) {
 					Ice_Weapon.IceAffect(this, e);
 				}
 			}
 		}
+	}
+
+	protected void movement() {
+		int xP = Game.player.getX();
+		int yP = Game.player.getY();
+		double angle = Math.atan2(yP - this.y,xP - this.x);
+
+		this.x += Math.cos(angle) * this.speed;
+		this.y += Math.sin(angle) * this.speed;
+	}
+
+	protected void reverseMovement() {
+		int xP = Game.player.getX();
+		int yP = Game.player.getY();
+		double angle = Math.atan2(yP - this.y,xP - this.x);
+
+		this.x -= Math.cos(angle) * this.speed;
+		this.y -= Math.sin(angle) * this.speed;
 	}
 }

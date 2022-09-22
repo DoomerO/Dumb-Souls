@@ -6,16 +6,16 @@ import world.Camera;
 
 public class Ice_Weapon extends Weapon{
 	
-	public BufferedImage shootFace;
+	public BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 48, 16, 16);
-	private int shootDamage = 3, shootSpeed = 2, dashTime = 300, dt = 0;
+	private int shotDamage = 3, shotSpeed = 2, dashTime = 300, dt = 0;
 	private double ablt2Dmg = 5;
 	private static double frost = 5;
 	private double ablt3Dmg = 0.1, ablt3Spd = 0.5;
 	
 	public Ice_Weapon() {
 		super(sprite);
-		shootFace = Game.sheet.getSprite(128, 48, 16, 16);
+		shotFace = Game.sheet.getSprite(128, 48, 16, 16);
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 48, 16, 16, 3);
@@ -37,23 +37,25 @@ public class Ice_Weapon extends Weapon{
 	public void checkOptions(String opt) {
 		switch(opt){
 			case "Life Boost":
-				Game.player.maxLife += 10;
+				Game.player.maxLife += 20;
 				break;
 			case "Speed Boost":
-				Game.player.speed += 0.1;
+				Game.player.maxSpeed += 0.1;
+				Game.player.speed = Game.player.maxSpeed;
 				break;
 			case "Max Mana":
-				Game.player.maxMana += 5;
+				Game.player.maxMana += 20;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 0.01;
+				Game.player.manaRec += 0.02;
 				break;
 			case "Cold Strength":
-				shootDamage += 1;
-				frost += 0.5;
+				shotDamage += 1;
+				frost += 1;
 				break;
 			case "Cold Speed":
-				shootSpeed += 1;
+				shotSpeed += 1;
+				frost += 0.5;
 				break;
 			case "Ice Dash":
 				if (dashAva == false) {
@@ -83,16 +85,16 @@ public class Ice_Weapon extends Weapon{
 		}
 	}
 	
-	public void Atack() {
+	public void Attack() {
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Shoot e = new Shoot(Game.player.getX(), Game.player.getY(), 3, 3, shootFace, dx, dy, shootDamage, shootSpeed, 35);
-		Game.shoots.add(e);
+		Shot e = new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, shotDamage, shotSpeed, 35);
+		Game.shots.add(e);
 	}
 
-	public static void IceAffect(Enemy e1, Shoot e2) {
+	public static void IceAffect(Enemy e1, Shot e2) {
 		if (Entity.isColiding(e1, e2)) {
 			e1.frost += frost;
 		}

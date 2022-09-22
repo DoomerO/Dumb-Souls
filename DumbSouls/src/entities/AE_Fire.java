@@ -8,9 +8,9 @@ import java.awt.Graphics;
 
 import world.Camera;
 
-public class AE_Fire extends Atack_Entity {
+public class AE_Fire extends Attack_Entity {
 	
-	private int maxFrames = 20, frames = 0, index, maxIndex = 2, time;
+	private int maxFrames = 20, frames = 0, index, maxIndex = 2, time, timer = 0;
 	
 	public AE_Fire(int x, int y, int width, int height, BufferedImage sprite, int time) {
 		super(x, y, width, height, sprite, time);
@@ -36,13 +36,15 @@ public class AE_Fire extends Atack_Entity {
 	}
 	
 	private void Colision() {
+		timer++;
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
-			if(Entity.isColiding(e, this)) {
-				e.life -= 0.1;
+			if(timer % 15 == 0) {
+				if (isColiding(e, this)){
+					e.life -= 2;
+				}
 			}
 		}
-		
 	}
 	
 	public void render(Graphics g) {

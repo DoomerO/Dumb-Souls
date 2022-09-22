@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import world.Camera;
 import main.Game;
 
-public class BAE_Spike extends Atack_Entity{
+public class BAE_Spike extends Attack_Entity{
 	
-	private int life = 0, index, damage;
+	private int life = 0, index, damage, timer;
 	
 	public BAE_Spike(int x, int y, int width, int height, BufferedImage sprite, int timeLife, int dmg) {
 		super(x, y, width, height, sprite, timeLife);
@@ -21,17 +21,19 @@ public class BAE_Spike extends Atack_Entity{
 		life++;
 		if (life > 30) {
 			index = 2;
-			atack();
+			if (Entity.isColiding(Game.player, this) && timer % 60 == 0) {
+				attack();
+				timer++;
+			}
 		}
 		if (this.life == this.timeLife) {
 			this.die();
 		}
 	}
 	
-	private void atack() {
-		if (Entity.isColiding(Game.player, this)) {
-			Game.player.life -= damage;
-		}
+	private void attack() {
+		timer = 0;
+		Game.player.life -= damage;
 	}
 	
 	public void render(Graphics g) {

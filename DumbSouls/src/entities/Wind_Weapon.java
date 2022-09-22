@@ -6,15 +6,15 @@ import world.Camera;
 
 public class Wind_Weapon extends Weapon {
 	
-	public static BufferedImage shootFace;
+	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 32, 16, 16);
-	private int shootDamage = 3, shootSpeed = 6;
+	private int shotDamage = 3, shotSpeed = 6;
 	private double hrcSpeed = 0.8, hrcDamage = 0.1, ablt3Dmg = 0.3, ablt3Spd = 5.0;
 	private double di, dashDistance = 40;
 	
 	public Wind_Weapon() {
 		super(sprite);
-		shootFace = Game.sheet.getSprite(128, 32, 16, 16);
+		shotFace = Game.sheet.getSprite(128, 32, 16, 16);
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 32, 16, 16, 3);
@@ -36,13 +36,14 @@ public class Wind_Weapon extends Weapon {
 	public void checkOptions(String opt) {
 		switch (opt) {
 		case "Life Boost":
-			Game.player.maxLife += 5;
+			Game.player.maxLife += 10;
 			break;
 		case "Speed Boost":
-			Game.player.speed += 0.5;
+			Game.player.maxSpeed += 0.2;
+			Game.player.speed = Game.player.maxSpeed;
 			break;
 		case "Wind Strength":
-			shootDamage += 1;
+			shotDamage += 1;
 			break;
 		case "Max Mana":
 			Game.player.maxMana += 10;
@@ -51,14 +52,14 @@ public class Wind_Weapon extends Weapon {
 			Game.player.manaRec += 0.01;
 			break;
 		case "Wind Speed":
-			shootSpeed += 2;
+			shotSpeed += 2;
 			break;
 		case "Wind Dash":
 			if (dashAva == false) {
 				dashAva = true;
 			}
 			else {
-				dashDistance += 1;
+				dashDistance += 3;
 			}
 			break;
 		case "Hurricane":
@@ -82,12 +83,12 @@ public class Wind_Weapon extends Weapon {
 		}
 	}
 	
-	public void Atack() {
+	public void Attack() {
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.shoots.add(new Shoot(Game.player.getX(), Game.player.getY(), 3, 6, shootFace, dx, dy, shootDamage, shootSpeed, 35));
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 6, shotFace, dx, dy, shotDamage, shotSpeed, 35));
 	}
 	
 	public void Dash() {

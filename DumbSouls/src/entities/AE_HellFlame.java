@@ -5,7 +5,7 @@ import main.Game;
 import world.Camera;
 import java.awt.Graphics;
 
-public class AE_HellFlame extends Atack_Entity {
+public class AE_HellFlame extends Attack_Entity {
 	
 	private double speed;
 	private double dx, dy, damage;

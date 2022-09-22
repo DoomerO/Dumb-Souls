@@ -11,12 +11,12 @@ import world.*;
 
 public class Player extends Entity{
 	
-	public boolean up, down, left, right, moving, atack, levelUp, dash, ablt2, ablt3;
+	public boolean up, down, left, right, moving, attack, levelUp, dash, ablt2, ablt3;
 	public int maxLife = 100, exp = 0, maxExp = 100, maxMana = 100, souls = 0;
 	public int level = 1;
 	private int index, maxIndex = 4, frames, maxFrames = 10;
 	public int direct = 2;
-	public double speed = 1.5, mana = 100, manaRec = 0.2, life = 100, lifeRec=1.0001;
+	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 0.2, life = 100, lifeRec=1.0001;
 	public Weapon playerWeapon;
 	
 	private BufferedImage[] playerDown;
@@ -49,10 +49,10 @@ public class Player extends Entity{
 		this.depth = 1;
 	}
 	
-	private void isAtacking() {
-		if (atack) {
-			atack = false;
-			playerWeapon.Atack();
+	private void isAttacking() {
+		if (attack) {
+			attack = false;
+			playerWeapon.Attack();
 		}
 		
 	}
@@ -77,9 +77,9 @@ public class Player extends Entity{
 	
 	private void die() {
 		Game.entities.clear();
-		Game.shoots.clear();
+		Game.shots.clear();
 		Game.enemies.clear();
-		Game.eShoots.clear();
+		Game.eShots.clear();
 		Game.player = new Player(0, 0, 16, 16, Game.sheet.getSprite(0, 16, 16, 16));
 		Game.entities.add(Game.player);
 		World.maxEnemies = 5;
@@ -123,12 +123,12 @@ public class Player extends Entity{
 		}
 	}
 	
-	private void shootDamage() {
-		for (int i = 0;  i < Game.eShoots.size(); i++) {
-			Enemy_Shoot e = Game.eShoots.get(i);
+	private void shotDamage() {
+		for (int i = 0;  i < Game.eShots.size(); i++) {
+			Enemy_Shot e = Game.eShots.get(i);
 			if (isColiding(this, e)) {
 				life -= e.damage;
-				Game.eShoots.remove(e);
+				Game.eShots.remove(e);
 			}
 		}
 	}
@@ -164,13 +164,13 @@ public class Player extends Entity{
 		
 		playerWeapon.tick();
 		playerWeapon.Effect();
-		isAtacking();
+		isAttacking();
 		isMoving();
 		dashing();
 		checkExp();
 		ablt2Using();
 		ablt3Using();
-		shootDamage();
+		shotDamage();
 		
 		Camera.x = Camera.Clamp(this.getX() - (Game.width / 2), 0, World.WIDTH * 16 - Game.width);
 		Camera.y = Camera.Clamp(this.getY() - (Game.height / 2), 0, World.HEIGHT * 16 - Game.height);

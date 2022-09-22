@@ -6,14 +6,14 @@ import main.Game;
 import world.Camera;
 
 public class Fisical_Weapon extends Weapon {
-	public static BufferedImage shootFace;
+	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(144, 16, 16, 16);
-	private int shootDamage = 5, ablt2W = 48, ablt2H = 48, tspw;
-	private double ablt2Dmg = 0.3, di = 0, dashDistance = 30, ablt3Dmg = 6;
+	private int shotDamage = 4, ablt2Dmg = 10, ablt2W = 64, ablt2H = 64, tspw;
+	private double di = 0, dashDistance = 30, ablt3Dmg = 6;
 	
 	public Fisical_Weapon() {
 		super(sprite);
-		shootFace = Game.sheet.getSprite(208, 16, 16, 16);
+		shotFace = Game.sheet.getSprite(208, 16, 16, 16);
 		
 		setOptionsNames(9);
 		this.getAnimation(160, 16, 16, 16, 3);
@@ -35,19 +35,20 @@ public class Fisical_Weapon extends Weapon {
 	public void checkOptions(String opt) {
 		switch(opt){
 			case "Life Boost":
-				Game.player.maxLife += 10;
+				Game.player.maxLife += 20;
 				break;
 			case "Speed Boost":
-				Game.player.speed += 0.1;
+				Game.player.maxSpeed += 0.2;
+				Game.player.speed = Game.player.maxSpeed;
 				break;
 			case "Max Mana":
-				Game.player.maxMana += 20;
+				Game.player.maxMana += 10;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 0.02;
+				Game.player.manaRec += 0.01;
 				break;
 			case "Punch Strength":
-				shootDamage += 1;
+				shotDamage += 2;
 				break;
 			case "Fisical Dash":
 				if (dashAva == false) {
@@ -62,9 +63,9 @@ public class Fisical_Weapon extends Weapon {
 					ablt2Ava = true;
 				}
 				else {
-					ablt2W += 16;
-					ablt2H += 16;
-					ablt2Dmg += 0.1;
+					ablt2W += 24;
+					ablt2H += 24;
+					ablt2Dmg += 5;
 				}
 				break;
 			case "Punch Rain":
@@ -72,25 +73,25 @@ public class Fisical_Weapon extends Weapon {
 					ablt3Ava = true;
 				}
 				else {
-					ablt3Dmg += 2;
+					ablt3Dmg += 3;
 				}
 				break;
 			case "Fisical Condition":
-				Game.player.lifeRec += 0.0005;
+				Game.player.lifeRec += 0.0003;
 				break;
 		}
 	}
 	
-	public void Atack() {
+	public void Attack() {
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.shoots.add(new Shoot(Game.player.getX(), Game.player.getY(), 3, 3, shootFace, dx, dy, shootDamage, 2.5, 20));
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, shotDamage, 2.5, 20));
 	}
 	
 	public void Dash() {
-		int manaCost = 5;
+		int manaCost = 4;
 		
 		if (this.dashAva && Game.player.mana >= manaCost) {
 			if (!md) {

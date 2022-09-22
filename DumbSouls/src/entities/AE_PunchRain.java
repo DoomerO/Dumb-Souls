@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
 
-public class AE_PunchRain extends Atack_Entity {
+public class AE_PunchRain extends Attack_Entity {
 	
 	private double speed;
 	private double dx, dy, damage;

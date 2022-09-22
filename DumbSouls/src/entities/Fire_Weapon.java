@@ -6,15 +6,14 @@ import world.Camera;
 
 public class Fire_Weapon extends Weapon {
 	
-	public static BufferedImage shootFace;
+	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 16, 16, 16);
-	private int shootDamage = 5, shootSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60;
-	private double ablt3Dmg = 1.0, ablt3Spd = 0.8;
-	private double di = 0, ablt2Dmg = 0.1;
+	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60;
+	private double ablt3Dmg = 1.0, ablt3Spd = 0.8, di = 0, ablt2Dmg = 1;
  
 	public Fire_Weapon() {
 		super(sprite);
-		shootFace = Game.sheet.getSprite(128, 16, 16, 16);
+		shotFace = Game.sheet.getSprite(128, 16, 16, 16);
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 16, 16, 16, 3);
@@ -39,26 +38,27 @@ public class Fire_Weapon extends Weapon {
 				Game.player.maxLife += 10;
 				break;
 			case "Speed Boost":
-				Game.player.speed += 0.1;
+				Game.player.maxSpeed += 0.1;
+				Game.player.speed = Game.player.maxSpeed;
 				break;
 			case "Max Mana":
 				Game.player.maxMana += 20;
 				break;
 			case "Mana Recover":
-				Game.player.maxLife += 0.02;
+				Game.player.manaRec += 0.02;
 				break;
 			case "Fireball Strength":
-				shootDamage += 1;
+				shotDamage += 2;
 				break;
 			case "FireBall Speed":
-				shootSpeed += 1;
+				shotSpeed += 1;
 				break;
 			case "Fire Dash":
 				if (dashAva == false) {
 					dashAva = true;
 				}
 				else {
-					dashDistance += 1;
+					dashDistance += 15;
 				}
 				break;
 			case "Blaze":
@@ -66,7 +66,7 @@ public class Fire_Weapon extends Weapon {
 					ablt2Ava = true;
 				}
 				else {
-					ablt2Dmg += 0.1;
+					ablt2Dmg += 1;
 					maxtspw2 += 5;
 				}
 				break;
@@ -82,16 +82,16 @@ public class Fire_Weapon extends Weapon {
 			}
 		}
 	
-	public void Atack() {
+	public void Attack() {
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.shoots.add(new Shoot(Game.player.getX(), Game.player.getY(), 3, 3, shootFace, dx, dy, shootDamage, shootSpeed, 35));
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, shotDamage, shotSpeed, 35));
 	}
 	
 	public void Dash() {
-		int manaCost = 10;
+		int manaCost = 12;
 		
 		if (this.dashAva && Game.player.mana >= manaCost) {
 			if (!md) {
@@ -117,7 +117,7 @@ public class Fire_Weapon extends Weapon {
 					Game.player.y -= 2.5;
 				}
 				if (tspw == 2) {
-					Game.entities.add(new AE_Fire(Game.player.getX(), Game.player.getY(), 16, 16, null, 60));
+					Game.entities.add(new AE_Fire(Game.player.getX(), Game.player.getY(), 16, 16, null, 125));
 					tspw = 0;
 				}
 			}
@@ -131,7 +131,7 @@ public class Fire_Weapon extends Weapon {
 	}
 	
 	public void Ablt2() {
-		int manaCost = 30;
+		int manaCost = 34;
 		
 		if (ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md) {
@@ -143,7 +143,7 @@ public class Fire_Weapon extends Weapon {
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);
 			if (tspw2 % 4 == 0) {
-				Game.entities.add(new AE_Fire2(Game.player.getX(), Game.player.getY(), 16, 16, 2, dx, dy, ablt2Dmg, null, 20));
+				Game.entities.add(new AE_Fire2(Game.player.getX(), Game.player.getY(), 16, 16, 2, dx, dy, ablt2Dmg, null, 60));
 			}
 			if (tspw2 == maxtspw2) {
 				tspw2 = 0;
@@ -154,7 +154,7 @@ public class Fire_Weapon extends Weapon {
 	}
 	
 	public void Ablt3() {
-		int manaCost = 80;
+		int manaCost = 68;
 		
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md) {

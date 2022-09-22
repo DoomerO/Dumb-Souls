@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
 
-public class AE_SnowStorm extends Atack_Entity {
+public class AE_SnowStorm extends Attack_Entity {
 	
 	private double speed, damage;
 	private int frames, maxFrames = 10, index, maxIndex = 2, time;

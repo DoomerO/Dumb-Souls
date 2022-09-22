@@ -5,7 +5,7 @@ import world.Camera;
 import java.awt.Graphics;
 import main.Game;
 
-public class AE_IceSpike extends Atack_Entity {
+public class AE_IceSpike extends Attack_Entity {
 	
 	private double damage;
 	private int time;

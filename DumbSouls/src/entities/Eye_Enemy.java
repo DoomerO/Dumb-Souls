@@ -9,7 +9,7 @@ import main.Game;
 public class Eye_Enemy extends Enemy{
 	private int frames, maxFrames = 15, index, maxIndex = 3, timeAtk = 0;
 	private BufferedImage spriteAtk = Game.sheet.getSprite(0, 160, 16, 16);
-	public Enemy_Shoot atk;
+	public Enemy_Shot atk;
 	
 	public Eye_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -17,7 +17,8 @@ public class Eye_Enemy extends Enemy{
 		this.getAnimation(48, 80, 16, 16, 3);
 		this.expValue = 25;
 		this.soulValue = 2;
-		this.life = 10;
+		this.maxLife = 15;
+		this.life = maxLife;
 		this.maxSpeed = 0.8;
 		this.frost = 0;
 		this.speed = this.maxSpeed;
@@ -41,15 +42,15 @@ public class Eye_Enemy extends Enemy{
 		Game.player.souls += this.soulValue;
 	}
 	
-	private void atack() {
+	private void attack() {
 		timeAtk++;
 		if (timeAtk == 60) {
 			double ang = Math.atan2((Game.player.getY() - Camera.y) - (this.getY() - Camera.y) ,(Game.player.getX() - Camera.x) - (this.getX() - Camera.x));
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);
 			
-			atk = new Enemy_Shoot(this.getX(), this.getY(), 6, 3, spriteAtk, dx, dy, 15, 3, 35);
-			Game.eShoots.add(atk);
+			atk = new Enemy_Shot(this.getX(), this.getY(), 6, 3, spriteAtk, dx, dy, 15, 3, 35);
+			Game.eShots.add(atk);
 			timeAtk = 0;
 		}
 	}
@@ -59,27 +60,14 @@ public class Eye_Enemy extends Enemy{
 		animate();
 		
 		if (Entity.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) >= 80) {
-			
-			if (this.getX() < Game.player.getX()) {
-				this.x += this.speed;
-			}
-			else if (this.getX() > Game.player.getX()) {
-				this.x -= this.speed;
-			}
-			
-			if (this.getY() < Game.player.getY()) {
-				this.y += this.speed;
-			}
-			else if (this.getY() > Game.player.getY()) {
-				this.y -= this.speed;
-			}
+			this.movement();
 		}
 		else {
-			atack();
+			attack();
 		}
-		this.shootDamage();
+		this.shotDamage();
 
-		this.frostEffect(0.9);
+		this.frostEffect(0.995);
 
 		if (this.life <= 0) {
 			die();

@@ -27,9 +27,6 @@ import java.awt.event.MouseMotionListener;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Thread thread;
 	private boolean isRuning = false;
@@ -61,8 +58,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
-	public static List<Shoot> shoots;
-	public static List<Enemy_Shoot> eShoots;
+	public static List<Shot> shots;
+	public static List<Enemy_Shot> eShots;
 
 	public Game() {
 		addKeyListener(this);
@@ -71,9 +68,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		setPreferredSize(new Dimension(width * scale, height * scale));
 		initFrame();
 		entities = new ArrayList<Entity>();
-		shoots = new ArrayList<Shoot>();
+		shots = new ArrayList<Shot>();
 		enemies = new ArrayList<Enemy>();
-		eShoots = new ArrayList<Enemy_Shoot>();
+		eShots = new ArrayList<Enemy_Shot>();
 		rand = new Random();
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		sheet = new Spritesheet("/spritesheet.png");
@@ -139,14 +136,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			for(int i = 0; i < entities.size(); i++) {
 				entities.get(i).tick();
 			}
-			for(int i = 0; i < shoots.size(); i++) {
-				shoots.get(i).tick();
+			for(int i = 0; i < shots.size(); i++) {
+				shots.get(i).tick();
 			}
 			for(int i = 0; i < enemies.size(); i++) {
 				enemies.get(i).tick();
 			}
-			for(int i = 0; i < eShoots.size(); i++) {
-				eShoots.get(i).tick();
+			for(int i = 0; i < eShots.size(); i++) {
+				eShots.get(i).tick();
 			}
 			
 			spawnEnemies();
@@ -185,11 +182,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			for(int i = 0; i < enemies.size(); i++) {
 				enemies.get(i).render(g);
 			}
-			for(int i = 0; i < shoots.size(); i++) {
-				shoots.get(i).render(g);
+			for(int i = 0; i < shots.size(); i++) {
+				shots.get(i).render(g);
 			}
-			for(int i = 0; i < eShoots.size(); i++) {
-				eShoots.get(i).render(g);
+			for(int i = 0; i < eShots.size(); i++) {
+				eShots.get(i).render(g);
 			}
 			g.dispose();
 			g = bs.getDrawGraphics();
@@ -431,14 +428,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		player.atack = true;
+		player.attack = true;
 		player.playerWeapon.mx = e.getX() / scale;
 		player.playerWeapon.my = e.getY() / scale;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		player.atack = false;
+		player.attack = false;
 	}
 
 	@Override
