@@ -21,17 +21,21 @@ public class BAE_Spike extends Attack_Entity{
 		life++;
 		if (life > 30) {
 			index = 2;
-			if (Entity.isColiding(Game.player, this) && timer % 60 == 0) {
-				attack();
-				timer++;
-			}
+			atack();
 		}
 		if (this.life == this.timeLife) {
 			this.die();
 		}
+
+		if (Entity.isColiding(Game.player, this)) {
+			if (timer % 60 == 0) {
+				atack();
+			}
+			timer += 1;
+		}
 	}
 	
-	private void attack() {
+	private void atack() {
 		timer = 0;
 		Game.player.life -= damage;
 	}

@@ -55,6 +55,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Menu_Player playerMenu;
 	public static Menu_Init startMenu;
 	public static Menu_Help helpMenu;
+	public static Menu_Pause pauseMenu;
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
@@ -80,6 +81,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		ui = new UI();
 		startMenu = new Menu_Init();
 		playerMenu = new Menu_Player();
+		pauseMenu = new Menu_Pause();
 		levelUpMenu = new Menu_Level(3);
 		helpMenu = new Menu_Help();
 	}
@@ -160,6 +162,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		case "MENUHELP":
 			helpMenu.tick();
 			break;
+		case "MENUPAUSE":
+			pauseMenu.tick();
+			break;
 		}
 	}
 	
@@ -217,6 +222,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g = bs.getDrawGraphics();
 			g.drawImage(image, 0, 0, width * scale, height * scale, null);
 			break;
+		case "MENUPAUSE":
+			pauseMenu.render(g);
+			g.dispose();
+			g = bs.getDrawGraphics();
+			g.drawImage(image, 0, 0, width * scale, height * scale, null);
+			break;
 		}
 		bs.show();
 	}
@@ -266,6 +277,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPLAYER":
 					playerMenu.up = true;
 					break;
+				case "MENUPAUSE":
+					pauseMenu.up = true;
+					break;
 			}
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -282,6 +296,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					break;
 				case "MENUPLAYER":
 					playerMenu.down = true;
+					break;
+				case "MENUPAUSE":
+					pauseMenu.down = true;
 					break;
 			}
 		}
@@ -321,8 +338,20 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUHELP":
 					helpMenu.enter = true;
 					break;
+				case "MENUPAUSE":
+					pauseMenu.enter = true;
+					break;
 			}
 		}
+
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			switch(gameState) {
+				case "NORMAL":
+					gameState = "MENUPAUSE";
+					break;
+			}
+		}
+
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			switch(gameState){
 				case "NORMAL":

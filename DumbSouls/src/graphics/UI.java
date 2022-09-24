@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 import main.*;
+import world.World;
 
 public class UI {
 	
@@ -12,6 +13,14 @@ public class UI {
 		g.fillRect(5, 5, 200 + 4, 14);
 		g.setColor(Color.red);
 		g.fillRect(7, 7, ((int)(Game.player.life * 100) / Game.player.maxLife) * 2, 10);
+	}
+
+	private void wave(Graphics g) {
+		g.setColor(new Color(50, 50, 50));
+		g.fillRect(900, 5, 50, 30);
+		g.setColor(Color.white);
+		g.setFont(new Font("arial", Font.BOLD, 10));
+		g.drawString("Wave: " + World.wave, 900, 22);
 	}
 	
 	private void level(Graphics g) {
@@ -44,7 +53,7 @@ public class UI {
 		level(g);
 		manaBar(g);
 		levelBar(g);
-		
+		wave(g);
 		
 	}
 }
