@@ -37,6 +37,7 @@ public class AE_Rupture extends Attack_Entity {
 	}
 	
 	private void Colision() {
+		if (time == 5)
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(e, this)) {
