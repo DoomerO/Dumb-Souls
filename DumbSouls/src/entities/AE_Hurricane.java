@@ -11,7 +11,7 @@ public class AE_Hurricane extends Attack_Entity{
 	private double speed, damage;
 	private int frames, maxFrames = 10, index, maxIndex = 2, time;
 	
-	public AE_Hurricane(int x, int y, int width, int height, BufferedImage sprite, int time, double spd, double dmg) {
+	public AE_Hurricane(int x, int y, int width, int height, BufferedImage sprite, int time, double spd, int dmg) {
 		super(x, y, width, height, sprite, time);
 		this.speed = spd;
 		this.damage = dmg;
@@ -51,6 +51,7 @@ public class AE_Hurricane extends Attack_Entity{
 		}
 		
 		enemyColision();
+		refreshTick();
 	}
 	
 	public void enemyColision() {

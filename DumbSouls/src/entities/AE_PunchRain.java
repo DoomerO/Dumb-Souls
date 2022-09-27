@@ -12,7 +12,7 @@ public class AE_PunchRain extends Attack_Entity {
 	private double dx, dy, damage;
 	private int time;
 	
-	public AE_PunchRain(int x, int y, int height, int width, double spd, double dirx, double diry, double dmg, BufferedImage sprite, int time) {
+	public AE_PunchRain(int x, int y, int height, int width, double spd, double dirx, double diry, int dmg, BufferedImage sprite, int time) {
 		super(x, y, height, width, sprite, time);
 		this.speed = spd;
 		this.dx = dirx;

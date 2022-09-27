@@ -12,7 +12,7 @@ public class AE_HellFlame extends Attack_Entity {
 	private int time, spawntime;
 	private int maxFrames = 20, frames = 0, index, maxIndex = 2;
 	
-	public AE_HellFlame(int x, int y, int width, int height, double spd, double dx, double dy, double dmg, BufferedImage sprite, int time) {
+	public AE_HellFlame(int x, int y, int width, int height, double spd, double dx, double dy, int dmg, BufferedImage sprite, int time) {
 		super(x, y, height, width, sprite, time);
 		this.speed = spd;
 		this.dx = dx;
@@ -40,6 +40,7 @@ public class AE_HellFlame extends Attack_Entity {
 		}
 		
 		colidingEnemy();
+		refreshTick();
 		spawnFire();
 	}
 	
@@ -55,7 +56,7 @@ public class AE_HellFlame extends Attack_Entity {
 	private void colidingEnemy() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
-			if(Entity.isColiding(this, e)) {
+			if(Entity.isColiding(this, e) && TickTimer(15)) {
 				e.life -= damage;
 			}
 		}

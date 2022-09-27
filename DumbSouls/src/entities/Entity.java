@@ -70,7 +70,6 @@ public class Entity {
 		return this.height;
 	}
 	
-	
 	public void tick() {
 		
 	}

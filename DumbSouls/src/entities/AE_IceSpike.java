@@ -10,7 +10,7 @@ public class AE_IceSpike extends Attack_Entity {
 	private double damage;
 	private int time;
 	
-	public AE_IceSpike(int x, int y, int width, int height, BufferedImage sprite, int time, double damage) {
+	public AE_IceSpike(int x, int y, int width, int height, BufferedImage sprite, int time, int damage) {
 		super(x, y, width, height, sprite, time);
 		this.damage = damage;
 		this.getAnimation(48, 128, 16, 16, 1);
@@ -23,17 +23,15 @@ public class AE_IceSpike extends Attack_Entity {
 			this.die();
 		}
 		Colision();
+		refreshTick();
 	}
 	
 	public void Colision() {
 		for(int i = 0; i < Game.enemies.size(); i++ ) {
 			Enemy e = Game.enemies.get(i);
-			if (Entity.isColiding(this, e)) {
+			if (Entity.isColiding(this, e) && TickTimer(5)) {
 				e.life -= damage;
-				e.speed -= 0.8;
-				if (e.speed < 0) {
-					e.speed = 0;
-				}
+				e.frost += 2;
 			}
 		}
 	}

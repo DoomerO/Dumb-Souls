@@ -8,7 +8,7 @@ import java.awt.Graphics;
 
 public class Attack_Entity extends Entity {
 	
-	protected int timeLife;
+	protected int timeLife, tickTimer;
 	protected BufferedImage[] animation;
 	
 	public Attack_Entity(int x, int y, int width, int height, BufferedImage sprite, int timeLife) {
@@ -31,6 +31,22 @@ public class Attack_Entity extends Entity {
 	
 	public void tick() {
 		
+	}
+
+	protected boolean TickTimer(int frames){
+		if (this.tickTimer % frames == 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	protected void refreshTick(){
+		this.tickTimer++;
+		if (this.tickTimer >= 60){
+			this.tickTimer = 0;
+		}
 	}
 	
 	public void render(Graphics g) {

@@ -24,13 +24,14 @@ public class AE_IceDs extends Attack_Entity {
 			this.die();
 		}
 		Colision();
+		refreshTick();
 	}
 	
 	private void Colision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
-			if(Entity.isColiding(e, this)) {
-				e.frost += 0.05;
+			if(Entity.isColiding(e, this) && TickTimer(5)) {
+				e.frost += 0.25;
 			}
 		}
 	}

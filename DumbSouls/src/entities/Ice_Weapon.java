@@ -8,10 +8,9 @@ public class Ice_Weapon extends Weapon{
 	
 	public BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 48, 16, 16);
-	private int shotDamage = 3, shotSpeed = 2, dashTime = 300, dt = 0;
-	private double ablt2Dmg = 5;
+	private int shotDamage = 3, shotSpeed = 2, ablt2Dmg = 4, ablt3Dmg = 3, dashTime = 300, dt = 0;
+	private double ablt3Spd = 0.5;
 	private static double frost = 5;
-	private double ablt3Dmg = 0.1, ablt3Spd = 0.5;
 	
 	public Ice_Weapon() {
 		super(sprite);
@@ -47,7 +46,7 @@ public class Ice_Weapon extends Weapon{
 				Game.player.maxMana += 20;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 0.02;
+				Game.player.manaRec += 2;
 				break;
 			case "Cold Strength":
 				shotDamage += 1;
@@ -70,7 +69,7 @@ public class Ice_Weapon extends Weapon{
 					ablt2Ava = true;
 				}
 				else {
-					ablt2Dmg += 0.1;
+					ablt2Dmg += 2;
 				}
 				break;
 			case "Snow Storm":
@@ -78,7 +77,7 @@ public class Ice_Weapon extends Weapon{
 					ablt3Ava = true;
 				}
 				else {
-					ablt3Dmg += 0.1;
+					ablt3Dmg += 2;
 					ablt3Spd += 0.1;
 				}
 				break;
@@ -173,7 +172,7 @@ public class Ice_Weapon extends Weapon{
 	
 	public void Ablt3() {
 		int manaCost = 60;
-		if (ablt3Ava && Game.player.mana >= manaCost) {
+		if (true && Game.player.mana >= manaCost) {
 			if (!md) {
 				md = true;
 				Game.player.mana -= manaCost;

@@ -11,7 +11,7 @@ public class AE_Rupture extends Attack_Entity {
 	public int time, frames, index, maxFrames = 10, maxIndex = 3;
 	public double dmg;
 	
-	public AE_Rupture(int x, int y, int width, int height, BufferedImage sprite, int time, double dmg) {
+	public AE_Rupture(int x, int y, int width, int height, BufferedImage sprite, int time, int dmg) {
 		super(x, y, width, height, sprite, time);
 		this.setMask(0, 0, width, height);
 		this.getAnimation(80, 128, 16, 16, 3);

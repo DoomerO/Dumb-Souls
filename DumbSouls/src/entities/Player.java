@@ -11,12 +11,13 @@ import world.*;
 
 public class Player extends Entity{
 	
+	private int tickTimer;
 	public boolean up, down, left, right, moving, attack, levelUp, dash, ablt2, ablt3;
 	public int maxLife = 100, exp = 0, maxExp = 100, maxMana = 100, souls = 0;
 	public int level = 1;
 	private int index, maxIndex = 4, frames, maxFrames = 10;
 	public int direct = 2;
-	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 0.2, life = 100, lifeRec=1.0001;
+	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 4, life = 100, lifeRec=1.003;
 	public Weapon playerWeapon;
 	
 	private BufferedImage[] playerDown;
@@ -132,6 +133,22 @@ public class Player extends Entity{
 			}
 		}
 	}
+
+	private boolean TickTimer(int frames){
+		if (this.tickTimer % frames == 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	private void refreshTick(){
+		this.tickTimer++;
+		if (this.tickTimer >= 60){
+			this.tickTimer = 0;
+		}
+	}
 	
 	public void tick() {
 		if (up) {
@@ -150,14 +167,23 @@ public class Player extends Entity{
 			direct = 1;
 		}
 		
-		if (mana < maxMana) {
+		if (mana < maxMana && TickTimer(30)) {
 			mana += manaRec;
+			if (mana > maxMana){
+				mana = maxMana;
+			}
 		}
 
-		if (Game.player.life < Game.player.maxLife) {
+		if (Game.player.life < Game.player.maxLife && TickTimer(30)) {
+
 			Game.player.life *= Game.player.lifeRec;
+			if (Game.player.life > Game.player.maxLife){
+				Game.player.life = Game.player.maxLife;
+			}
 		}
-		
+
+		refreshTick();
+
 		if (life <= 0) {
 			die();
 		}

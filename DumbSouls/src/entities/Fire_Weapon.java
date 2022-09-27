@@ -6,11 +6,11 @@ import world.Camera;
 
 public class Fire_Weapon extends Weapon {
 	
-	public static BufferedImage shotFace;
+	public static BufferedImage shotFace, light;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 16, 16, 16);
-	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60;
-	private double ablt3Dmg = 1.0, ablt3Spd = 0.8, di = 0, ablt2Dmg = 1;
- 
+	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60, ablt2Dmg = 1, ablt3Dmg = 16;
+	private double ablt3Spd = 0.8, di = 0;
+	
 	public Fire_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 16, 16, 16);
@@ -45,7 +45,7 @@ public class Fire_Weapon extends Weapon {
 				Game.player.maxMana += 20;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 0.02;
+				Game.player.manaRec += 2;
 				break;
 			case "Fireball Strength":
 				shotDamage += 2;
@@ -75,7 +75,7 @@ public class Fire_Weapon extends Weapon {
 					ablt3Ava = true;
 				}
 				else {
-					ablt3Dmg += 0.2;
+					ablt3Dmg += 3;
 					ablt3Spd += 0.2;
 				}
 				break;

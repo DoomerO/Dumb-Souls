@@ -15,7 +15,7 @@ public class Mouth_Enemy extends Enemy {
 		this.getAnimation(96, 80, 16, 16, 3);
 		this.expValue = 20;
 		this.soulValue = 2;
-		this.maxLife = 8;
+		this.maxLife = 12;
 		this.life = maxLife;
 		this.maxSpeed = 1.8;
 		this.frost = 0;
@@ -42,14 +42,14 @@ public class Mouth_Enemy extends Enemy {
 	
 	private void attack() {
 		timer = 0;
-		Game.player.life -= 20;
+		Game.player.life -= 26;
 	}
 	
 	public void tick() {
 		animate();
 		movement();
 		
-		if (Entity.isColiding(this, Game.player) && timer % 60 == 0) {
+		if (Entity.isColiding(this, Game.player) && timer % 15 == 0) {
 			attack();
 			timer += 1;
 		}

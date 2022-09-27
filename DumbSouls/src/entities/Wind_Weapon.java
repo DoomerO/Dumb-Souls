@@ -8,8 +8,8 @@ public class Wind_Weapon extends Weapon {
 	
 	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 32, 16, 16);
-	private int shotDamage = 3, shotSpeed = 6;
-	private double hrcSpeed = 0.8, hrcDamage = 0.1, ablt3Dmg = 0.3, ablt3Spd = 5.0;
+	private int shotDamage = 3, shotSpeed = 6, hrcDamage = 1, ablt3Dmg = 3;
+	private double hrcSpeed = 0.8, ablt3Spd = 5.0;
 	private double di, dashDistance = 40;
 	
 	public Wind_Weapon() {
@@ -49,7 +49,7 @@ public class Wind_Weapon extends Weapon {
 			Game.player.maxMana += 10;
 			break;
 		case "Mana Recover":
-			Game.player.manaRec += 0.01;
+			Game.player.manaRec += 1;
 			break;
 		case "Wind Speed":
 			shotSpeed += 2;
@@ -68,7 +68,7 @@ public class Wind_Weapon extends Weapon {
 			}
 			else {
 				hrcSpeed += 0.1;
-				hrcDamage += 0.01;
+				hrcDamage += 1;
 			}
 			break;
 		case "Wind Barrage":
@@ -76,7 +76,7 @@ public class Wind_Weapon extends Weapon {
 				ablt3Ava = true;
 			}
 			else {
-				ablt3Dmg += 0.1;
+				ablt3Dmg += 1;
 				ablt3Spd += 0.3;
 			}
 			break;

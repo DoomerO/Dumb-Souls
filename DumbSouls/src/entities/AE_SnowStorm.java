@@ -11,7 +11,7 @@ public class AE_SnowStorm extends Attack_Entity {
 	private double speed, damage;
 	private int frames, maxFrames = 10, index, maxIndex = 2, time;
 	
-	public AE_SnowStorm(int x, int y, int width, int height, BufferedImage sprite, int time, double spd, double dmg) {
+	public AE_SnowStorm(int x, int y, int width, int height, BufferedImage sprite, int time, double spd, int dmg) {
 		super(x, y, width, height, sprite, time);
 		this.speed = spd;
 		this.damage = dmg;
@@ -24,19 +24,11 @@ public class AE_SnowStorm extends Attack_Entity {
 	public void tick() {
 		frames ++;
 		time ++;
-		
-		if ((Game.mx * Game.scale) > this.getX()) {
-			x += speed;
-		}
-		else if ((Game.mx * Game.scale) < this.getX()) {
-			x -= speed;
-		}
-		if ((Game.my * Game.scale) > this.getY()) {
-			y += speed;
-		}
-		else if ((Game.my * Game.scale) < this.getY()) {
-			y -= speed;
-		}
+
+		double angle = Math.atan2(Game.my - this.y, Game.mx - this.x);
+
+		this.x += Math.cos(angle) * this.speed;
+		this.y += Math.sin(angle) * this.speed;
 		
 		if (frames == maxFrames) {
 			frames = 0;
@@ -51,14 +43,15 @@ public class AE_SnowStorm extends Attack_Entity {
 		}
 		
 		enemyColision();
+		refreshTick();
 	}
 	
 	public void enemyColision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
-			if (Entity.isColiding(this, e)) {
+			if (Entity.isColiding(this, e) && TickTimer(20)) {
 				e.life -= this.damage;
-				e.speed -= 0.01;
+				e.frost += 2;
 			}
 		}
 	}

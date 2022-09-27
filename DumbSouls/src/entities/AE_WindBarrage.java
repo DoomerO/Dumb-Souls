@@ -32,13 +32,16 @@ public class AE_WindBarrage extends Attack_Entity{
 		}
 		
 		colidingEnemy();
+		refreshTick();
 	}
 	
 	private void colidingEnemy() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(this, e)) {
+				if (TickTimer(10)){
 				e.life -= damage;
+				}
 				if (this.getX() < e.getX()) {
 					e.x -= this.speed;
 				}

@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 public class Menu_Pause {
-    private String[] options = {"Initial Menu", "Resume"};
+    private String[] options = {"Resume", "Initial Menu"};
 	
 	public boolean up, down, enter, space;
 	private int cur;
@@ -27,11 +27,11 @@ public class Menu_Pause {
 		}
 		if (enter) {
 			enter = false;
-			if (options[cur] == "Initial Menu") {
-				Game.gameState = "MENUINIT";
-			}
-			else if (options[cur] == "Resume") {
+			if (options[cur] == "Resume") {
 				Game.gameState = "NORMAL";
+			}
+			else if (options[cur] == "Initial Menu") {
+				Game.gameState = "MENUINIT";
 			}
 		}
 	}

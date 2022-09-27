@@ -54,7 +54,7 @@ public class Base_Enemy extends Enemy{
 			this.movement();
 		}
 		else {
-			if (timer % 60 == 0) {
+			if (timer % 15 == 0) {
 				attack();
 			}
 			timer += 1;

@@ -8,8 +8,8 @@ import world.Camera;
 public class Fisical_Weapon extends Weapon {
 	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(144, 16, 16, 16);
-	private int shotDamage = 4, ablt2Dmg = 10, ablt2W = 64, ablt2H = 64, tspw;
-	private double di = 0, dashDistance = 30, ablt3Dmg = 6;
+	private int shotDamage = 4, ablt2Dmg = 10, ablt2W = 64, ablt2H = 64, ablt3Dmg = 6, tspw;
+	private double di = 0, dashDistance = 30;
 	
 	public Fisical_Weapon() {
 		super(sprite);
@@ -45,7 +45,7 @@ public class Fisical_Weapon extends Weapon {
 				Game.player.maxMana += 10;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 0.01;
+				Game.player.manaRec += 1;
 				break;
 			case "Punch Strength":
 				shotDamage += 2;
@@ -77,7 +77,7 @@ public class Fisical_Weapon extends Weapon {
 				}
 				break;
 			case "Fisical Condition":
-				Game.player.lifeRec += 0.0003;
+				Game.player.lifeRec += 0.009;
 				break;
 		}
 	}
@@ -119,12 +119,6 @@ public class Fisical_Weapon extends Weapon {
 				Game.player.dash = false;
 			}
 		}
-	}
-	
-		public void Effect() {
-			if (Game.player.life < Game.player.maxLife) {
-				Game.player.life *= Game.player.lifeRec;
-		}	
 	}
 	
 	public void Ablt2() {
