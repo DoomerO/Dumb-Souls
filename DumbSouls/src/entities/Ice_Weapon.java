@@ -172,7 +172,7 @@ public class Ice_Weapon extends Weapon{
 	
 	public void Ablt3() {
 		int manaCost = 60;
-		if (true && Game.player.mana >= manaCost) {
+		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md) {
 				md = true;
 				Game.player.mana -= manaCost;
