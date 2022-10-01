@@ -78,7 +78,7 @@ public class Ice_Weapon extends Weapon{
 				}
 				else {
 					ablt3Dmg += 2;
-					ablt3Spd += 0.1;
+					ablt3Spd += 0.3;
 				}
 				break;
 		}
