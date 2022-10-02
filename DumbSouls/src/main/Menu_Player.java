@@ -7,7 +7,7 @@ import entities.*;
 
 public class Menu_Player {
 	private int cur, curW;
-	private String[] weapons = {"Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon"}, options = {"Books", "Start", "Back"};
+	private String[] weapons = {"Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"}, options = {"Books", "Start", "Back"};
 	public boolean up, down, left, right, enter;
 	private boolean clickR, clickL;
 	
@@ -81,6 +81,9 @@ public class Menu_Player {
 			case "Fisical Weapon":
 				Game.player.playerWeapon = new Fisical_Weapon();
 				break;
+			case "Poison Weapon":
+				Game.player.playerWeapon = new Poison_Weapon();
+				break;
 		}
 	}
 	
@@ -98,6 +101,8 @@ public class Menu_Player {
 		case 3:
 			g.drawImage(Fisical_Weapon.sprite, 200, 54, 32, 32, null);
 			break;
+		case 4:
+			g.drawImage(Poison_Weapon.sprite, 200, 54, 32, 32, null);
 		}
 	}
 	
