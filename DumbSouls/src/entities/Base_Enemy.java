@@ -56,6 +56,7 @@ public class Base_Enemy extends Enemy{
 		else {
 			if (timer % 15 == 0) {
 				attack();
+				timer = 0;
 			}
 			timer += 1;
 		}

@@ -42,6 +42,9 @@ public class Enemy extends Entity{
 				if (Game.player.playerWeapon instanceof Ice_Weapon) {
 					Ice_Weapon.IceAffect(this, e);
 				}
+				else if (Game.player.playerWeapon instanceof Poison_Weapon) {
+					Poison_Weapon.poisonEffect(e);
+				}
 			}
 		}
 	}

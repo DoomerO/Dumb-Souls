@@ -13,7 +13,7 @@ public class Player extends Entity{
 	
 	private int tickTimer;
 	public boolean up, down, left, right, moving, attack, levelUp, dash, ablt2, ablt3;
-	public int maxLife = 100, exp = 0, maxExp = 100, maxMana = 100, souls = 0, timer = 0;
+	public int maxLife = 100, exp = 0, maxExp = 100, maxMana = 100, souls = 0;
 	public int level = 1;
 	private int index, maxIndex = 4, frames, maxFrames = 10;
 	public int direct = 2;
@@ -51,14 +51,11 @@ public class Player extends Entity{
 	}
 	
 	private void isAttacking() {
-		if (attack && timer % 3 == 0) {
+		if (attack) {
 			attack = false;
 			playerWeapon.Attack();
-			timer = 0;
 		}
-		if (timer < 3){
-		timer += 1;
-		}
+		
 	}
 	
 	private void dashing() {
@@ -170,18 +167,17 @@ public class Player extends Entity{
 			direct = 1;
 		}
 		
-		if (mana < maxMana && TickTimer(30)) {
+		if (mana < maxMana && TickTimer(10)) {
 			mana += manaRec;
 			if (mana > maxMana){
 				mana = maxMana;
 			}
 		}
 
-		if (Game.player.life < Game.player.maxLife && TickTimer(30)) {
-
-			Game.player.life *= Game.player.lifeRec;
-			if (Game.player.life > Game.player.maxLife){
-				Game.player.life = Game.player.maxLife;
+		if (life < maxLife && TickTimer(30)) {
+			life *= lifeRec;
+			if (life > maxLife){
+				life = maxLife;
 			}
 		}
 

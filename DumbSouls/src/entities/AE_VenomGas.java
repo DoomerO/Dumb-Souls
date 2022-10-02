@@ -1,25 +1,26 @@
 package entities;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import main.Game;
+
+import java.awt.Graphics;
 import world.Camera;
 
-public class AE_PunchRain extends Attack_Entity {
+public class AE_VenomGas extends Attack_Entity {
 	
 	private double speed;
 	private double dx, dy, damage;
 	private int time;
 	
-	public AE_PunchRain(int x, int y, int height, int width, double spd, double dirx, double diry, int dmg, BufferedImage sprite, int time) {
+	public AE_VenomGas(int x, int y, int height, int width, double spd, double dirx, double diry, double dmg, BufferedImage sprite, int time) {
 		super(x, y, height, width, sprite, time);
 		this.speed = spd;
 		this.dx = dirx;
 		this.dy = diry;
 		this.damage = dmg;
-		this.getAnimation(176, 112, 16, 16, 1);
-		this.setMask(2, 6, 3, 3);
+		this.getAnimation(192, 112, 16, 16, 1);
+		this.setMask(2, 2, 6, 8);
 		this.depth = 2;
 	}
 	
@@ -30,16 +31,17 @@ public class AE_PunchRain extends Attack_Entity {
 		if (time == this.timeLife) {
 			this.die();
 		}
-		
-		colidingEnemy();
+		Colision();
 	}
 	
-	private void colidingEnemy() {
+	private void Colision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(this, e)) {
 				e.life -= damage;
-				this.die();
+				if (time % 20 == 0) {
+					e.frost += 3;
+				}
 			}
 		}
 	}

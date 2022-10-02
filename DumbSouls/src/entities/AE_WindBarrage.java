@@ -19,7 +19,7 @@ public class AE_WindBarrage extends Attack_Entity{
 		this.dy = dy;
 		this.damage = dmg;
 		this.depth = 2;
-		this.getAnimation(96, 112, 16, 16, 1);
+		this.getAnimation(128, 112, 16, 16, 1);
 		this.setMask(0, 0, 32, 32);
 	}
 	

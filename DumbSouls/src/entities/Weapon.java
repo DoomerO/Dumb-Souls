@@ -15,7 +15,7 @@ public class Weapon {
 	public int mx, my;
 	public String[] listNames;
 	public boolean md;
-	protected boolean dashAva, ablt2Ava, ablt3Ava;
+	protected boolean dashAva = true, ablt2Ava = true, ablt3Ava = true;
 	
 	
 	public Weapon(BufferedImage sprite) {

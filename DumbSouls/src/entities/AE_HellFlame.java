@@ -18,7 +18,7 @@ public class AE_HellFlame extends Attack_Entity {
 		this.dx = dx;
 		this.dy = dy;
 		this.damage = dmg;
-		this.getAnimation(112, 112, 16, 16, 2);
+		this.getAnimation(148, 112, 16, 16, 2);
 		this.setMask(0, 0, 48, 48);
 		this.depth = 3;
 	}

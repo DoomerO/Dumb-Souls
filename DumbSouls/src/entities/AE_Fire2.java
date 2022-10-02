@@ -20,7 +20,7 @@ public class AE_Fire2 extends Attack_Entity{
 		this.dy = diry;
 		this.damage = dmg;
 		this.getAnimation(0, 128, 16, 16, 1);
-		this.setMask(2, 6, 3, 3);
+		this.setMask(2, 2, 3, 3);
 		this.depth = 2;
 	}
 	

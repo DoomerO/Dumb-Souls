@@ -2,9 +2,6 @@ package entities;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
-
-
-
 import main.Game;
 import world.Camera;
 
@@ -40,6 +37,9 @@ public class Shot extends Entity{
 		y += diry * speed;
 		curlife++;
 		if (curlife == life) {
+			if (Game.player.playerWeapon instanceof Poison_Weapon ) {
+				Poison_Weapon.poisonEffect(this);
+			}
 			Game.shots.remove(this);
 		}
 	}
