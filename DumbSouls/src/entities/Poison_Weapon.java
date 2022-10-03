@@ -58,19 +58,34 @@ public class Poison_Weapon extends Weapon{
             		poisonPoolH += 1;
             	break;
             case "Poison Barrier":
+            	if (dashAva) {
             		dsW += 1;
             		dsH += 1;
             		dsD += 1;
             		dsT += 20;
+            	}
+            	else {
+            		dashAva = true;
+            	}
             	break;
             case "Venom Pool":
+            	if (ablt2Ava) {
             		ablt2W += 8;
             		ablt2H += 8;
             		ablt2D += 2;
+            	}
+            	else {
+            		ablt2Ava = true;
+            	}
             	break;
             case "Venom Gas":
-            	 maxTspw += 20;
-            	 ablt3D += 0.01;
+            	if (ablt3Ava) {
+            		 maxTspw += 20;
+                	 ablt3D += 0.01;
+            	}
+            	else {
+            		ablt3Ava = true;
+            	}
             	break;
         }
     }
