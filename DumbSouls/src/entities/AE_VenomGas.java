@@ -38,10 +38,8 @@ public class AE_VenomGas extends Attack_Entity {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(this, e)) {
+				e.frost = e.maxSpeed * 0.8;
 				e.life -= damage;
-				if (time % 20 == 0) {
-					e.frost += 3;
-				}
 			}
 		}
 	}

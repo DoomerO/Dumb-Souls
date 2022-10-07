@@ -17,7 +17,7 @@ public class Mouth_Enemy extends Enemy {
 		this.soulValue = 2;
 		this.maxLife = 12;
 		this.life = maxLife;
-		this.maxSpeed = 1.8;
+		this.maxSpeed = 1 + Game.player.maxSpeed * 0.5;
 		this.frost = 0;
 		this.speed = this.maxSpeed;
 		this.setMask(0, 2, 16, 14);

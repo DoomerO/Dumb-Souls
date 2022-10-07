@@ -3,6 +3,7 @@ package main;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
+import entities.Player;
 
 public class Menu_Pause {
     private String[] options = {"Resume", "Initial Menu"};
@@ -31,7 +32,8 @@ public class Menu_Pause {
 				Game.gameState = "NORMAL";
 			}
 			else if (options[cur] == "Initial Menu") {
-				Game.gameState = "MENUINIT";
+				cur = 0;
+				Player.die();
 			}
 		}
 	}
@@ -46,6 +48,11 @@ public class Menu_Pause {
 		
 		g.drawString(options[0], 120, 60);
 		g.drawString(options[1], 120, 90);
+
+		g.drawString("Life : " + (int)Game.player.life + "/" + Game.player.maxLife, 10, Game.height - 15);
+		g.drawString("Mana : " + (int)Game.player.mana + "/" + Game.player.maxMana, 10, Game.height - 5);
+		g.drawString("Speed : " + Game.player.speed + "/" + Game.player.maxSpeed, Game.width * 2 / 3, Game.height - 15);
+		g.drawString("EXP : " + Game.player.exp + "/" + Game.player.maxExp, Game.width * 2 / 3, Game.height - 5);
 		
 		if (cur == 0) {
 			g.drawString(">", 100, 60);

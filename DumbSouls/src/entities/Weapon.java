@@ -12,7 +12,7 @@ public class Weapon {
 	public BufferedImage sprite;
 	protected BufferedImage[] animation;
 	private int frames, maxFrames = 10, index, maxIndex = 3;
-	public int mx, my;
+	public int mx, my, attackTimer;
 	public String[] listNames;
 	public boolean md;
 	protected boolean dashAva, ablt2Ava, ablt3Ava;
@@ -31,6 +31,10 @@ public class Weapon {
 		}
 	}
 	
+	protected void setAttackTimer(int frames){
+		this.attackTimer = frames;
+	}
+
 	public void checkOptions(String opt) {
 		
 	}

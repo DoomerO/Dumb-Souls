@@ -11,13 +11,13 @@ import world.*;
 
 public class Player extends Entity{
 	
-	private int tickTimer;
+	private int tickTimer, attackTimer;
 	public boolean up, down, left, right, moving, attack, levelUp, dash, ablt2, ablt3;
 	public int maxLife = 100, exp = 0, maxExp = 100, maxMana = 100, souls = 0;
 	public int level = 1;
 	private int index, maxIndex = 4, frames, maxFrames = 10;
 	public int direct = 2;
-	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 4, life = 100, lifeRec=1.003;
+	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 2, life = 100, lifeRec=1.001;
 	public Weapon playerWeapon;
 	
 	private BufferedImage[] playerDown;
@@ -51,11 +51,16 @@ public class Player extends Entity{
 	}
 	
 	private void isAttacking() {
-		if (attack) {
+		if (attackTimer == playerWeapon.attackTimer) {
+			if (attack) {
 			attack = false;
+			attackTimer = 0;
 			playerWeapon.Attack();
+			}
 		}
-		
+		if (attackTimer < playerWeapon.attackTimer){
+			attackTimer++;
+		}
 	}
 	
 	private void dashing() {
@@ -76,7 +81,7 @@ public class Player extends Entity{
 		}
 	}
 	
-	private void die() {
+	public static void die() {
 		Game.entities.clear();
 		Game.shots.clear();
 		Game.enemies.clear();
@@ -97,7 +102,7 @@ public class Player extends Entity{
 		if (exp >= maxExp) {
 			levelUp = true;
 			level ++;
-			exp = 0;
+			exp -= maxExp;
 			down = false;
 			up = false;
 			left = false;
@@ -134,8 +139,8 @@ public class Player extends Entity{
 		}
 	}
 
-	private boolean TickTimer(int frames){
-		if (this.tickTimer % frames == 0){
+	private boolean TickTimer(int frames) {
+		if (this.tickTimer % frames == 0) {
 			return true;
 		}
 		else{
@@ -174,10 +179,11 @@ public class Player extends Entity{
 			}
 		}
 
-		if (life < maxLife && TickTimer(30)) {
-			life *= lifeRec;
-			if (life > maxLife){
-				life = maxLife;
+		if (Game.player.life < Game.player.maxLife && TickTimer(10)) {
+
+			Game.player.life *= Game.player.lifeRec;
+			if (Game.player.life > Game.player.maxLife){
+				Game.player.life = Game.player.maxLife;
 			}
 		}
 

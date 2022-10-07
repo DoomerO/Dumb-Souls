@@ -8,20 +8,22 @@ public class Poison_Weapon extends Weapon{
     
     public static BufferedImage sprite = Game.sheet.getSprite(144, 32, 16, 16);
     public BufferedImage shotFace;
-    private static int poisonPoolW = 16, poisonPoolH = 16, poisonPoolD = 5;
-    private int ablt2W = 48, ablt2H = 48, ablt2D = 7;
+    private static int poisonPoolW = 32, poisonPoolH = 32, poisonPoolD = 1;
+    private int ablt2W = 64, ablt2H = 64, ablt2D = 5;
     private int dsW = 18, dsH= 18, dsD = 5, dsT = 120;
     private int tspw, maxTspw = 180;
-    private double ablt3D = 0.03;
+    private double ablt3D = 0.05;
 
+	
     public Poison_Weapon() {
-        super(sprite);
+		super(sprite);
         shotFace = Game.sheet.getSprite(208, 32, 16, 16);
-
+		super.setAttackTimer(30);
+		
         setOptionsNames(9);
         this.getAnimation(160, 32, 16, 16, 3);
     }
-
+	
     private void setOptionsNames(int opt) {
         this.listNames = new String[opt];
 		this.listNames[0] = "Life Boost";
@@ -45,24 +47,24 @@ public class Poison_Weapon extends Weapon{
                 Game.player.speed = Game.player.maxSpeed;
                 break;
             case "Max Mana":
-                Game.player.maxMana += 30;
+                Game.player.maxMana += 15;
                 break;
             case "Mana Recover":
-                    Game.player.manaRec += 2;
+                    Game.player.manaRec += 0.75;
                 break;
             case "Poison Strength":
             		poisonPoolD += 1;
             	break;
             case "Poison Area":
-            		poisonPoolW += 1;
-            		poisonPoolH += 1;
+            		poisonPoolW += 8;
+            		poisonPoolH += 8;
             	break;
             case "Poison Barrier":
             	if (dashAva) {
-            		dsW += 1;
-            		dsH += 1;
-            		dsD += 1;
-            		dsT += 20;
+            		dsW += 2;
+            		dsH += 2;
+            		dsD += 2;
+            		dsT += 30;
             	}
             	else {
             		dashAva = true;
@@ -70,9 +72,9 @@ public class Poison_Weapon extends Weapon{
             	break;
             case "Venom Pool":
             	if (ablt2Ava) {
-            		ablt2W += 8;
-            		ablt2H += 8;
-            		ablt2D += 2;
+            		ablt2W += 16;
+            		ablt2H += 16;
+            		ablt2D += 1;
             	}
             	else {
             		ablt2Ava = true;
@@ -81,7 +83,7 @@ public class Poison_Weapon extends Weapon{
             case "Venom Gas":
             	if (ablt3Ava) {
             		 maxTspw += 20;
-                	 ablt3D += 0.01;
+                	 ablt3D += 0.03;
             	}
             	else {
             		ablt3Ava = true;
@@ -91,7 +93,7 @@ public class Poison_Weapon extends Weapon{
     }
 
     public static void poisonEffect(Shot atck) {
-       Game.entities.add(new AE_PoisonPool(atck.getX(), atck.getY(), poisonPoolW, poisonPoolH, null, 30, poisonPoolD));
+       Game.entities.add(new AE_PoisonPool(atck.getX() - poisonPoolW/3, atck.getY() - poisonPoolH/3, poisonPoolW, poisonPoolH, null, 120, poisonPoolD));
     }
 
     public void Attack() {
@@ -124,7 +126,7 @@ public class Poison_Weapon extends Weapon{
 				md = true;
 				Game.player.mana -= manaCost;
 			}
-			Game.entities.add(new AE_PoisonPool(Game.player.getX() - ablt2W / 2 + 8, Game.player.getY() - ablt2H / 2 + 8, ablt2W, ablt2H, null, 60, ablt2D));
+			Game.entities.add(new AE_PoisonPool(Game.player.getX() - ablt2W / 2 + 8, Game.player.getY() - ablt2H / 2 + 8, ablt2W, ablt2H, null, 150, ablt2D));
 			Game.player.ablt2 = false;
 			md = false;
         }

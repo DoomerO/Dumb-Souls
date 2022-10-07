@@ -15,6 +15,7 @@ public class Wind_Weapon extends Weapon {
 	public Wind_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 32, 16, 16);
+		super.setAttackTimer(2);
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 32, 16, 16, 3);
@@ -49,7 +50,7 @@ public class Wind_Weapon extends Weapon {
 			Game.player.maxMana += 10;
 			break;
 		case "Mana Recover":
-			Game.player.manaRec += 1;
+			Game.player.manaRec += 0.5;
 			break;
 		case "Wind Speed":
 			shotSpeed += 2;

@@ -37,10 +37,11 @@ public class AE_PoisonPool extends Attack_Entity {
 	}
 	
 	public void Colision() {
-		if (time % 10 == 0) {
+		if (time % 12 == 0) {
 			for (int i = 0; i < Game.enemies.size(); i++) {
 				Enemy e = Game.enemies.get(i);
 				if(Entity.isColiding(e, this)) {
+					e.frost = e.maxSpeed * 0.5;
 					e.life -= dmg;
 				}
 			}	

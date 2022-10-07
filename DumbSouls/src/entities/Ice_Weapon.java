@@ -15,6 +15,7 @@ public class Ice_Weapon extends Weapon{
 	public Ice_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 48, 16, 16);
+		super.setAttackTimer(6);
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 48, 16, 16, 3);
@@ -46,7 +47,7 @@ public class Ice_Weapon extends Weapon{
 				Game.player.maxMana += 20;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 2;
+				Game.player.manaRec += 1;
 				break;
 			case "Cold Strength":
 				shotDamage += 1;

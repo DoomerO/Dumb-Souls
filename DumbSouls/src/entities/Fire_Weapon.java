@@ -14,6 +14,7 @@ public class Fire_Weapon extends Weapon {
 	public Fire_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 16, 16, 16);
+		super.setAttackTimer(3);
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 16, 16, 16, 3);
@@ -45,7 +46,7 @@ public class Fire_Weapon extends Weapon {
 				Game.player.maxMana += 20;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 2;
+				Game.player.manaRec += 1;
 				break;
 			case "Fireball Strength":
 				shotDamage += 2;

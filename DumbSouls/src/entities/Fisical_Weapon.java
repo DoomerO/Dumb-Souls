@@ -14,6 +14,7 @@ public class Fisical_Weapon extends Weapon {
 	public Fisical_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(208, 16, 16, 16);
+		super.setAttackTimer(3);
 		
 		setOptionsNames(9);
 		this.getAnimation(160, 16, 16, 16, 3);
@@ -45,7 +46,7 @@ public class Fisical_Weapon extends Weapon {
 				Game.player.maxMana += 10;
 				break;
 			case "Mana Recover":
-				Game.player.manaRec += 1;
+				Game.player.manaRec += 0.5;
 				break;
 			case "Punch Strength":
 				shotDamage += 2;
@@ -77,7 +78,7 @@ public class Fisical_Weapon extends Weapon {
 				}
 				break;
 			case "Fisical Condition":
-				Game.player.lifeRec += 0.009;
+				Game.player.lifeRec += 0.003;
 				break;
 		}
 	}

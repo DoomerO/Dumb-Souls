@@ -9,7 +9,7 @@ import world.World;
 
 public class Boss_Sucubus extends Enemy {
 	private int frames, maxFrames = 40, index, maxIndex = 2, timeAtk ;
-	private boolean balance, showAura;
+	private boolean balance, showAura, canAttack;
 	private BufferedImage spriteAtk = Game.sheet.getSprite(64, 160, 16, 16);
 	private BufferedImage spriteAtk2 = Game.sheet.getSprite(96, 160, 16, 16);
 	private BufferedImage aura = Game.sheet.getSprite(80, 160, 16, 16);
@@ -104,6 +104,7 @@ public class Boss_Sucubus extends Enemy {
 	private void tp() {
 		if (timeAtk % 300 == 0) {
 			int prop;
+			canAttack = false;
 			
 			if (Game.rand.nextInt(2) == 1) {
 				prop = -1;
@@ -127,11 +128,12 @@ public class Boss_Sucubus extends Enemy {
 		renderAura();
 		cure();
 		if (Entity.calculateDistance(Game.player.getX(), Game.player.getY(), this.getX(), this.getY()) <= 140) {
-			if (timeAtk % 20 == 0) {
+			if (timeAtk % 20 == 0 && canAttack) {
 				attack1();
 			}
 			if (timeAtk % 100 == 0) {
 				attack2();
+				canAttack = true;
 			}
 		}		
 		
@@ -146,7 +148,6 @@ public class Boss_Sucubus extends Enemy {
 		if (this.life <= 0) {
 			die();
 		}
-		
 	}
 	
 	public void render(Graphics g) {
