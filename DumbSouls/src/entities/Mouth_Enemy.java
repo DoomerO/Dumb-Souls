@@ -3,7 +3,7 @@ package entities;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import world.Camera;
-
+import world.World;
 import main.Game;
 
 public class Mouth_Enemy extends Enemy {
@@ -15,7 +15,7 @@ public class Mouth_Enemy extends Enemy {
 		this.getAnimation(96, 80, 16, 16, 3);
 		this.expValue = 20;
 		this.soulValue = 2;
-		this.maxLife = 12;
+		this.maxLife = 12 + (int)(12 * 0.05 * World.wave);
 		this.life = maxLife;
 		this.maxSpeed = 1 + Game.player.maxSpeed * 0.5;
 		this.frost = 0;

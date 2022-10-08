@@ -62,6 +62,13 @@ public class Player extends Entity{
 			attackTimer++;
 		}
 	}
+
+	public void stopMoving(){
+		Game.player.up = false;
+		Game.player.right = false;
+		Game.player.down = false;
+		Game.player.left = false;
+	}
 	
 	private void dashing() {
 		if (dash) {

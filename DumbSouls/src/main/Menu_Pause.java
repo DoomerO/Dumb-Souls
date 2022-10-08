@@ -10,7 +10,7 @@ public class Menu_Pause {
 	
 	public boolean up, down, enter, space;
 	private int cur;
-
+	
     public void tick() {
 		if (down) {
 			cur++;
@@ -29,6 +29,7 @@ public class Menu_Pause {
 		if (enter) {
 			enter = false;
 			if (options[cur] == "Resume") {
+				Game.player.stopMoving();
 				Game.gameState = "NORMAL";
 			}
 			else if (options[cur] == "Initial Menu") {

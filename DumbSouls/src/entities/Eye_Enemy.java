@@ -3,7 +3,7 @@ package entities;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import world.Camera;
-
+import world.World;
 import main.Game;
 
 public class Eye_Enemy extends Enemy{
@@ -17,7 +17,7 @@ public class Eye_Enemy extends Enemy{
 		this.getAnimation(48, 80, 16, 16, 3);
 		this.expValue = 25;
 		this.soulValue = 2;
-		this.maxLife = 15;
+		this.maxLife = 15 + (int)(15 * 0.05 * World.wave);
 		this.life = maxLife;
 		this.maxSpeed = 0.8;
 		this.frost = 0;
