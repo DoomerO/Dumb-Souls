@@ -16,10 +16,10 @@ public class AE_PoisonPool extends Attack_Entity {
 		this.setMask(0, 0, width, height);
 		this.getAnimation(128, 128, 16, 16, 2);
 		this.dmg = dmg;
-		this.depth = 0;
 	}
 	
 	public void tick() {
+		Colision();
 		time ++;
 		frames++;
 		if (frames == maxFrames) {
@@ -33,7 +33,6 @@ public class AE_PoisonPool extends Attack_Entity {
 		if (time == this.timeLife) {
 			this.die();
 		}
-		Colision();
 	}
 	
 	public void Colision() {

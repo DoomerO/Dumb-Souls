@@ -25,10 +25,10 @@ public class AE_SnowStorm extends Attack_Entity {
 		frames ++;
 		time ++;
 
-		double angle = Math.atan2(Game.my - this.y, Game.mx - this.x);
+		double ang = getAngle(Game.my / Game.scale, (this.y + 16 - Camera.y) , Game.mx / Game.scale, (this.x + 26 - Camera.x));
 
-		this.x += Math.cos(angle) * this.speed;
-		this.y += Math.sin(angle) * this.speed;
+		this.x += Math.cos(ang) * this.speed;
+		this.y += Math.sin(ang) * this.speed;
 		
 		if (frames == maxFrames) {
 			frames = 0;

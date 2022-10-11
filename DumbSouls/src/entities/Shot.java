@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
+
 import main.Game;
 import world.Camera;
 
@@ -15,7 +16,7 @@ public class Shot extends Entity{
 	private int curlife = 0;
 	private BufferedImage sprite;
 	
-	public Shot(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy, int dmg, double speed, int life) {
+	public Shot(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy, double ang, int dmg, double speed, int life) {
 		super(x, y, width, height, sprite);
 		this.dirx = dx;
 		this.diry = dy;
@@ -23,7 +24,7 @@ public class Shot extends Entity{
 		this.speed = speed;
 		this.mw = width;
 		this.mh = height;
-		this.sprite = sprite;
+		this.sprite = rotate(sprite, ang);
 		this.life = life;
 		this.push = Game.player.push;
 		this.setMask(4, 5, width, height);

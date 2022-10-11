@@ -92,7 +92,7 @@ public class Wind_Weapon extends Weapon {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 6, shotFace, dx, dy, shotDamage, shotSpeed, 35));
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 6, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
 	}
 	
 	public void Dash() {
@@ -127,7 +127,7 @@ public class Wind_Weapon extends Weapon {
 	}
 	
 	public void Ablt2() {
-		int manaCost = 50;	
+		int manaCost = 64;
 		if (this.ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md) {
 				md = true;
@@ -140,7 +140,7 @@ public class Wind_Weapon extends Weapon {
 	}
 	
 	public void Ablt3() {
-		int manaCost = 50;
+		int manaCost = 36;
 		if (this.ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md) {
 				md = true;

@@ -53,7 +53,7 @@ public class Enemy extends Entity{
 	protected void movement() {
 		int xP = Game.player.getX();
 		int yP = Game.player.getY();
-		double angle = Math.atan2(yP - this.y,xP - this.x);
+		double angle = getAngle(yP, this.y, xP, this.x);
 
 		this.x += Math.cos(angle) * this.speed;
 		this.y += Math.sin(angle) * this.speed;
@@ -62,7 +62,7 @@ public class Enemy extends Entity{
 	protected void reverseMovement() {
 		int xP = Game.player.getX();
 		int yP = Game.player.getY();
-		double angle = Math.atan2(yP - this.y,xP - this.x);
+		double angle = getAngle(yP, this.y, xP, this.x);
 
 		this.x -= Math.cos(angle) * this.speed;
 		this.y -= Math.sin(angle) * this.speed;

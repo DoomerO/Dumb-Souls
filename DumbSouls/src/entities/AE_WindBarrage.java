@@ -42,8 +42,8 @@ public class AE_WindBarrage extends Attack_Entity{
 			if(Entity.isColiding(this, e)) {
 				if (TickTimer(10)){
 				e.life -= damage;
-				}
 				knockBack(this, e);
+				}
 			}
 		}
 	}

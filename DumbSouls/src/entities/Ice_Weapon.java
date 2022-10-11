@@ -90,7 +90,7 @@ public class Ice_Weapon extends Weapon{
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Shot e = new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, shotDamage, shotSpeed, 35);
+		Shot e = new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, 0, shotDamage, shotSpeed, 35);
 		Game.shots.add(e);
 	}
 

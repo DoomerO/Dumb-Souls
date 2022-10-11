@@ -6,6 +6,7 @@ import java.util.Comparator;
 import main.Game;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Entity {
@@ -50,6 +51,18 @@ public class Entity {
 			return 0;
 		}
 	};
+
+	public static BufferedImage rotate(BufferedImage sprite, double angle) {
+		int w = sprite.getWidth();    
+		int h = sprite.getHeight();
+	
+		BufferedImage rotated = new BufferedImage(w, h, sprite.getType());  
+		Graphics2D graphic = rotated.createGraphics();
+		graphic.rotate(angle, w/2, h/2);
+		graphic.drawImage(sprite, null, 0, 0);
+		graphic.dispose();
+		return rotated;
+	}
 	
 	public void setX(int newX) {
 		this.x = newX;
@@ -70,11 +83,8 @@ public class Entity {
 	public int getHeight() {
 		return this.height;
 	}
-	public double getCenterX(){
-		return this.x + this.width / 2;
-	}
-	public double getCenterY(){
-		return this.y + this.height / 2;
+	public double getAngle(double destY, double startY, double destX, double startX){
+		return Math.atan2(destY - startY,destX - startX); 
 	}
 	
 	public void tick() {
@@ -101,7 +111,7 @@ public class Entity {
 	}
 
 	protected void knockBack(Entity e, Entity taker){
-		double angle = Math.atan2(taker.getY() - e.getY(), taker.getX() - e.getX());
+		double angle = getAngle(taker.getY() + taker.getHeight() / 2, e.getY() + e.getHeight() / 2, taker.getX() + taker.getWidth() / 2, e.getX() + e.getWidth() / 2);
 
 		taker.x += Math.cos(angle) * e.push;
 		taker.y += Math.sin(angle) * e.push;

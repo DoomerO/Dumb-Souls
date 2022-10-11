@@ -89,7 +89,7 @@ public class Fisical_Weapon extends Weapon {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, shotDamage, 2.5, 20));
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, 2.5, 20));
 	}
 	
 	public void Dash() {

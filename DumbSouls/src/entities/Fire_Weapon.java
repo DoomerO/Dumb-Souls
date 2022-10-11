@@ -88,7 +88,7 @@ public class Fire_Weapon extends Weapon {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, shotDamage, shotSpeed, 35));
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
 	}
 	
 	public void Dash() {
