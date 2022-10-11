@@ -37,11 +37,12 @@ public class AE_Rupture extends Attack_Entity {
 	}
 	
 	private void Colision() {
-		if (time == 5) {
+		if (time <= 6 && time % 2 == 0) {
 			for (int i = 0; i < Game.enemies.size(); i++) {
 				Enemy e = Game.enemies.get(i);
 				if(Entity.isColiding(e, this)) {
 					e.life -= dmg;
+					knockBack(Game.player, e);
 				}
 			}	
 		}

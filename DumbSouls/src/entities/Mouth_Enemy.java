@@ -15,7 +15,7 @@ public class Mouth_Enemy extends Enemy {
 		this.getAnimation(96, 80, 16, 16, 3);
 		this.expValue = 20;
 		this.soulValue = 2;
-		this.maxLife = 12 + (int)(12 * 0.05 * World.wave);
+		this.maxLife = 12 + (int)(12 * 0.01 * World.wave);
 		this.life = maxLife;
 		this.maxSpeed = 1 + Game.player.maxSpeed * 0.5;
 		this.frost = 0;
@@ -36,28 +36,29 @@ public class Mouth_Enemy extends Enemy {
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.player.exp +=  this.expValue;
+		Game.entities.add(new EXP_Orb((int)this.x, (int)this.y, 16, 16, Enemy.baseSprite, this.expValue));
 		Game.player.souls += this.soulValue;
 	}
 	
 	private void attack() {
-		timer = 0;
 		Game.player.life -= 26;
+		timer = 0;
 	}
 	
 	public void tick() {
 		animate();
 		movement();
 		
-		if (Entity.isColiding(this, Game.player) && timer % 15 == 0) {
-			attack();
+		if (Entity.isColiding(this, Game.player)) {
+			if (timer % 15 == 0) {
+				attack();
+			}
 			timer += 1;
 		}
 		
-		shotDamage();
-
 		this.frostEffect(0.8);
 		
+		shotDamage();
 		if (this.life <= 0) {
 			this.die();
 		}

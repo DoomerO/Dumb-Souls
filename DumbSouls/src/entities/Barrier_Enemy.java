@@ -8,22 +8,22 @@ import main.*;
 
 import java.awt.Graphics;
 
-public class Base_Enemy extends Enemy{
+public class Barrier_Enemy extends Enemy{
 	
-	private int index, maxIndex = 3, frames, maxFrames = 10, timer = 0;
+	private int index, maxIndex = 2, frames, maxFrames = 20, timer = 0;
 	
-	public Base_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
+	public Barrier_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 		
-		this.getAnimation(0, 80, 16, 16, 3);
-		this.expValue = 10;
-		this.soulValue = 1;
-		this.maxLife = 10 + (int)(10 * 0.01 * World.wave);
+		this.getAnimation(144, 80, 48, 32, 2);
+		this.expValue = 30;
+		this.soulValue = 12;
+		this.maxLife = 250 + (int)(250 * 0.01 * World.wave);
 		this.life = maxLife;
-		this.maxSpeed = 1;
-		this.frost = 0;
+		this.maxSpeed = 0.6;
 		this.speed = this.maxSpeed;
-		this.setMask(3, 2, 8, 14);
+		this.frost = 0;
+		this.setMask(1, 1, 46, 30);
 	}
 	
 	private void animate() {
@@ -38,13 +38,15 @@ public class Base_Enemy extends Enemy{
 	}
 	
 	private void attack() {
-		Game.player.life -= 8;
+		Game.player.life -= 82;
 		timer = 0;
 	}
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.entities.add(new EXP_Orb(this.getX(), this.getY(), 16, 16, Enemy.baseSprite, this.expValue));
+		Game.enemies.add(new Mimic_Enemy(this.getX(), this.getY() - 16, 16, 16, Enemy.baseSprite, this.expValue));
+		Game.enemies.add(new Mimic_Enemy(this.getX() - 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue));
+		Game.enemies.add(new Mimic_Enemy(this.getX() + 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue));
 		Game.player.souls += this.soulValue;
 	}
 	
@@ -55,13 +57,13 @@ public class Base_Enemy extends Enemy{
 			this.movement();
 		}
 		else {
-			if (timer % 15 == 0) {
+			if (timer % 30 == 0) {
 				attack();
 			}
 			timer += 1;
 		}
 
-		this.frostEffect(0.99);
+		this.frostEffect(0.92);
 		
 		this.shotDamage();
 		if (life <= 0) {

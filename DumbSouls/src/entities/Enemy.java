@@ -38,11 +38,12 @@ public class Enemy extends Entity{
 			Shot e = Game.shots.get(i);
 			if (isColiding(this, e)) {
 				this.life -= e.damage;
+				knockBack(Game.player, this);
 				Game.shots.remove(e);
 				if (Game.player.playerWeapon instanceof Ice_Weapon) {
 					Ice_Weapon.IceAffect(this, e);
 				}
-				else if (Game.player.playerWeapon instanceof Poison_Weapon) {
+				if (Game.player.playerWeapon instanceof Poison_Weapon) {
 					Poison_Weapon.poisonEffect(e);
 				}
 			}

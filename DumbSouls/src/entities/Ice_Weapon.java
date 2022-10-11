@@ -37,10 +37,10 @@ public class Ice_Weapon extends Weapon{
 	public void checkOptions(String opt) {
 		switch(opt){
 			case "Life Boost":
-				Game.player.maxLife += 20;
+				Game.player.maxLife += 30;
 				break;
 			case "Speed Boost":
-				Game.player.maxSpeed += 0.1;
+				Game.player.maxSpeed += 0.2;
 				Game.player.speed = Game.player.maxSpeed;
 				break;
 			case "Max Mana":

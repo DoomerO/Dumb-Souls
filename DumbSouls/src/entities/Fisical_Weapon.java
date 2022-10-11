@@ -15,6 +15,7 @@ public class Fisical_Weapon extends Weapon {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(208, 16, 16, 16);
 		super.setAttackTimer(3);
+		Game.player.push = 2.5;
 		
 		setOptionsNames(9);
 		this.getAnimation(160, 16, 16, 16, 3);
@@ -36,10 +37,10 @@ public class Fisical_Weapon extends Weapon {
 	public void checkOptions(String opt) {
 		switch(opt){
 			case "Life Boost":
-				Game.player.maxLife += 20;
+				Game.player.maxLife += 40;
 				break;
 			case "Speed Boost":
-				Game.player.maxSpeed += 0.2;
+				Game.player.maxSpeed += 0.3;
 				Game.player.speed = Game.player.maxSpeed;
 				break;
 			case "Max Mana":
@@ -78,7 +79,7 @@ public class Fisical_Weapon extends Weapon {
 				}
 				break;
 			case "Fisical Condition":
-				Game.player.lifeRec += 0.003;
+				Game.player.lifeRec += 0.004;
 				break;
 		}
 	}

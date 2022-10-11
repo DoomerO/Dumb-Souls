@@ -204,10 +204,15 @@ public class Player extends Entity{
 		playerWeapon.Effect();
 		isAttacking();
 		isMoving();
-		dashing();
 		checkExp();
+		dashing();
 		ablt2Using();
 		ablt3Using();
+		if (!playerWeapon.md){
+			dash = false;
+			ablt2 = false;
+			ablt3 = false;
+		}
 		shotDamage();
 		
 		Camera.x = Camera.Clamp(this.getX() - (Game.width / 2), 0, World.WIDTH * 16 - Game.width);

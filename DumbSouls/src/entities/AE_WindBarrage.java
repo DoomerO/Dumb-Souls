@@ -18,6 +18,7 @@ public class AE_WindBarrage extends Attack_Entity{
 		this.dx = dx;
 		this.dy = dy;
 		this.damage = dmg;
+		this.push = 10;
 		this.depth = 2;
 		this.getAnimation(128, 112, 16, 16, 1);
 		this.setMask(0, 0, 32, 32);
@@ -42,18 +43,7 @@ public class AE_WindBarrage extends Attack_Entity{
 				if (TickTimer(10)){
 				e.life -= damage;
 				}
-				if (this.getX() < e.getX()) {
-					e.x -= this.speed;
-				}
-				else if (this.getX() > e.getX()) {
-					e.x += this.speed;
-				}
-				if (this.getY() < e.getY()) {
-					e.y -= this.speed;
-				}
-				else if (this.getY() > e.getY()) {
-					e.y += this.speed;
-				}
+				knockBack(this, e);
 			}
 		}
 	}

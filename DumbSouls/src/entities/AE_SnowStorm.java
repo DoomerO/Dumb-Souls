@@ -17,7 +17,7 @@ public class AE_SnowStorm extends Attack_Entity {
 		this.damage = dmg;
 		this.timeLife = time;
 		this.depth = 3;
-		this.getAnimation(64, 112, 16, 16, maxIndex);
+		this.getAnimation(96, 112, 16, 16, maxIndex);
 		this.setMask(0, 24, 64, 40);
 	}
 	

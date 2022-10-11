@@ -8,7 +8,7 @@ public class Wind_Weapon extends Weapon {
 	
 	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 32, 16, 16);
-	private int shotDamage = 3, shotSpeed = 6, hrcDamage = 1, ablt3Dmg = 3;
+	private int shotDamage = 3, shotSpeed = 6, hrcDamage = 1, ablt3Dmg = 6;
 	private double hrcSpeed = 0.8, ablt3Spd = 5.0;
 	private double di, dashDistance = 40;
 	
@@ -16,6 +16,7 @@ public class Wind_Weapon extends Weapon {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 32, 16, 16);
 		super.setAttackTimer(2);
+		Game.player.push = 5;
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 32, 16, 16, 3);
@@ -37,14 +38,15 @@ public class Wind_Weapon extends Weapon {
 	public void checkOptions(String opt) {
 		switch (opt) {
 		case "Life Boost":
-			Game.player.maxLife += 10;
+			Game.player.maxLife += 20;
 			break;
 		case "Speed Boost":
-			Game.player.maxSpeed += 0.2;
+			Game.player.maxSpeed += 0.4;
 			Game.player.speed = Game.player.maxSpeed;
 			break;
 		case "Wind Strength":
 			shotDamage += 1;
+			Game.player.push += 0.4;
 			break;
 		case "Max Mana":
 			Game.player.maxMana += 10;
@@ -54,6 +56,7 @@ public class Wind_Weapon extends Weapon {
 			break;
 		case "Wind Speed":
 			shotSpeed += 2;
+			Game.player.push += 0.2;
 			break;
 		case "Wind Dash":
 			if (dashAva == false) {
@@ -77,7 +80,7 @@ public class Wind_Weapon extends Weapon {
 				ablt3Ava = true;
 			}
 			else {
-				ablt3Dmg += 1;
+				ablt3Dmg += 2;
 				ablt3Spd += 0.3;
 			}
 			break;

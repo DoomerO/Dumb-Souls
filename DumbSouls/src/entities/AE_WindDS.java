@@ -11,6 +11,7 @@ public class AE_WindDS extends Attack_Entity {
 	
 	public AE_WindDS(int x, int y, int width, int height, BufferedImage sprite, int time) {
 		super(x, y, width, height, sprite, time);
+		this.push = 10;
 		this.setMask(0, 0, 16, 16);
 		this.getAnimation(48, 112, 16, 16, 1);
 		this.depth = 2;
@@ -31,18 +32,7 @@ public class AE_WindDS extends Attack_Entity {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(e, this)) {
 				e.life -= 0.2;
-				if (e.getX() > this.getX()) {
-					e.x += 10;
-				}
-				else if (e.getX() < this.getX()) {
-					e.x -= 10;
-				}
-				if (e.getY() > this.getY()) {
-					e.y += 10;
-				}
-				else if(e.getY() < this.getY()) {
-					e.y -= 10;
-				}
+				knockBack(this, e);
 			}
 		}
 	}

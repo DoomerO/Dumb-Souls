@@ -16,6 +16,7 @@ public class Entity {
 	protected int height;
 	protected int mx, my, mw, mh;
 	protected Rectangle mask;
+	protected double push;
 	public int depth;
 	
 	public BufferedImage sprite;
@@ -69,6 +70,12 @@ public class Entity {
 	public int getHeight() {
 		return this.height;
 	}
+	public double getCenterX(){
+		return this.x + this.width / 2;
+	}
+	public double getCenterY(){
+		return this.y + this.height / 2;
+	}
 	
 	public void tick() {
 		
@@ -91,5 +98,12 @@ public class Entity {
 		e1.mask = new Rectangle(e1.getX() + e1.mx, e1.getY() + e1.my, e1.mw, e1.mh);
 		e2.mask = new Rectangle(e2.getX() + e2.mx, e2.getY() + e2.my, e2.mw, e2.mh);
 		return e1.mask.intersects(e2.mask);
+	}
+
+	protected void knockBack(Entity e, Entity taker){
+		double angle = Math.atan2(taker.getY() - e.getY(), taker.getX() - e.getX());
+
+		taker.x += Math.cos(angle) * e.push;
+		taker.y += Math.sin(angle) * e.push;
 	}
 }

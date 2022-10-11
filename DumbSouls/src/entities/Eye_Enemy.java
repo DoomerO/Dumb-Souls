@@ -16,8 +16,8 @@ public class Eye_Enemy extends Enemy{
 		
 		this.getAnimation(48, 80, 16, 16, 3);
 		this.expValue = 25;
-		this.soulValue = 2;
-		this.maxLife = 15 + (int)(15 * 0.05 * World.wave);
+		this.soulValue = 3;
+		this.maxLife = 15 + (int)(15 * 0.01 * World.wave);
 		this.life = maxLife;
 		this.maxSpeed = 0.8;
 		this.frost = 0;
@@ -38,7 +38,7 @@ public class Eye_Enemy extends Enemy{
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.player.exp +=  this.expValue;
+		Game.entities.add(new EXP_Orb((int)this.x, (int)this.y, 16, 16, Enemy.baseSprite, this.expValue));
 		Game.player.souls += this.soulValue;
 	}
 	

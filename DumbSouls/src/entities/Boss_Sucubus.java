@@ -9,7 +9,7 @@ import world.World;
 
 public class Boss_Sucubus extends Enemy {
 	private int frames, maxFrames = 40, index, maxIndex = 2, timeAtk ;
-	private boolean balance, showAura, canAttack;
+	private boolean balance, showAura;
 	private BufferedImage spriteAtk = Game.sheet.getSprite(64, 160, 16, 16);
 	private BufferedImage spriteAtk2 = Game.sheet.getSprite(96, 160, 16, 16);
 	private BufferedImage aura = Game.sheet.getSprite(80, 160, 16, 16);
@@ -38,16 +38,16 @@ public class Boss_Sucubus extends Enemy {
 	}
 	
 	private void balanceStatus() {
-		this.maxLife =  (800 * World.wave) / 10;
-		this.expValue = (1500 * World.wave) / 10;
-		this.soulValue = (20 * World.wave) / 10; 
+		this.maxLife =  800 * World.wave / 10;
+		this.expValue = 1500 * World.wave / 10;
+		this.soulValue = 20 * World.wave / 10; 
 		this.life = maxLife;
 		balance = true;
 	}
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.player.exp +=  this.expValue;
+		Game.player.exp += this.expValue;
 		Game.player.souls +=  this.soulValue;
 	}
 	
@@ -56,7 +56,7 @@ public class Boss_Sucubus extends Enemy {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 
-		Game.eShots.add(new Enemy_Shot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 50, 5, 50));
+		Game.eShots.add(new Enemy_Shot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 36, 5, 50));
 	}
 	
 	private void attack2() {
@@ -97,14 +97,13 @@ public class Boss_Sucubus extends Enemy {
 	
 	private void cure() {
 		if (timeAtk % 200 == 0 && this.life < ((this.maxLife / 100) * 20)) {
-			this.life += (this.maxLife / 100) * 10;
+			this.life += (this.maxLife / 100) * 8;
 		}
 	}
 	
 	private void tp() {
 		if (timeAtk % 300 == 0) {
 			int prop;
-			canAttack = false;
 			
 			if (Game.rand.nextInt(2) == 1) {
 				prop = -1;
@@ -128,12 +127,11 @@ public class Boss_Sucubus extends Enemy {
 		renderAura();
 		cure();
 		if (Entity.calculateDistance(Game.player.getX(), Game.player.getY(), this.getX(), this.getY()) <= 140) {
-			if (timeAtk % 20 == 0 && canAttack) {
+			if (timeAtk % 20 == 0) {
 				attack1();
 			}
 			if (timeAtk % 100 == 0) {
 				attack2();
-				canAttack = true;
 			}
 		}		
 		

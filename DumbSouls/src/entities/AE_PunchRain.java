@@ -18,6 +18,7 @@ public class AE_PunchRain extends Attack_Entity {
 		this.dx = dirx;
 		this.dy = diry;
 		this.damage = dmg;
+		this.push = 0.5;
 		this.getAnimation(176, 112, 16, 16, 1);
 		this.setMask(2, 6, 3, 3);
 		this.depth = 2;
@@ -39,6 +40,7 @@ public class AE_PunchRain extends Attack_Entity {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(this, e)) {
 				e.life -= damage;
+				knockBack(this, e);
 				this.die();
 			}
 		}

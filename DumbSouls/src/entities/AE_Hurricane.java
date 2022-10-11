@@ -16,6 +16,7 @@ public class AE_Hurricane extends Attack_Entity{
 		this.speed = spd;
 		this.damage = dmg;
 		this.timeLife = time;
+		this.push = - 2;
 		this.depth = 2;
 		this.getAnimation(16, 128, 16, 16, maxIndex);
 		this.setMask(6, 0, 52, 32);
@@ -25,18 +26,10 @@ public class AE_Hurricane extends Attack_Entity{
 		frames ++;
 		time ++;
 		
-		if ((Game.mx * Game.scale) > this.getX()) {
-			x += speed;
-		}
-		else if ((Game.mx * Game.scale) < this.getX()) {
-			x -= speed;
-		}
-		if ((Game.my * Game.scale) > this.getY()) {
-			y += speed;
-		}
-		else if ((Game.my * Game.scale) < this.getY()) {
-			y -= speed;
-		}
+		double angle = Math.atan2(Game.my - this.y, Game.mx - this.x);
+
+		this.x += Math.cos(angle) * this.speed;
+		this.y += Math.sin(angle) * this.speed;
 		
 		if (frames == maxFrames) {
 			frames = 0;
@@ -59,18 +52,7 @@ public class AE_Hurricane extends Attack_Entity{
 			Enemy e = Game.enemies.get(i);
 			if (Entity.isColiding(this, e)) {
 				e.life -= this.damage;
-				if (e.getX() > this.getX() + 16) {
-					e.x -= 2;
-				}
-				else if (e.getX() < this.getX() + 16) {
-					e.x += 2;
-				}
-				if (e.getY() > this.getY() + 16) {
-					e.y -= 2;
-				}
-				else if (e.getY() > this.getY() + 16) {
-					e.y += 2;
-				}
+				knockBack(this, e);
 			}
 		}
 	}

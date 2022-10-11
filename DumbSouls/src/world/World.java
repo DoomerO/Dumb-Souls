@@ -81,7 +81,7 @@ public class World {
 		
 	}
 	
-	public void spwanEnemy() {
+	public void spawnEnemy() {
 		while (true) {
 			int pe = Game.rand.nextInt(100);
 			int ex = Game.rand.nextInt(WIDTH);
@@ -90,23 +90,29 @@ public class World {
 				if (wave <= 5) {
 					Game.enemies.add(new Base_Enemy(ex * 16, ey * 16, 16, 16, null));
 				}
-				else if (wave > 5 && wave <= 11){
-					if (pe <= 90) {
-						Game.enemies.add(new Base_Enemy(ex * 16, ey * 16, 16, 16, null));
-					}
-					else {
-						Game.enemies.add(new Eye_Enemy(ex * 16, ey * 16, 16, 16, null));
-					}
-				}
-				else if (wave > 11) {
+				else if (wave <= 11){
 					if (pe <= 70) {
 						Game.enemies.add(new Base_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe > 70 && pe <= 90) {
+					else if (pe <= 95){
+						Game.enemies.add(new Eye_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else{
 						Game.enemies.add(new Mouth_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe > 90){
+				}
+				else{
+					if (pe <= 55) {
+						Game.enemies.add(new Base_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else if (pe <= 70) {
+						Game.enemies.add(new Mouth_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else if (pe <= 98){
 						Game.enemies.add(new Eye_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else{
+						Game.enemies.add(new Barrier_Enemy(ex * 16, ey * 16, 48, 32 , null));
 					}
 				}
 				break;

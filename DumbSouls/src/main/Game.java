@@ -122,7 +122,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				world.rizeMaxEnemies();
 				World.wave++;
 				for (int c = 0; c <= World.maxEnemies; c++) {
-					world.spwanEnemy();
+					world.spawnEnemy();
 				}
 			}
 			else {
@@ -349,6 +349,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "NORMAL":
 					gameState = "MENUPAUSE";
 					break;
+				case "MENUPAUSE":
+					player.stopMoving();
+					gameState = "NORMAL";
+					break;
 			}
 		}
 
@@ -445,7 +449,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			case "MENUHELP":
 				helpMenu.enter = false;
 				break;
-		}
+			}
 		}
 	}
 

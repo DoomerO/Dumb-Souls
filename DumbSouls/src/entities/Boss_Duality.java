@@ -38,16 +38,17 @@ public class Boss_Duality extends Enemy{
 	}
 	
 	private void balanceStatus() {
-		this.maxLife =  (800 * World.wave) / 10;
-		this.expValue = (1500 * World.wave) / 10;
-		this.soulValue = (20 * World.wave) / 10; 
+		this.maxLife =  800 * World.wave / 10;
+		this.expValue = 1500 * World.wave / 10;
+		this.soulValue = 20 * World.wave / 10; 
 		this.life = this.maxLife;
 		balance = true;
 	}
 	
 	private void die() {
+		
 		Game.enemies.remove(this);
-		Game.player.exp +=  this.expValue;
+		Game.player.exp += this.expValue;
 		Game.player.souls +=  this.soulValue;
 	}
 	private void closeAtk() {
@@ -57,7 +58,7 @@ public class Boss_Duality extends Enemy{
 			double dy =  Math.sin(ang);
 
 			Game.eShots.add(new Enemy_Shot(this.getX() + 3, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 15, 2, 30));
-			Game.player.mana -= 1;
+			Game.player.mana *= 0.75;
 		}
 	}
 	

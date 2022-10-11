@@ -25,6 +25,7 @@ public class Shot extends Entity{
 		this.mh = height;
 		this.sprite = sprite;
 		this.life = life;
+		this.push = Game.player.push;
 		this.setMask(4, 5, width, height);
 	}
 	
