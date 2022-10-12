@@ -139,6 +139,8 @@ public class Fire_Weapon extends Weapon {
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			tspw2++;
 			double ang = Math.atan2(Game.my / Game.scale - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
 			double dx = Math.cos(ang);

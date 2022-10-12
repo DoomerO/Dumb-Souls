@@ -100,6 +100,8 @@ public class Fisical_Weapon extends Weapon {
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			di += 5.0;
 			if (di < dashDistance) {
 				if (Game.player.right) {
@@ -130,6 +132,8 @@ public class Fisical_Weapon extends Weapon {
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			Game.entities.add(new AE_Rupture(Game.player.getX() - ablt2W / 2 + 8, Game.player.getY() - ablt2H / 2 + 8, ablt2W, ablt2H, null, 80, ablt2Dmg));
 			Game.player.ablt2 = false;
 			md = false;
@@ -143,6 +147,8 @@ public class Fisical_Weapon extends Weapon {
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			tspw++;
 			double off = Game.rand.nextInt(20);
 			double ang = Math.atan2(Game.my / Game.scale + off - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));

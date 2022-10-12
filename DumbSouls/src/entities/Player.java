@@ -179,7 +179,7 @@ public class Player extends Entity{
 			direct = 1;
 		}
 		
-		if (mana < maxMana && TickTimer(10)) {
+		if (mana < maxMana && TickTimer(20)) {
 			mana += manaRec;
 			if (mana > maxMana){
 				mana = maxMana;

@@ -107,6 +107,8 @@ public class Ice_Weapon extends Weapon{
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			dt += 1;
 			double dashSpeed = Game.player.speed + 0.8;
 			if (dt != dashTime) {
@@ -131,7 +133,6 @@ public class Ice_Weapon extends Weapon{
 				md = false;
 				dt = 0;
 			}
-			
 		}
 	}
 
@@ -142,6 +143,8 @@ public class Ice_Weapon extends Weapon{
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			for (int c = 1; c <= 3; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() + (13 * c), Game.player.getY(), 6, 16, null, 60, ablt2Dmg));
 			}
@@ -178,6 +181,8 @@ public class Ice_Weapon extends Weapon{
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			Game.entities.add(new AE_SnowStorm(Game.player.getX(), Game.player.getY(), 32, 32, null, 240, ablt3Spd, ablt3Dmg));
 			md = false;
 			Game.player.ablt3 = false;

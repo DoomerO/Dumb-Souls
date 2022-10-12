@@ -102,6 +102,8 @@ public class Wind_Weapon extends Weapon {
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if(md) {
 			Game.entities.add(new AE_WindDS(Game.player.getX(), Game.player.getY(), 16, 16, null, (int)(dashDistance / 4)));
 			di += 4.0;
 			if (di < dashDistance) {
@@ -133,6 +135,8 @@ public class Wind_Weapon extends Weapon {
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			Game.player.ablt2 = false;
 			md = false;
 			Game.entities.add(new AE_Hurricane(Game.player.getX(), Game.player.getY(), 32, 32, null, 240, hrcSpeed, hrcDamage));
@@ -146,6 +150,8 @@ public class Wind_Weapon extends Weapon {
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			double ang = Math.atan2(Game.my / Game.scale - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);

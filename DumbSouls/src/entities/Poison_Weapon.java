@@ -112,6 +112,8 @@ public class Poison_Weapon extends Weapon{
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			Game.entities.add(new AE_PoisonDs(Game.player.getX() - dsW / 2 + 8, Game.player.getY() - dsH / 2 + 8, dsW, dsH, null, dsT, dsD));
 			Game.player.dash = false;
 			md = false;
@@ -126,6 +128,8 @@ public class Poison_Weapon extends Weapon{
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			Game.entities.add(new AE_PoisonPool(Game.player.getX() - ablt2W / 2 + 8, Game.player.getY() - ablt2H / 2 + 8, ablt2W, ablt2H, null, 150, ablt2D));
 			Game.player.ablt2 = false;
 			md = false;
@@ -141,6 +145,8 @@ public class Poison_Weapon extends Weapon{
 				md = true;
 				Game.player.mana -= manaCost;
 			}
+		}
+		if (md) {
 			tspw++;
 			double off = Game.rand.nextInt(40);
 			int off2 = Game.rand.nextInt(1);
@@ -162,6 +168,6 @@ public class Poison_Weapon extends Weapon{
 				Game.player.ablt3 = false;
 				md = false;
 			}
-        }
+		}
     }
 }
