@@ -19,7 +19,7 @@ public class Boss_Sucubus extends Enemy {
 		this.getAnimation(96, 192, 32, 32, 2);
 		this.expValue = 1500;
 		this.soulValue = 20;
-		this.maxLife = 800;
+		this.maxLife = 300;
 		this.life = maxLife;
 		this.maxSpeed = 0.6;
 		this.speed = this.maxSpeed;
@@ -38,7 +38,7 @@ public class Boss_Sucubus extends Enemy {
 	}
 	
 	private void balanceStatus() {
-		this.maxLife =  800 * World.wave / 10;
+		this.maxLife =  300 * World.wave / 10;
 		this.expValue = 1500 * World.wave / 10;
 		this.soulValue = 20 * World.wave / 10; 
 		this.life = maxLife;

@@ -20,7 +20,7 @@ public class Boss_Duality extends Enemy{
 		this.getAnimation(0, 192, 32, 32, 3);
 		this.expValue = 1500;
 		this.soulValue = 20;
-		this.maxLife = 10;
+		this.maxLife = 800;
 		this.life = maxLife;
 		this.speed = 0.8;
 		this.setMask(11, 6, 12, 20);
