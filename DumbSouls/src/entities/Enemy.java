@@ -67,4 +67,11 @@ public class Enemy extends Entity{
 		this.x -= Math.cos(angle) * this.speed;
 		this.y -= Math.sin(angle) * this.speed;
 	}
+	
+	protected void objectiveMovement(int xObjct, int yObjct) {
+		double angle = getAngle(yObjct, this.y, xObjct, this.x);
+		
+		this.x += Math.cos(angle) * this.speed;
+		this.y += Math.sin(angle) * this.speed;
+	}
 }
