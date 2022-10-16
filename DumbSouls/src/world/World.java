@@ -77,8 +77,7 @@ public class World {
 				}
 				break;
 			}
-		}
-		
+		}		
 	}
 	
 	public void spawnEnemy() {
@@ -101,15 +100,32 @@ public class World {
 						Game.enemies.add(new Mouth_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
 				}
+				else if (wave <= 17) {
+					if (pe <= 60) {
+						Game.enemies.add(new Base_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else if (pe <= 80) {
+						Game.enemies.add(new Eye_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else if (pe <= 98) {
+						Game.enemies.add(new Mouth_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else {
+						Game.enemies.add(new Trapper_Enemy(ex * 16, ey * 16, 32, 16, null));
+					}
+				}
 				else{
 					if (pe <= 55) {
 						Game.enemies.add(new Base_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe <= 70) {
+					else if (pe <= 66) {
 						Game.enemies.add(new Mouth_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe <= 98){
+					else if (pe <= 94){
 						Game.enemies.add(new Eye_Enemy(ex * 16, ey * 16, 16, 16, null));
+					}
+					else if (pe <= 98) {
+						Game.enemies.add(new Trapper_Enemy(ex * 16, ey * 16, 32, 16, null));
 					}
 					else{
 						Game.enemies.add(new Barrier_Enemy(ex * 16, ey * 16, 48, 32 , null));
