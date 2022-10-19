@@ -73,7 +73,7 @@ public class Trapper_Enemy extends Enemy{
 			stage2();
 		}
 		
-		this.frostEffect(0.89);
+		this.frostEffect(0.995);
 		
 		if (life <= 0) {
 			die();

@@ -1,6 +1,9 @@
 package entities;
 
 import java.awt.image.BufferedImage;
+
+import graphics.Shader;
+
 import java.awt.Graphics;
 
 import main.Game;
@@ -24,7 +27,7 @@ public class Shot extends Entity{
 		this.speed = speed;
 		this.mw = width;
 		this.mh = height;
-		this.sprite = rotate(sprite, ang);
+		this.sprite = Shader.rotate(sprite, ang);
 		this.life = life;
 		this.push = Game.player.push;
 		this.setMask(4, 5, width, height);

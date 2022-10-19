@@ -24,11 +24,18 @@ public class AE_SnowStorm extends Attack_Entity {
 	public void tick() {
 		frames ++;
 		time ++;
+		
+		double destX = Game.mx / Game.scale;
+		double destY = Game.my / Game.scale;
+		double startX = this.x + 26 - Camera.x;
+		double startY = this.y + 16 - Camera.y;
 
-		double ang = getAngle(Game.my / Game.scale, (this.y + 16 - Camera.y) , Game.mx / Game.scale, (this.x + 26 - Camera.x));
+		double ang = getAngle(destY, startY, destX, startX);
 
-		this.x += Math.cos(ang) * this.speed;
-		this.y += Math.sin(ang) * this.speed;
+		if (calculateDistance((int)destX, (int)destY, (int)startX, (int)startY) > 1){
+			this.x += Math.cos(ang) * this.speed;
+			this.y += Math.sin(ang) * this.speed;
+		}
 		
 		if (frames == maxFrames) {
 			frames = 0;

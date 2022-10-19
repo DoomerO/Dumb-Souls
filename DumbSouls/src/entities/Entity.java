@@ -6,7 +6,6 @@ import java.util.Comparator;
 import main.Game;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Entity {
@@ -36,7 +35,7 @@ public class Entity {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	
-	public static double calculeDistance2pt(int p1, int p2) {
+	public static double calculateDistance2pt(int p1, int p2) {
 		return Math.sqrt(p1 * p1 + p2 * p2);
 	}
 	
@@ -51,18 +50,6 @@ public class Entity {
 			return 0;
 		}
 	};
-
-	public static BufferedImage rotate(BufferedImage sprite, double angle) {
-		int w = sprite.getWidth();    
-		int h = sprite.getHeight();
-	
-		BufferedImage rotated = new BufferedImage(w, h, sprite.getType());  
-		Graphics2D graphic = rotated.createGraphics();
-		graphic.rotate(angle, w/2, h/2);
-		graphic.drawImage(sprite, null, 0, 0);
-		graphic.dispose();
-		return rotated;
-	}
 	
 	public void setX(int newX) {
 		this.x = newX;

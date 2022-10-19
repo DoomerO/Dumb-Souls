@@ -130,7 +130,7 @@ public class Wind_Weapon extends Weapon {
 	
 	public void Ablt2() {
 		int manaCost = 64;
-		if (this.ablt2Ava && Game.player.mana >= manaCost) {
+		if (ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md) {
 				md = true;
 				Game.player.mana -= manaCost;
@@ -145,7 +145,7 @@ public class Wind_Weapon extends Weapon {
 	
 	public void Ablt3() {
 		int manaCost = 36;
-		if (this.ablt3Ava && Game.player.mana >= manaCost) {
+		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md) {
 				md = true;
 				Game.player.mana -= manaCost;

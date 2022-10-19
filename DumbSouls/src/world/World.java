@@ -107,24 +107,27 @@ public class World {
 					else if (pe <= 80) {
 						Game.enemies.add(new Eye_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe <= 98) {
+					else if (pe <= 90) {
 						Game.enemies.add(new Mouth_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else {
+					else if (pe <= 99) {
 						Game.enemies.add(new Trapper_Enemy(ex * 16, ey * 16, 32, 16, null));
+					}
+					else{
+						Game.enemies.add(new Barrier_Enemy(ex * 16, ey * 16, 48, 32, null));
 					}
 				}
 				else{
-					if (pe <= 55) {
+					if (pe <= 45) {
 						Game.enemies.add(new Base_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe <= 66) {
+					else if (pe <= 60) {
 						Game.enemies.add(new Mouth_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe <= 94){
+					else if (pe <= 85){
 						Game.enemies.add(new Eye_Enemy(ex * 16, ey * 16, 16, 16, null));
 					}
-					else if (pe <= 98) {
+					else if (pe <= 95) {
 						Game.enemies.add(new Trapper_Enemy(ex * 16, ey * 16, 32, 16, null));
 					}
 					else{
