@@ -10,6 +10,8 @@ public class Menu_Player {
 	private String[] weapons = {"Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"}, options = {"Books", "Start", "Back"};
 	public boolean up, down, left, right, enter;
 	private boolean clickR, clickL;
+	private int weaponCost;
+	private boolean weaponBlock;
 	
 	public void tick() {
 		
@@ -47,6 +49,7 @@ public class Menu_Player {
 					curW = weapons.length - 1;
 				}
 			}
+			costWeapon();
 		}
 		
 		if (options[cur] == "Start") {
@@ -54,8 +57,13 @@ public class Menu_Player {
 			clickL = false;
 			if (enter) {
 				enter = false;
-				Game.gameState = "NORMAL";
-				weaponVerification();
+				if (costPossible() || isWeaponBlock()) {
+					if (!isWeaponBlock()) {
+						Player.souls -= weaponCost;
+					}
+					Game.gameState = "NORMAL";
+					weaponVerification();
+				}
 			}
 		}
 		
@@ -67,23 +75,71 @@ public class Menu_Player {
 		}
 	}
 	
+	private boolean isWeaponBlock() {
+		if (weaponBlock == false) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	private boolean costPossible() {
+		if (Player.souls >= weaponCost) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	private void weaponVerification() {
 		switch(weapons[curW]){
 			case "Fire Weapon":
 				Game.player.playerWeapon = new Fire_Weapon();
+				Fire_Weapon.block = false;
 				break;
 			case "Wind Weapon":
 				Game.player.playerWeapon = new Wind_Weapon();
+				Wind_Weapon.block = false;
 				break;
 			case "Ice Weapon":
 				Game.player.playerWeapon = new Ice_Weapon();
+				Ice_Weapon.block = false;
 				break;
 			case "Fisical Weapon":
 				Game.player.playerWeapon = new Fisical_Weapon();
+				Fisical_Weapon.block = false;
 				break;
 			case "Poison Weapon":
 				Game.player.playerWeapon = new Poison_Weapon();
+				Poison_Weapon.block = false;
 				break;
+		}
+	}
+	
+	private void costWeapon() {
+		switch(curW) {
+		case 0:
+			weaponCost = Fire_Weapon.soulCost;
+			weaponBlock = Fire_Weapon.block;
+			break;
+		case 1:
+			weaponCost = Wind_Weapon.soulCost;
+			weaponBlock = Wind_Weapon.block;
+			break;
+		case 2:
+			weaponCost = Ice_Weapon.soulCost;
+			weaponBlock = Ice_Weapon.block;
+			break;
+		case 3:
+			weaponCost = Fisical_Weapon.soulCost;
+			weaponBlock = Fisical_Weapon.block;
+			break;
+		case 4:
+			weaponCost = Poison_Weapon.soulCost;
+			weaponBlock = Poison_Weapon.block;
+			break;
 		}
 	}
 	
@@ -103,6 +159,7 @@ public class Menu_Player {
 			break;
 		case 4:
 			g.drawImage(Poison_Weapon.sprite, 200, 54, 32, 32, null);
+			break;
 		}
 	}
 	
@@ -137,6 +194,26 @@ public class Menu_Player {
 		else if (cur == 2) {
 			g.drawString(">", 20, 130);
 		}
+		
+		if (costPossible()) {
+			g.setColor(new Color(0, 127, 14));
+		}
+		else {
+			g.setColor(new Color(127, 0, 0));
+		}
+		g.drawString("Soul Cost: " + weaponCost, 183, 100);
+		
+		if (isWeaponBlock()) {
+			g.setColor(new Color(0, 127, 14));
+			g.drawString("Unblocked", 183, 110);
+		}
+		else {
+			g.setColor(new Color(127, 0, 0));
+			g.drawString("Blocked", 183, 110);
+		}
+		
+		g.setColor(new Color(74, 52, 160));
+		g.drawString("Souls : " + Player.souls, 255, 150);
 		
 		g.setColor(new Color(50, 50, 50));
 		g.fillRect(200, 54, 32, 32);
