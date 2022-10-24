@@ -11,12 +11,14 @@ public class Ice_Weapon extends Weapon{
 	private int shotDamage = 3, shotSpeed = 2, ablt2Dmg = 4, ablt3Dmg = 3, dashTime = 300, dt = 0;
 	private double ablt3Spd = 0.5;
 	private static double frost = 5;
+	public static int soulCost = 400;
+	 public static boolean block = true;
 	
 	public Ice_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 48, 16, 16);
 		super.setAttackTimer(6);
-		
+
 		setOptionsNames(9);
 		this.getAnimation(80, 48, 16, 16, 3);
 	}

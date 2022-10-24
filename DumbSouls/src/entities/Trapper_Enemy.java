@@ -20,7 +20,6 @@ public class Trapper_Enemy extends Enemy{
 		this.maxSpeed = 1;
 		this.frost = 0;
 		this.speed = this.maxSpeed;
-		this.setMask(2, 0, 14, 32);
 		xP = Game.player.getX();
 		yP = Game.player.getY();
 	}
@@ -44,10 +43,11 @@ public class Trapper_Enemy extends Enemy{
 	private void die() {
 		Game.enemies.remove(this);
 		Game.entities.add(new EXP_Orb(this.getX(), this.getY(), 16, 16, Enemy.baseSprite, this.expValue));
-		Game.player.souls += this.soulValue;
+		Player.souls += this.soulValue;
 	}
 	private void stage2() {
 		this.shotDamage();
+		this.setMask(2, 0, 14, 32);
 		animate();
 		cont++;
 		if (isColiding(this, Game.player)) {
@@ -67,6 +67,7 @@ public class Trapper_Enemy extends Enemy{
 	public void tick() {
 		if (this.getX() != xP && this.getY() != yP) {
 			objectiveMovement(xP, yP);
+			this.setMask(0, 0, 0, 0);
 		}
 		else {
 			stage2 = true;

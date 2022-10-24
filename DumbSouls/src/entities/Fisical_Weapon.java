@@ -10,13 +10,15 @@ public class Fisical_Weapon extends Weapon {
 	public static BufferedImage sprite = Game.sheet.getSprite(144, 16, 16, 16);
 	private int shotDamage = 4, ablt2Dmg = 10, ablt2W = 64, ablt2H = 64, ablt3Dmg = 6, tspw;
 	private double di = 0, dashDistance = 30;
+	public static int soulCost = 500;
+	 public static boolean block = true;
 	
 	public Fisical_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(208, 16, 16, 16);
 		super.setAttackTimer(3);
 		Game.player.push = 2.5;
-		
+
 		setOptionsNames(9);
 		this.getAnimation(160, 16, 16, 16, 3);
 	}

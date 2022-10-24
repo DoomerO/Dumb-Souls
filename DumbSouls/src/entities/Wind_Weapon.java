@@ -11,6 +11,8 @@ public class Wind_Weapon extends Weapon {
 	private int shotDamage = 3, shotSpeed = 6, hrcDamage = 1, ablt3Dmg = 6;
 	private double hrcSpeed = 0.8, ablt3Spd = 5.0;
 	private double di, dashDistance = 40;
+	public static int soulCost = 100;
+	 public static boolean block = true;
 	
 	public Wind_Weapon() {
 		super(sprite);

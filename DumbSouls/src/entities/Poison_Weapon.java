@@ -13,7 +13,8 @@ public class Poison_Weapon extends Weapon{
     private int dsW = 18, dsH= 18, dsD = 5, dsT = 120;
     private int tspw, maxTspw = 180;
     private double ablt3D = 0.05;
-
+    public static int soulCost = 700;
+    public static boolean block = true;
 	
     public Poison_Weapon() {
 		super(sprite);
