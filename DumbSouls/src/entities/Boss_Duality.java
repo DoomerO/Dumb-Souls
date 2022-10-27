@@ -49,7 +49,7 @@ public class Boss_Duality extends Enemy{
 		
 		Game.enemies.remove(this);
 		Game.player.exp += this.expValue;
-		Game.player.souls +=  this.soulValue;
+		Player.souls +=  this.soulValue;
 	}
 	private void closeAtk() {
 		if (Entity.calculateDistance(Game.player.getX(), Game.player.getY(), this.getX() + 16, this.getY() + 16) <= 60) {

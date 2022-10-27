@@ -39,7 +39,7 @@ public class Eye_Enemy extends Enemy{
 	private void die() {
 		Game.enemies.remove(this);
 		Game.entities.add(new EXP_Orb((int)this.x, (int)this.y, 16, 16, Enemy.baseSprite, this.expValue));
-		Game.player.souls += this.soulValue;
+		Player.souls += this.soulValue;
 	}
 	
 	private void attack() {

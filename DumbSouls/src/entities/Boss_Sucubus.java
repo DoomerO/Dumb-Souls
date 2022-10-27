@@ -48,7 +48,7 @@ public class Boss_Sucubus extends Enemy {
 	private void die() {
 		Game.enemies.remove(this);
 		Game.player.exp += this.expValue;
-		Game.player.souls +=  this.soulValue;
+		Player.souls +=  this.soulValue;
 	}
 	
 	private void attack1() {

@@ -47,7 +47,7 @@ public class Barrier_Enemy extends Enemy{
 		Game.enemies.add(new Mimic_Enemy(this.getX(), this.getY() - 16, 16, 16, Enemy.baseSprite, this.expValue));
 		Game.enemies.add(new Mimic_Enemy(this.getX() - 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue));
 		Game.enemies.add(new Mimic_Enemy(this.getX() + 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue));
-		Game.player.souls += this.soulValue;
+		Player.souls += this.soulValue;
 	}
 	
 	public void tick() {

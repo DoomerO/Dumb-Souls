@@ -45,7 +45,7 @@ public class Base_Enemy extends Enemy{
 	private void die() {
 		Game.enemies.remove(this);
 		Game.entities.add(new EXP_Orb(this.getX(), this.getY(), 16, 16, Enemy.baseSprite, this.expValue));
-		Game.player.souls += this.soulValue;
+		Player.souls += this.soulValue;
 	}
 	
 	public void tick() {
