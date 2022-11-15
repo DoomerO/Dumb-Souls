@@ -10,7 +10,7 @@ public class Fire_Weapon extends Weapon {
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 16, 16, 16);
 	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60, ablt2Dmg = 1, ablt3Dmg = 16;
 	private double ablt3Spd = 0.8, di = 0;
-	public static int soulCost = 0;
+	public static int soulCost = 100;
 	 public static boolean block = true;
 	
 	public Fire_Weapon() {

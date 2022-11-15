@@ -37,15 +37,22 @@ public class Shot extends Entity{
 		g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 	
+	public void die() {
+		Game.shots.remove(this);
+		if (Game.player.playerWeapon instanceof Poison_Weapon ) {
+			Poison_Weapon.poisonEffect(this);
+		}
+		else if (Game.player.playerWeapon instanceof Mana_Weapon) {
+			Mana_Weapon.manaEffect(this);
+		}
+	}
+	
 	public void tick() {
 		x += dirx * speed;
 		y += diry * speed;
 		curlife++;
 		if (curlife == life) {
-			if (Game.player.playerWeapon instanceof Poison_Weapon ) {
-				Poison_Weapon.poisonEffect(this);
-			}
-			Game.shots.remove(this);
+			this.die();
 		}
 	}
 }
