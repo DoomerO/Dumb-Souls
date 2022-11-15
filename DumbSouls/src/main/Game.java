@@ -233,12 +233,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 	
 	public void run() {
+		requestFocus();
 		long lastTime = System.nanoTime();
 		double amountTicks = 60.0;
 		double ns = 1000000000 / amountTicks;
 		double delta = 0;
-		
-		requestFocus();
 		
 		while(isRuning) {
 			long now = System.nanoTime();
@@ -247,9 +246,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			
 			if(delta >= 1) {
 				tick();
-				render();
 				delta --;
 			}
+			render();
 		}
 		end();
 	}

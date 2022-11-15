@@ -7,7 +7,7 @@ import entities.*;
 
 public class Menu_Player {
 	private int cur, curW;
-	private String[] weapons = {"Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"}, options = {"Books", "Start", "Back"};
+	private String[] weapons = {"Mana Weapon", "Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"}, options = {"Books", "Start", "Back"};
 	public boolean up, down, left, right, enter;
 	private boolean clickR, clickL;
 	private int weaponCost;
@@ -95,6 +95,10 @@ public class Menu_Player {
 	
 	private void weaponVerification() {
 		switch(weapons[curW]){
+			case "Mana Weapon": 
+				Game.player.playerWeapon = new Mana_Weapon();
+				Mana_Weapon.block = false;
+				break;
 			case "Fire Weapon":
 				Game.player.playerWeapon = new Fire_Weapon();
 				Fire_Weapon.block = false;
@@ -121,22 +125,26 @@ public class Menu_Player {
 	private void costWeapon() {
 		switch(curW) {
 		case 0:
+			weaponCost = Mana_Weapon.soulCost;
+			weaponBlock = Mana_Weapon.block;
+			break;
+		case 1:
 			weaponCost = Fire_Weapon.soulCost;
 			weaponBlock = Fire_Weapon.block;
 			break;
-		case 1:
+		case 2:
 			weaponCost = Wind_Weapon.soulCost;
 			weaponBlock = Wind_Weapon.block;
 			break;
-		case 2:
+		case 3:
 			weaponCost = Ice_Weapon.soulCost;
 			weaponBlock = Ice_Weapon.block;
 			break;
-		case 3:
+		case 4:
 			weaponCost = Fisical_Weapon.soulCost;
 			weaponBlock = Fisical_Weapon.block;
 			break;
-		case 4:
+		case 5:
 			weaponCost = Poison_Weapon.soulCost;
 			weaponBlock = Poison_Weapon.block;
 			break;
@@ -145,19 +153,22 @@ public class Menu_Player {
 	
 	private void imgWeapon(Graphics g) {
 		switch(curW){
-		case 0:
-			g.drawImage(Fire_Weapon.sprite, 200, 54, 32, 32, null);
+		case 0: 
+			g.drawImage(Mana_Weapon.sprite, 200, 54, 32, 32, null);
 			break;
 		case 1:
-			g.drawImage(Wind_Weapon.sprite, 200, 54, 32, 32, null);
+			g.drawImage(Fire_Weapon.sprite, 200, 54, 32, 32, null);
 			break;
 		case 2:
-			g.drawImage(Ice_Weapon.sprite, 200, 54, 32, 32, null);
+			g.drawImage(Wind_Weapon.sprite, 200, 54, 32, 32, null);
 			break;
 		case 3:
-			g.drawImage(Fisical_Weapon.sprite, 200, 54, 32, 32, null);
+			g.drawImage(Ice_Weapon.sprite, 200, 54, 32, 32, null);
 			break;
 		case 4:
+			g.drawImage(Fisical_Weapon.sprite, 200, 54, 32, 32, null);
+			break;
+		case 5:
 			g.drawImage(Poison_Weapon.sprite, 200, 54, 32, 32, null);
 			break;
 		}
