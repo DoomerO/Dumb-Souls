@@ -98,12 +98,12 @@ public class Fisical_Weapon extends Weapon {
 		int manaCost = 4;
 		
 		if (this.dashAva && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md1) {
+				md1 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md1) {
 			di += 5.0;
 			if (di < dashDistance) {
 				if (Game.player.right) {
@@ -121,7 +121,7 @@ public class Fisical_Weapon extends Weapon {
 			}
 			else {
 				di = 0;
-				md = false;
+				md1 = false;
 				Game.player.dash = false;
 			}
 		}
@@ -130,27 +130,27 @@ public class Fisical_Weapon extends Weapon {
 	public void Ablt2() {
 		int manaCost = 30;	
 		if (this.ablt2Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md2) {
+				md2 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md2) {
 			Game.entities.add(new AE_Rupture(Game.player.getX() - ablt2W / 2 + 8, Game.player.getY() - ablt2H / 2 + 8, ablt2W, ablt2H, null, 80, ablt2Dmg));
 			Game.player.ablt2 = false;
-			md = false;
+			md2 = false;
 		}
 	}
 	
 	public void Ablt3() {
 		int manaCost = 50;
 		if (this.ablt3Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md3) {
+				md3 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md3) {
 			tspw++;
 			double off = Game.rand.nextInt(20);
 			double ang = Math.atan2(Game.my / Game.scale + off - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
@@ -162,7 +162,7 @@ public class Fisical_Weapon extends Weapon {
 			if (tspw == 40) {
 				Game.player.ablt3 = false;
 				tspw = 0;
-				md = false;
+				md3 = false;
 			}
 		}
 	}

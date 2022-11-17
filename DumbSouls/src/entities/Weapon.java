@@ -1,7 +1,6 @@
 package entities;
 
 import java.awt.image.BufferedImage;
-
 import main.Game;
 import world.Camera;
 
@@ -14,9 +13,8 @@ public class Weapon {
 	private int frames, maxFrames = 10, index, maxIndex = 3;
 	public int mx, my, attackTimer;
 	public String[] listNames;
-	public boolean md;
+	public boolean md1, md2, md3;
 	protected boolean dashAva, ablt2Ava, ablt3Ava;
-	
 	
 	public Weapon(BufferedImage sprite) {
 		this.sprite = sprite;

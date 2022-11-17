@@ -203,18 +203,23 @@ public class Player extends Entity{
 		
 		playerWeapon.tick();
 		playerWeapon.Effect();
+		
 		isAttacking();
 		isMoving();
 		checkExp();
 		dashing();
 		ablt2Using();
 		ablt3Using();
-		if (!playerWeapon.md){
+		shotDamage();
+		if (!playerWeapon.md1) {
 			dash = false;
+		}
+		if (!playerWeapon.md2) {
 			ablt2 = false;
+		}
+		if (!playerWeapon.md3) {
 			ablt3 = false;
 		}
-		shotDamage();
 		
 		Camera.x = Camera.Clamp(this.getX() - (Game.width / 2), 0, World.WIDTH * 16 - Game.width);
 		Camera.y = Camera.Clamp(this.getY() - (Game.height / 2), 0, World.HEIGHT * 16 - Game.height);

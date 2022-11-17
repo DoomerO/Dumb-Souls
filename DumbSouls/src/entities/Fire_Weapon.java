@@ -97,8 +97,8 @@ public class Fire_Weapon extends Weapon {
 		int manaCost = 12;
 		
 		if (this.dashAva && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md1) {
+				md1 = true;
 				Game.player.mana -= manaCost;
 			}
 			if (tspw > 2) {
@@ -126,7 +126,7 @@ public class Fire_Weapon extends Weapon {
 			}
 			else {
 				Game.player.dash = false;
-				md = false;
+				md1 = false;
 				di = 0;
 			}
 			
@@ -137,12 +137,12 @@ public class Fire_Weapon extends Weapon {
 		int manaCost = 34;
 		
 		if (ablt2Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md2) {
+				md2 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md2) {
 			tspw2++;
 			double ang = Math.atan2(Game.my / Game.scale - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
 			double dx = Math.cos(ang);
@@ -153,7 +153,7 @@ public class Fire_Weapon extends Weapon {
 			if (tspw2 == maxtspw2) {
 				tspw2 = 0;
 				Game.player.ablt2 = false;
-				md = false;
+				md2 = false;
 			}
 		}
 	}
@@ -162,8 +162,8 @@ public class Fire_Weapon extends Weapon {
 		int manaCost = 68;
 		
 		if (ablt3Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md3) {
+				md3 = true;
 				Game.player.mana -= manaCost;
 			}
 			double ang = Math.atan2(Game.my / Game.scale - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
@@ -171,7 +171,7 @@ public class Fire_Weapon extends Weapon {
 			double dy =  Math.sin(ang);
 			Game.entities.add(new AE_HellFlame(Game.player.getX(), Game.player.getY() - 32, 32, 32, ablt3Spd, dx, dy, ablt3Dmg, null, 80));
 			Game.player.ablt3 = false;
-			md = false;
+			md3 = false;
 		}
 	}
 }

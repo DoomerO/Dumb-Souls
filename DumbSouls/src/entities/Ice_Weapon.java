@@ -105,12 +105,12 @@ public class Ice_Weapon extends Weapon{
 	public void Dash() {
 		int manaCost = 25;
 		if (this.dashAva && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md1) {
+				md1 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md1) {
 			dt += 1;
 			double dashSpeed = Game.player.speed + 0.8;
 			if (dt != dashTime) {
@@ -132,7 +132,7 @@ public class Ice_Weapon extends Weapon{
 			}
 			else {
 				Game.player.dash = false;
-				md = false;
+				md1 = false;
 				dt = 0;
 			}
 		}
@@ -141,12 +141,12 @@ public class Ice_Weapon extends Weapon{
 	public void Ablt2() {
 		int manaCost = 50;
 		if (ablt2Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md2) {
+				md2 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md2) {
 			for (int c = 1; c <= 3; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() + (13 * c), Game.player.getY(), 6, 16, null, 60, ablt2Dmg));
 			}
@@ -172,21 +172,21 @@ public class Ice_Weapon extends Weapon{
 				Game.entities.add(new AE_IceSpike(Game.player.getX() - (8 * c), Game.player.getY() + (8 * c), 6, 16, null, 60, ablt2Dmg));
 			}
 			Game.player.ablt2 = false;
-			md = false;
+			md2 = false;
 		}
 	}
 	
 	public void Ablt3() {
 		int manaCost = 60;
 		if (ablt3Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md3) {
+				md3 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md3) {
 			Game.entities.add(new AE_SnowStorm(Game.player.getX(), Game.player.getY(), 32, 32, null, 240, ablt3Spd, ablt3Dmg));
-			md = false;
+			md3 = false;
 			Game.player.ablt3 = false;
 		}
 	}

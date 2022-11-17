@@ -12,7 +12,7 @@ public class Wind_Weapon extends Weapon {
 	private double hrcSpeed = 0.8, ablt3Spd = 5.0;
 	private double di, dashDistance = 40;
 	public static int soulCost = 100;
-	 public static boolean block = true;
+	public static boolean block = true;
 	
 	public Wind_Weapon() {
 		super(sprite);
@@ -100,12 +100,12 @@ public class Wind_Weapon extends Weapon {
 	public void Dash() {
 		int manaCost = 20;
 		if (this.dashAva && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md1) {
+				md1 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if(md) {
+		if(md1) {
 			Game.entities.add(new AE_WindDS(Game.player.getX(), Game.player.getY(), 16, 16, null, (int)(dashDistance / 4)));
 			di += 4.0;
 			if (di < dashDistance) {
@@ -124,7 +124,7 @@ public class Wind_Weapon extends Weapon {
 			}
 			else {
 				di = 0;
-				md = false;
+				md1 = false;
 				Game.player.dash = false;
 			}
 		}
@@ -133,14 +133,14 @@ public class Wind_Weapon extends Weapon {
 	public void Ablt2() {
 		int manaCost = 64;
 		if (ablt2Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md2) {
+				md2 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md2) {
 			Game.player.ablt2 = false;
-			md = false;
+			md2 = false;
 			Game.entities.add(new AE_Hurricane(Game.player.getX(), Game.player.getY(), 32, 32, null, 240, hrcSpeed, hrcDamage));
 		}
 	}
@@ -148,18 +148,18 @@ public class Wind_Weapon extends Weapon {
 	public void Ablt3() {
 		int manaCost = 36;
 		if (ablt3Ava && Game.player.mana >= manaCost) {
-			if (!md) {
-				md = true;
+			if (!md3) {
+				md3 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
-		if (md) {
+		if (md3) {
 			double ang = Math.atan2(Game.my / Game.scale - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);
 			Game.entities.add(new AE_WindBarrage(Game.player.getX(), Game.player.getY(), 32, 32, ablt3Spd, dx, dy, ablt3Dmg, null, 30));
 			Game.player.ablt3 = false;
-			md = false;
+			md3 = false;
 		}
 	}
 }
