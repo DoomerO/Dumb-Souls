@@ -3,6 +3,7 @@ package entities;
 import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
+import sounds.SoundPlayer;
 
 public class Fire_Weapon extends Weapon {
 	
@@ -86,6 +87,7 @@ public class Fire_Weapon extends Weapon {
 		}
 	
 	public void Attack() {
+		SoundPlayer.PlaySound("fire_atk.wav");
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
@@ -100,49 +102,40 @@ public class Fire_Weapon extends Weapon {
 			if (!md1) {
 				md1 = true;
 				Game.player.mana -= manaCost;
+				SoundPlayer.PlaySound("fire_ablt2.wav");
 			}
+			if (di == 0) {
+				Game.player.speed += 2.5;
+			}
+			di += 2.5;
 			if (tspw > 2) {
 				tspw = 0;
 			}
 			tspw ++;
-			di += 2.5;
-			if (di < dashDistance) {
-				if (Game.player.right) {
-					Game.player.x += 2.5;
-				}
-				else if (Game.player.left) {
-					Game.player.x -= 2.5;
-				}
-				if (Game.player.down) {
-					Game.player.y += 2.5;
-				}
-				else if (Game.player.up) {
-					Game.player.y -= 2.5;
-				}
-				if (tspw == 2) {
-					Game.entities.add(new AE_Fire(Game.player.getX(), Game.player.getY(), 16, 16, null, 125));
-					tspw = 0;
-				}
+			if (tspw == 2) {
+				Game.entities.add(new AE_Fire(Game.player.getX(), Game.player.getY(), 16, 16, null, 125));
+				tspw = 0;
 			}
-			else {
+			if (di >= dashDistance) {
 				Game.player.dash = false;
 				md1 = false;
 				di = 0;
+				Game.player.speed = Game.player.maxSpeed;
 			}
-			
 		}
 	}
 	
 	public void Ablt2() {
 		int manaCost = 34;
-		
 		if (ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md2) {
+				SoundPlayer.PlaySound("fire_ablt1.wav");
 				md2 = true;
 				Game.player.mana -= manaCost;
 			}
 		}
 		if (md2) {
+			
 			tspw2++;
 			double ang = Math.atan2(Game.my / Game.scale - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
 			double dx = Math.cos(ang);
@@ -163,9 +156,11 @@ public class Fire_Weapon extends Weapon {
 		
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md3) {
+				SoundPlayer.PlaySound("fire_ablt2.wav");
 				md3 = true;
 				Game.player.mana -= manaCost;
 			}
+			
 			double ang = Math.atan2(Game.my / Game.scale - (Game.player.getY() + 8 - Camera.y) , Game.mx / Game.scale - (Game.player.getX() + 8 - Camera.x));
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);

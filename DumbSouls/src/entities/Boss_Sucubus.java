@@ -56,34 +56,34 @@ public class Boss_Sucubus extends Enemy {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 
-		Game.eShots.add(new Enemy_Shot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 36, 5, 50));
+		Game.eShots.add(new Enemy_Shot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 36, 5, 30));
 	}
 	
 	private void attack2() {
-		int prop;
-		int prop2;
+		int prob;
+		int prob2;
 		
 		if (Game.rand.nextInt(2) == 1) {
-			prop = -1;
+			prob = -1;
 		}
 		else {
-			prop = 1;
+			prob = 1;
 		}
 		
 		if (Game.rand.nextInt(2) == 1) {
-			prop2 = -1;
+			prob2 = -1;
 		}
 		else  {
-			prop2 = 1;
+			prob2 = 1;
 		}
 		
-		int distance = 100 * prop, distance2 = 80 * prop2 ;
+		int distance = 100 * prob, distance2 = 80 * prob2 ;
 		
 		double ang = Math.atan2((Game.player.getY() - Camera.y) - (Game.player.getY() - Camera.y + distance2) ,(Game.player.getX() - Camera.x) - (Game.player.getX() - Camera.x  + distance));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.eShots.add(new Enemy_Shot(Game.player.getX() + distance, Game.player.getY() + distance2, 6, 3, spriteAtk2, dx, dy, 10, 7, 30));
+		Game.eShots.add(new Enemy_Shot(Game.player.getX() + distance, Game.player.getY() + distance2, 6, 3, spriteAtk2, dx, dy, 10, 7, 50));
 	}
 	
 	private void renderAura() {

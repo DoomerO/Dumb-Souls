@@ -3,6 +3,7 @@ package entities;
 import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
+import sounds.SoundPlayer;
 
 public class Wind_Weapon extends Weapon {
 	
@@ -90,6 +91,7 @@ public class Wind_Weapon extends Weapon {
 	}
 	
 	public void Attack() {
+		SoundPlayer.PlaySound("wind_atk.wav");
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
@@ -134,6 +136,7 @@ public class Wind_Weapon extends Weapon {
 		int manaCost = 64;
 		if (ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md2) {
+				
 				md2 = true;
 				Game.player.mana -= manaCost;
 			}
@@ -149,6 +152,7 @@ public class Wind_Weapon extends Weapon {
 		int manaCost = 36;
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md3) {
+				SoundPlayer.PlaySound("wind_ablt2.wav");
 				md3 = true;
 				Game.player.mana -= manaCost;
 			}
