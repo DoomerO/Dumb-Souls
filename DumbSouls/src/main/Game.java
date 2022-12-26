@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import graphics.*;
 import entities.*;
 import world.*;
+import sounds.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -42,15 +43,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Spritesheet sheet;
 	
 	public static String gameState = "MENUINIT";
-	
 	public static UI ui;
-	
 	public static World world;
-	
 	public static Player player;
-	
 	public static Random rand;
-	
 	public static Menu_Level levelUpMenu;
 	public static Menu_Player playerMenu;
 	public static Menu_Init startMenu;
@@ -95,6 +91,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static void main(String args[]) {
 		Game game = new Game();
 		game.start();
+		SoundPlayer.PlaySoundTrack("Gurenge.wav");
 	}
 	public void end() {
 		isRuning = false;

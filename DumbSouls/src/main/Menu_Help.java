@@ -25,8 +25,9 @@ public class Menu_Help {
 		g.drawString("Movement Controls: wasd / also in menus", 40, 36);
 		g.drawString("Dash Key : space", 40, 51);
 		g.drawString("Basic Attack : click on any mouse's buttons", 40, 66);
-		g.drawString("Skill : 1", 40, 81);
+		g.drawString("Skills : 1, 2", 40, 81);
 		g.drawString("Select : enter", 40, 96);
+		g.drawString("Pause : esc", 40, 111);
 		g.drawString("> Back", 10, 140);
 	}
 }
