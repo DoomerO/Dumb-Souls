@@ -24,10 +24,10 @@ public class AE_WindDS extends Attack_Entity {
 		if (time == this.timeLife) {
 			this.die();
 		}
-		Colision();
+		Collision();
 	}
 	
-	private void Colision() {
+	private void Collision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(e, this)) {

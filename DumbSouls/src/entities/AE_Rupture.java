@@ -33,10 +33,10 @@ public class AE_Rupture extends Attack_Entity {
 		if (time == this.timeLife) {
 			this.die();
 		}
-		Colision();
+		Collision();
 	}
 	
-	private void Colision() {
+	private void Collision() {
 		if (time <= 6 && time % 2 == 0) {
 			for (int i = 0; i < Game.enemies.size(); i++) {
 				Enemy e = Game.enemies.get(i);

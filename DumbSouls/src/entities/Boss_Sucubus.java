@@ -23,7 +23,7 @@ public class Boss_Sucubus extends Enemy {
 		this.life = maxLife;
 		this.maxSpeed = 0.6;
 		this.speed = this.maxSpeed;
-		this.setMask(2, 0, 30, 32);
+		this.setMask(2, 0, 28, 32);
 	}
 	
 	private void animate() {

@@ -32,11 +32,11 @@ public class AE_Fire extends Attack_Entity {
 		if (time == this.timeLife) {
 			this.die();
 		}
-		Colision();
+		Collision();
 		refreshTick();
 	}
 	
-	private void Colision() {
+	private void Collision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(TickTimer(15)) {

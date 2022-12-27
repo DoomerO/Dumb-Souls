@@ -31,7 +31,7 @@ public class AE_Explosion extends Attack_Entity{
 		}
 	}
 	
-	private void Colision() {
+	private void Collision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(e, this)) {
@@ -46,7 +46,7 @@ public class AE_Explosion extends Attack_Entity{
 		animate();
 		
 		if (index == maxIndex) {
-			Colision();
+			Collision();
 		}
 		
 		if (time == this.timeLife) {

@@ -20,7 +20,7 @@ public class AE_VenomGas extends Attack_Entity {
 		this.dy = diry;
 		this.damage = dmg;
 		this.getAnimation(192, 112, 16, 16, 1);
-		this.setMask(2, 2, 6, 8);
+		this.setMask(2, 2, 4, 8);
 		this.depth = 2;
 	}
 	
@@ -31,10 +31,10 @@ public class AE_VenomGas extends Attack_Entity {
 		if (time == this.timeLife) {
 			this.die();
 		}
-		Colision();
+		Collision();
 	}
 	
-	private void Colision() {
+	private void Collision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if(Entity.isColiding(this, e)) {

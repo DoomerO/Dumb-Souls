@@ -29,11 +29,11 @@ public class AE_ManaRay extends Attack_Entity {
 		}
 	}
 	
-	private void Colision() {
+	private void Collision() {
 		findSmallest();
 		Line2D line = new Line2D.Double(Game.player.getX() + 8, Game.player.getY() + 8, smallest.getX() + smallest.getWidth()/2, smallest.getY() + smallest.getHeight()/2);
 		
-		if(Entity.lineColision(line, smallest)) {
+		if(Entity.lineCollision(line, smallest)) {
 			if (time % 10 == 0) {
 				smallest.life -= damage;
 				if (smallest.life <= 0) {
@@ -45,7 +45,7 @@ public class AE_ManaRay extends Attack_Entity {
 	
 	public void tick() {
 		time++;
-		Colision();
+		Collision();
 		this.width = (int)Entity.calculateDistance(Game.player.getX() - 8, Game.player.getY() - 8, smallest.getX() - smallest.getWidth()/2, smallest.getY() - smallest.getHeight()/2);
 		this.x = Game.player.getX() + Game.player.getWidth()/2;
 		this.y = Game.player.getY() + Game.player.getHeight()/2;

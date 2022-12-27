@@ -49,11 +49,11 @@ public class AE_SnowStorm extends Attack_Entity {
 			this.die();
 		}
 		
-		enemyColision();
+		enemyCollision();
 		refreshTick();
 	}
 	
-	public void enemyColision() {
+	public void enemyCollision() {
 		for (int i = 0; i < Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
 			if (Entity.isColiding(this, e) && TickTimer(20)) {

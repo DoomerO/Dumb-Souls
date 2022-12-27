@@ -19,7 +19,7 @@ public class AE_PoisonPool extends Attack_Entity {
 	}
 	
 	public void tick() {
-		Colision();
+		Collision();
 		time ++;
 		frames++;
 		if (frames == maxFrames) {
@@ -35,7 +35,7 @@ public class AE_PoisonPool extends Attack_Entity {
 		}
 	}
 	
-	public void Colision() {
+	public void Collision() {
 		if (time % 12 == 0) {
 			for (int i = 0; i < Game.enemies.size(); i++) {
 				Enemy e = Game.enemies.get(i);

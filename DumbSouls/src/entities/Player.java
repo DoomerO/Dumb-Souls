@@ -47,7 +47,7 @@ public class Player extends Entity{
 			playerUp[xsp] = Game.sheet.getSprite(xsp * 16, 16 * 4, 16, 16);
 		}
 		
-		setMask(4, 1, 8, 15);
+		setMask(4, 1, 8, 14);
 		this.depth = 1;
 	}
 	

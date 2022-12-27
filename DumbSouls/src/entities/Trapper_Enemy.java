@@ -47,7 +47,7 @@ public class Trapper_Enemy extends Enemy{
 	}
 	private void stage2() {
 		this.shotDamage();
-		this.setMask(2, 0, 14, 32);
+		this.setMask(2, 0, 12, 32);
 		animate();
 		cont++;
 		if (isColiding(this, Game.player)) {

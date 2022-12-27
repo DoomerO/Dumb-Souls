@@ -95,7 +95,7 @@ public class Entity {
 		return e1.mask.intersects(e2.mask);
 	}
 	
-	public static boolean lineColision(Line2D line, Entity e) {
+	public static boolean lineCollision(Line2D line, Entity e) {
 		e.mask = new Rectangle(e.getX() + e.mx, e.getY() + e.my, e.mw, e.mh);
 		return line.intersects(e.mask);
 	}
