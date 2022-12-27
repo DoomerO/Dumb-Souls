@@ -56,7 +56,7 @@ public class Trapper_Enemy extends Enemy{
 			}
 			timer += 1;
 		}
-		if (cont >= 120) {
+		if (cont >= 120 && !isColiding(this, Game.player)) {
 			stage2 = false;
 			cont = 0;
 			this.xP = Game.player.getX();
@@ -65,7 +65,7 @@ public class Trapper_Enemy extends Enemy{
 	}
 	
 	public void tick() {
-		if (this.getX() != xP && this.getY() != yP) {
+		if (this.getX() != xP && this.getY() != yP || isColiding(this, Game.player)) {
 			objectiveMovement(xP, yP);
 			this.setMask(0, 0, 0, 0);
 		}
