@@ -7,6 +7,7 @@ import main.Game;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 
 public class Entity {
 	
@@ -35,9 +36,6 @@ public class Entity {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	
-	public static double calculateDistance2pt(int p1, int p2) {
-		return Math.sqrt(p1 * p1 + p2 * p2);
-	}
 	
 	public static Comparator<Entity> entityDepth = new Comparator<Entity>() {
 		public int compare(Entity n0, Entity n1) {
@@ -96,6 +94,11 @@ public class Entity {
 		e2.mask = new Rectangle(e2.getX() + e2.mx, e2.getY() + e2.my, e2.mw, e2.mh);
 		return e1.mask.intersects(e2.mask);
 	}
+	
+	public static boolean lineColision(Line2D line, Entity e) {
+		e.mask = new Rectangle(e.getX() + e.mx, e.getY() + e.my, e.mw, e.mh);
+		return line.intersects(e.mask);
+	}
 
 	protected void knockBack(Entity e, Entity taker){
 		double angle = getAngle(taker.getY() + taker.getHeight() / 2, e.getY() + e.getHeight() / 2, taker.getX() + taker.getWidth() / 2, e.getX() + e.getWidth() / 2);
@@ -103,4 +106,5 @@ public class Entity {
 		taker.x += Math.cos(angle) * e.push;
 		taker.y += Math.sin(angle) * e.push;
 	}
+	
 }
