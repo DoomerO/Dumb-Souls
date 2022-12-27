@@ -3,6 +3,7 @@ package main;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
+import entities.Player;
 
 public class Menu_Level {
 	private String[] options;
@@ -57,8 +58,8 @@ public class Menu_Level {
 		 
 		 if (space) {
 			 space = false;
-			 if (Game.player.souls >= 100) {
-				 Game.player.souls -= 100;
+			 if (Player.souls >= 100) {
+				 Player.souls -= 100;
 				 sortOptions(3);
 			 }
 		 }
@@ -86,7 +87,7 @@ public class Menu_Level {
 		}
 		
 		g.setColor(new Color(74, 52, 160));
-		g.drawString("Souls : " + Game.player.souls, 255, 20);
+		g.drawString("Souls : " + Player.souls, 255, 20);
 		g.drawString("[space] Refresh -100 souls", 180, 150);
 	}
 }
