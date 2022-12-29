@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.image.BufferedImage;
+
 import java.awt.Graphics;
 import world.Camera;
 
@@ -8,14 +9,16 @@ public class AE_Animation extends Attack_Entity {
 	
 	private int maxFrames, maxIndex, frames, index, time;
 	private String style;
+	private Entity followEntity;
 	
 	public AE_Animation(int x, int y, int width, int height, BufferedImage sprite, int time, 
-			int maxFrames, int maxIndex, int xSprite,int ySprite, int wSprite, int hSprite, String style) {
+			int maxFrames, int maxIndex, int xSprite,int ySprite, int wSprite, int hSprite, String style, Entity entity) {
 		super(x, y, width, height, sprite, time);
 		this.getAnimation(xSprite, ySprite, wSprite, hSprite, maxIndex);
 		this.maxFrames = maxFrames;
 		this.maxIndex = maxIndex;
 		this.style = style;
+		this.followEntity = entity;
 	}
 	
 	private void animate() {
@@ -39,12 +42,19 @@ public class AE_Animation extends Attack_Entity {
 				this.depth = 2;
 				this.y -= 0.1;
 			break;
+			case "goToUp_Objt_1": 
+				this.depth = 2;
+				this.y -= 0.4;
+				this.x = followEntity.getX();
+			break;
+			case "frames_1":
+				animate();
+			break;	
 		}
 	}
 	
 	public void tick() {
 		time++;
-		animate();
 		styleReader();
 		
 		if (time == this.timeLife) {
