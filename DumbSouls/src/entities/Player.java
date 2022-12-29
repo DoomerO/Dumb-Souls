@@ -47,7 +47,7 @@ public class Player extends Entity{
 			playerUp[xsp] = Game.sheet.getSprite(xsp * 16, 16 * 4, 16, 16);
 		}
 		
-		setMask(4, 1, 8, 14);
+		setMask(4, 1, 8, 15);
 		this.depth = 1;
 	}
 	
@@ -211,6 +211,10 @@ public class Player extends Entity{
 		ablt2Using();
 		ablt3Using();
 		shotDamage();
+		
+		if (playerWeapon instanceof Mana_Weapon) {
+			Mana_Weapon.graficEffect();
+		}
 		if (!playerWeapon.md1) {
 			dash = false;
 		}
@@ -251,7 +255,6 @@ public class Player extends Entity{
 				g.drawImage(playerUp[0], this.getX() - Camera.x, this.getY() - Camera.y, null);			
 			}
 		}
-		
 		playerWeapon.render(g);
 	}
 }

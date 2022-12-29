@@ -21,7 +21,7 @@ public class Attack_Entity extends Entity {
 		
 		for(int i = 0; i < animation.length; i++ ) {
 			animation[i] = Game.sheet.getSprite(x , y, width, height);
-			x += 16;
+			x += width;
 		}
 	}
 	

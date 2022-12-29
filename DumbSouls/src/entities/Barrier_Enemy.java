@@ -24,6 +24,8 @@ public class Barrier_Enemy extends Enemy{
 		this.speed = this.maxSpeed;
 		this.frost = 0;
 		this.setMask(1, 1, 46, 30);
+		this.spawning = true;
+		this.timeSpawn = 180;
 	}
 	
 	private void animate() {
@@ -52,24 +54,28 @@ public class Barrier_Enemy extends Enemy{
 	
 	public void tick() {
 		animate();
-		
-		if (!isColiding(this, Game.player)) {
-			this.movement();
+		if (!spawning) {
+			if (!isColiding(this, Game.player)) {
+				this.movement();
+			}
+			else {
+				if (timer % 30 == 0) {
+					attack();
+				}
+				timer += 1;
+			}
+
+			this.frostEffect(0.92);
+			
+			this.shotDamage();
+			if (life <= 0) {
+				die();
+			}
+
 		}
 		else {
-			if (timer % 30 == 0) {
-				attack();
-			}
-			timer += 1;
+			this.spawnAnimation(60);
 		}
-
-		this.frostEffect(0.92);
-		
-		this.shotDamage();
-		if (life <= 0) {
-			die();
-		}
-		
 	}
 	
 	public void render(Graphics g) {

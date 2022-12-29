@@ -23,6 +23,8 @@ public class Eye_Enemy extends Enemy{
 		this.frost = 0;
 		this.speed = this.maxSpeed;
 		this.setMask(3, 3, 12, 11);
+		this.timeSpawn = 180;
+		spawning = true;
 	}
 	
 	private void animate() {
@@ -58,21 +60,24 @@ public class Eye_Enemy extends Enemy{
 	
 	public void tick() {
 		animate();
-		
-		if (Entity.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) >= 80) {
-			this.movement();
+		if (!spawning) {
+			if (Entity.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) >= 80) {
+				this.movement();
+			}
+			else {
+				attack();
+			}
+			this.shotDamage();
+
+			this.frostEffect(0.995);
+
+			if (this.life <= 0) {
+				die();
+			}
 		}
 		else {
-			attack();
+			this.spawnAnimation(60);
 		}
-		this.shotDamage();
-
-		this.frostEffect(0.995);
-
-		if (this.life <= 0) {
-			die();
-		}
-		
 	}
 	
 	public void render(Graphics g) {

@@ -21,6 +21,8 @@ public class Mouth_Enemy extends Enemy {
 		this.frost = 0;
 		this.speed = this.maxSpeed;
 		this.setMask(0, 2, 16, 14);
+		this.spawning = true;
+		this.timeSpawn = 180;
 	}
 	
 	private void animate() {
@@ -47,20 +49,25 @@ public class Mouth_Enemy extends Enemy {
 	
 	public void tick() {
 		animate();
-		movement();
-		
-		if (Entity.isColiding(this, Game.player)) {
-			if (timer % 30 == 0) {
-				attack();
+		if (!spawning) {
+			movement();
+			
+			if (Entity.isColiding(this, Game.player)) {
+				if (timer % 30 == 0) {
+					attack();
+				}
+				timer += 1;
 			}
-			timer += 1;
+			
+			this.frostEffect(0.8);
+			
+			shotDamage();
+			if (this.life <= 0) {
+				this.die();
+			}
 		}
-		
-		this.frostEffect(0.8);
-		
-		shotDamage();
-		if (this.life <= 0) {
-			this.die();
+		else {
+			this.spawnAnimation(60);
 		}
 	}
 	

@@ -22,6 +22,8 @@ public class Trapper_Enemy extends Enemy{
 		this.speed = this.maxSpeed;
 		xP = Game.player.getX();
 		yP = Game.player.getY();
+		this.spawning = true;
+		this.timeSpawn = 180;
 	}
 	
 	private void animate() {
@@ -47,7 +49,7 @@ public class Trapper_Enemy extends Enemy{
 	}
 	private void stage2() {
 		this.shotDamage();
-		this.setMask(2, 0, 12, 32);
+		this.setMask(2, 0, 14, 32);
 		animate();
 		cont++;
 		if (isColiding(this, Game.player)) {
@@ -56,7 +58,7 @@ public class Trapper_Enemy extends Enemy{
 			}
 			timer += 1;
 		}
-		if (cont >= 120 && !isColiding(this, Game.player)) {
+		if (cont >= 120) {
 			stage2 = false;
 			cont = 0;
 			this.xP = Game.player.getX();
@@ -65,21 +67,25 @@ public class Trapper_Enemy extends Enemy{
 	}
 	
 	public void tick() {
-		if (this.getX() != xP && this.getY() != yP || isColiding(this, Game.player)) {
-			objectiveMovement(xP, yP);
-			this.setMask(0, 0, 0, 0);
+		if (!spawning) {
+			if (this.getX() != xP && this.getY() != yP) {
+				objectiveMovement(xP, yP);
+				this.setMask(0, 0, 0, 0);
+			}
+			else {
+				stage2 = true;
+				stage2();
+			}
+			
+			this.frostEffect(0.995);
+			
+			if (life <= 0) {
+				die();
+			}
 		}
 		else {
-			stage2 = true;
-			stage2();
+			this.spawnAnimation(60);
 		}
-		
-		this.frostEffect(0.995);
-		
-		if (life <= 0) {
-			die();
-		}
-		
 	}
 	
 	public void render(Graphics g) {

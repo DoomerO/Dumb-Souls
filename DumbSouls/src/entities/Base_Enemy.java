@@ -24,6 +24,8 @@ public class Base_Enemy extends Enemy{
 		this.frost = 0;
 		this.speed = this.maxSpeed;
 		this.setMask(3, 2, 8, 14);
+		this.timeSpawn = 180;
+		spawning = true;
 	}
 	
 	private void animate() {
@@ -50,24 +52,27 @@ public class Base_Enemy extends Enemy{
 	
 	public void tick() {
 		animate();
-		
-		if (!isColiding(this, Game.player)) {
-			this.movement();
+		if (spawning == false) {
+			if (!isColiding(this, Game.player)) {
+				this.movement();
+			}
+			else {
+				if (timer % 15 == 0) {
+					attack();
+				}
+				timer += 1;
+			}
+
+			this.frostEffect(0.99);
+			
+			this.shotDamage();
+			if (life <= 0) {
+				die();
+			}
 		}
 		else {
-			if (timer % 15 == 0) {
-				attack();
-			}
-			timer += 1;
+			this.spawnAnimation(60);
 		}
-
-		this.frostEffect(0.99);
-		
-		this.shotDamage();
-		if (life <= 0) {
-			die();
-		}
-		
 	}
 	
 	public void render(Graphics g) {
