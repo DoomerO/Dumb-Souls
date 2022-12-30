@@ -75,7 +75,7 @@ public class Enemy extends Entity{
 	
 	protected void spawnAnimation(int frames) {
 		if (contTS == 0) {
-			Game.entities.add(new AE_Animation(this.getX() - this.width/2, this.getY() - this.height, this.width*2, this.height*2, null, timeSpawn, frames, 3, 112, 144, 32, 32, "frames_1", null));
+			Game.enemies.add(new Enemy_Animation(this.getX() - this.width/2, this.getY() - this.height, this.width*2, this.height*2, null, timeSpawn, frames, 3, 112, 144, 32, 32, "frames_1", null));
 		}
 		this.contTS++;
 		if (this.contTS == this.timeSpawn) {
