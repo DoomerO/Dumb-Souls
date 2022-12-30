@@ -178,11 +178,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g.fillRect(0, 0, width, height);
 			world.render(g);
 			Collections.sort(entities, Entity.entityDepth);
-			for(int i = 0; i < enemies.size(); i++) {
-				enemies.get(i).render(g);
-			}
+			Collections.sort(enemies, Entity.entityDepth);
 			for(int i = 0; i < entities.size(); i++) {
 				entities.get(i).render(g);
+			}
+			for(int i = 0; i < enemies.size(); i++) {
+				enemies.get(i).render(g);
 			}
 			for(int i = 0; i < shots.size(); i++) {
 				shots.get(i).render(g);
