@@ -8,7 +8,7 @@ public class Ice_Weapon extends Weapon{
 	
 	public BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 48, 16, 16);
-	private int shotDamage = 3, shotSpeed = 2, ablt2Dmg = 4, ablt3Dmg = 3, dashTime = 300, dt = 0;
+	private int shotDamage = 3, shotSpeed = 2, ablt2Dmg = 4, ablt2Quant = 3, ablt3Dmg = 5, dashTime = 300, dt = 0;
 	private double ablt3Spd = 0.5;
 	private static double frost = 5;
 	public static int soulCost = 400;
@@ -72,6 +72,7 @@ public class Ice_Weapon extends Weapon{
 					ablt2Ava = true;
 				}
 				else {
+					ablt2Quant += 1;
 					ablt2Dmg += 2;
 				}
 				break;
@@ -147,28 +148,28 @@ public class Ice_Weapon extends Weapon{
 			}
 		}
 		if (md2) {
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() + (13 * c), Game.player.getY(), 6, 16, null, 60, ablt2Dmg));
 			}
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX(), Game.player.getY() + (13 * c), 6, 16, null, 60, ablt2Dmg));
 			}
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() - (13 * c), Game.player.getY(), 6, 16, null, 60, ablt2Dmg));
 			}
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX(), Game.player.getY() - (13 * c), 6, 16, null, 60, ablt2Dmg));
 			}
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() + (8 * c), Game.player.getY() + (8 * c), 6, 16, null, 60, ablt2Dmg));
 			}
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() - (8 * c), Game.player.getY() - (8 * c), 6, 16, null, 60, ablt2Dmg));
 			}
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() + (8 * c), Game.player.getY() - (8 * c), 6, 16, null, 60, ablt2Dmg));
 			}
-			for (int c = 1; c <= 3; c++) {
+			for (int c = 1; c <= ablt2Quant; c++) {
 				Game.entities.add(new AE_IceSpike(Game.player.getX() - (8 * c), Game.player.getY() + (8 * c), 6, 16, null, 60, ablt2Dmg));
 			}
 			Game.player.ablt2 = false;

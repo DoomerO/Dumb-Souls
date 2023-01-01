@@ -104,23 +104,36 @@ public class Fire_Weapon extends Weapon {
 				Game.player.mana -= manaCost;
 				SoundPlayer.PlaySound("fire_ablt2.wav");
 			}
-			if (di == 0) {
-				Game.player.speed += 2.5;
-			}
-			di += 2.5;
-			if (tspw > 2) {
-				tspw = 0;
-			}
-			tspw ++;
-			if (tspw == 2) {
-				Game.entities.add(new AE_Fire(Game.player.getX(), Game.player.getY(), 16, 16, null, 125));
-				tspw = 0;
-			}
-			if (di >= dashDistance) {
-				Game.player.dash = false;
-				md1 = false;
-				di = 0;
-				Game.player.speed = Game.player.maxSpeed;
+			if (md1) {
+				
+				if (Game.player.right) {
+					Game.player.x += Game.player.speed += 2.5;
+				}
+				if (Game.player.left) {
+					Game.player.x -= Game.player.speed += 2.5;
+				}
+				if (Game.player.down) {
+					Game.player.y += Game.player.speed += 2.5;
+				}
+				if (Game.player.up) {
+					Game.player.y += Game.player.speed += 2.5;
+				}
+				
+				di += 2.5;
+				if (tspw > 2) {
+					tspw = 0;
+				}
+				tspw ++;
+				if (tspw == 2) {
+					Game.entities.add(new AE_Fire(Game.player.getX(), Game.player.getY(), 16, 16, null, 125));
+					tspw = 0;
+				}
+				if (di >= dashDistance) {
+					Game.player.dash = false;
+					md1 = false;
+					di = 0;
+					Game.player.speed = Game.player.maxSpeed;
+				}
 			}
 		}
 	}
