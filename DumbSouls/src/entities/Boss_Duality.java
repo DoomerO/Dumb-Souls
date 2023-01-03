@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
 import world.World;
-
-import java.awt.Color;
 import java.awt.Graphics;
 
 public class Boss_Duality extends Enemy{
@@ -51,6 +49,8 @@ public class Boss_Duality extends Enemy{
 		Game.enemies.remove(this);
 		Game.player.exp += this.expValue;
 		Player.souls +=  this.soulValue;
+		World.bossTime = false;
+		World.bossName = "";
 	}
 	
 	private void closeAtk() {
@@ -102,7 +102,7 @@ public class Boss_Duality extends Enemy{
 			Game.eShots.add(new Enemy_Shot(this.getX() + 3, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 40, 5, 35, "straight"));
 		}
 		if (timeAtk % 80 == 0) {
-			Game.eShots.add(new Enemy_Shot(this.getX() + 16, this.getY() + 11, 16, 5, spriteAtk2, 0, 0, 32, 5, 50, "focused"));
+			Game.eShots.add(new Enemy_Shot(this.getX() + 16, this.getY() + 11, 16, 5, spriteAtk2, 0, 0, 32, 3, 50, "focused"));
 		}
 		if (timeAtk % 160 == 0) {
 			addShield();
@@ -145,15 +145,5 @@ public class Boss_Duality extends Enemy{
 		if (shieldActive) {
 			g.drawImage(shield, this.getX() - Camera.x - 32, this.getY() - Camera.y - 48, 98, 80, null);
 		}
-		
-		g.setColor(new Color(30, 30, 30));
-		g.fillRect((this.getX() + 1) - Camera.x, (this.getY() - 6) - Camera.y, 32, 4);
-		
-		g.setColor(Color.black);
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, 30, 2);
-		
-		g.setColor(new Color(125, 23, 145));
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, (int)((this.life * 30) / maxLife), 2);
 	}
-	
 }

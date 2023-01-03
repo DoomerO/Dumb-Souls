@@ -105,18 +105,17 @@ public class Fire_Weapon extends Weapon {
 				SoundPlayer.PlaySound("fire_ablt2.wav");
 			}
 			if (md1) {
-				
 				if (Game.player.right) {
-					Game.player.x += Game.player.speed += 2.5;
+					Game.player.x += 2.5;
 				}
 				if (Game.player.left) {
-					Game.player.x -= Game.player.speed += 2.5;
+					Game.player.x -= 2.5;
 				}
 				if (Game.player.down) {
-					Game.player.y += Game.player.speed += 2.5;
+					Game.player.y += 2.5;
 				}
 				if (Game.player.up) {
-					Game.player.y += Game.player.speed += 2.5;
+					Game.player.y -= 2.5;
 				}
 				
 				di += 2.5;

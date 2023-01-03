@@ -1,7 +1,6 @@
 package entities;
 
 import java.awt.image.BufferedImage;
-import java.awt.Color;
 import java.awt.Graphics;
 import main.Game;
 import world.Camera;
@@ -71,6 +70,8 @@ public class Boss_Hive extends Enemy{
 		Game.enemies.remove(this);
 		Game.player.exp += this.expValue;
 		Player.souls +=  this.soulValue;
+		World.bossTime = false;
+		World.bossName = "";
 	}
 	
 	public void tick() {
@@ -96,14 +97,5 @@ public class Boss_Hive extends Enemy{
 	
 	public void render(Graphics g) {
 		g.drawImage(this.animation[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		
-		g.setColor(new Color(30, 30, 30));
-		g.fillRect((this.getX() + 1) - Camera.x, (this.getY() - 6) - Camera.y, 32, 4);
-		
-		g.setColor(Color.black);
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, 30, 2);
-		
-		g.setColor(new Color(125, 23, 145));
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, (int)((this.life * 30) / maxLife), 2);
 	}
 }

@@ -1,7 +1,6 @@
 package entities;
 
 import java.awt.image.BufferedImage;
-import java.awt.Color;
 import java.awt.Graphics;
 import main.Game;
 import world.Camera;
@@ -23,7 +22,7 @@ public class Boss_Sucubus extends Enemy {
 		this.life = maxLife;
 		this.maxSpeed = 0.6;
 		this.speed = this.maxSpeed;
-		this.setMask(2, 0, 28, 32);
+		this.setMask(2, 0, 30, 32);
 	}
 	
 	private void animate() {
@@ -49,6 +48,8 @@ public class Boss_Sucubus extends Enemy {
 		Game.enemies.remove(this);
 		Game.player.exp += this.expValue;
 		Player.souls +=  this.soulValue;
+		World.bossTime = false;
+		World.bossName = "";
 	}
 	
 	private void attack1() {
@@ -56,7 +57,7 @@ public class Boss_Sucubus extends Enemy {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 
-		Game.eShots.add(new Enemy_Shot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 36, 5, 30));
+		Game.eShots.add(new Enemy_Shot(this.getX() + 6, this.getY() + 11, 6, 3, spriteAtk, dx, dy, 36, 5, 30, "straight"));
 	}
 	
 	private void attack2() {
@@ -83,7 +84,7 @@ public class Boss_Sucubus extends Enemy {
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
-		Game.eShots.add(new Enemy_Shot(Game.player.getX() + distance, Game.player.getY() + distance2, 6, 3, spriteAtk2, dx, dy, 10, 7, 50));
+		Game.eShots.add(new Enemy_Shot(Game.player.getX() + distance, Game.player.getY() + distance2, 6, 3, spriteAtk2, dx, dy, 10, 7, 50, "straight"));
 	}
 	
 	private void renderAura() {
@@ -150,16 +151,6 @@ public class Boss_Sucubus extends Enemy {
 	
 	public void render(Graphics g) {
 		g.drawImage(this.animation[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		
-		g.setColor(new Color(30, 30, 30));
-		g.fillRect((this.getX() + 1) - Camera.x, (this.getY() - 6) - Camera.y, 32, 4);
-		
-		g.setColor(Color.black);
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, 30, 2);
-		
-		g.setColor(new Color(125, 23, 145));
-		g.fillRect((this.getX() + 2) - Camera.x, (this.getY() - 5) - Camera.y, (int)((this.life * 30) / maxLife), 2);
-		
 		if (showAura) {
 			g.drawImage(aura, this.getX() - Camera.x,  this.getY() - Camera.y, 32, 32, null);
 		}
