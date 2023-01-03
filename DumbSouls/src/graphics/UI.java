@@ -48,12 +48,34 @@ public class UI {
 		g.fillRect(7, 20, (int)((Game.player.mana * 100) / Game.player.maxMana) * 2, 5);
 	}
 	
+	private void bossStatus(Graphics g) {
+		if (World.bossTime == true) {
+			g.setColor(new Color(60, 60, 60));
+			g.fillRect(920, 55, 40, 40);
+			g.drawImage(Game.enemies.get(0).sprite, 924, 59, 32, 32, null);
+			
+			g.setColor(new Color(30, 30, 30));
+			g.fillRect(816, 80, 104, 15);
+			g.fillRect(870, 65, 50, 15);
+			
+			g.setColor(Color.black);
+			g.fillRect(820, 85, 100, 7);
+			
+			g.setColor(new Color(125, 23, 145));
+			g.fillRect(820, 85, (int)((Game.enemies.get(0).life * 100) / Game.enemies.get(0).maxLife), 7);
+			
+			g.setColor(Color.white);
+			g.setFont(new Font("arial", Font.BOLD, 10));
+			g.drawString(World.bossName, 874, 76);
+		}
+	}
+	
 	public void render(Graphics g) {
 		lifeBar(g);
 		level(g);
 		manaBar(g);
 		levelBar(g);
 		wave(g);
-		
+		bossStatus(g);
 	}
 }
