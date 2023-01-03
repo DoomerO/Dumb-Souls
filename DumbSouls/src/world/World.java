@@ -15,7 +15,9 @@ public class World {
 	
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
-	public static int maxEnemies = 10, wave = 1;
+	public static int maxEnemies = 10, wave = 10;
+	public static String bossName;
+	public static boolean bossTime;
 	
 	public World(String path) {
 		try {
@@ -69,12 +71,19 @@ public class World {
 			int ex = Game.rand.nextInt(WIDTH - 2);
 			int ey = Game.rand.nextInt(HEIGHT - 2);
 			if (tiles[ex + (ey * WIDTH)] instanceof Floor_Tile) {
-				if (pe < 50) {
-					Game.enemies.add(new Boss_Sucubus(ex * 16, ey * 16, 32, 32, null));
+				if (pe < 33) {
+					Game.enemies.add(new Boss_Sucubus(ex * 16, ey * 16, 32, 32, Game.sheet.getSprite(105, 192, 12, 10)));
+					bossName = "Sucubus";
+				}
+				else if (pe < 66) {
+					Game.enemies.add(new Boss_Duality(ex * 16, ey * 16, 32, 32, Game.sheet.getSprite(11, 195, 10, 10)));
+					bossName = "Duality";
 				}
 				else {
-					Game.enemies.add(new Boss_Duality(ex * 16, ey * 16, 32, 32, null));
+					Game.enemies.add(new Boss_Hive(ex * 16, ey * 16, 32, 32, Game.sheet.getSprite(163, 202, 18, 12)));
+					bossName = "Hive";
 				}
+				bossTime = true;
 				break;
 			}
 		}		
