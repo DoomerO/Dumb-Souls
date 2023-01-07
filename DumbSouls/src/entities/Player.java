@@ -3,9 +3,9 @@ package entities;
 import java.awt.image.BufferedImage;
 
 import graphics.UI;
-
+import entities.shots.Enemy_Shot;
 import java.awt.Graphics;
-
+import entities.weapons.*;
 import main.*;
 import world.*;
 

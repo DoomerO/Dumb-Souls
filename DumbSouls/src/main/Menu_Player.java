@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 import entities.*;
+import entities.weapons.*;
 
 public class Menu_Player {
 	private int cur, curW;

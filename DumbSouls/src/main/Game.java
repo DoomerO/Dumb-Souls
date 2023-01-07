@@ -17,6 +17,8 @@ import java.awt.image.BufferedImage;
 
 import graphics.*;
 import entities.*;
+import entities.enemies.*;
+import entities.shots.*;
 import world.*;
 import sounds.*;
 

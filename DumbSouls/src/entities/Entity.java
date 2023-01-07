@@ -11,13 +11,13 @@ import java.awt.geom.Line2D;
 
 public class Entity {
 	
-	protected double x;
-	protected double y;
-	protected int width;
-	protected int height;
+	public double x;
+	public double y;
+	public int width;
+	public int height;
 	protected int mx, my, mw, mh;
 	protected Rectangle mask;
-	protected double push;
+	public double push;
 	public int depth;
 	
 	public BufferedImage sprite;

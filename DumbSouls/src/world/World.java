@@ -6,10 +6,8 @@ import java.awt.Graphics;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
+import entities.enemies.*;
 import main.Game;
-import entities.*;
-
 
 public class World {
 	
