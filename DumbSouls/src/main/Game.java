@@ -82,6 +82,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		pauseMenu = new Menu_Pause();
 		levelUpMenu = new Menu_Level(3);
 		helpMenu = new Menu_Help();
+		Save_Game.loadSave();
 	}
 	
 	public void start() {
