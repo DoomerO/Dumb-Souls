@@ -13,7 +13,7 @@ public class World {
 	
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
-	public static int maxEnemies = 10, wave = 10;
+	public static int maxEnemies = 10, wave = 1;
 	public static String bossName;
 	public static boolean bossTime;
 	
