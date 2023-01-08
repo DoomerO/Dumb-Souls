@@ -89,6 +89,7 @@ public class Fisical_Weapon extends Weapon {
 	
 	public void Attack() {
 		combo += 1;
+		int ruptureScale = shotDamage * 7;
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
@@ -97,13 +98,13 @@ public class Fisical_Weapon extends Weapon {
 				Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, 2.5, 20));
 			break;
 			case 3:
-				Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage + 2, 3.5, 20));
-				Game.shots.add(new Shot(Game.player.getX() + 10, Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage + 2, 3.5, 20));
+				Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, 3.5, 20));
+				Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage + 2, 3.75, 20));
 			break;
 			case 5:
-				Game.player.x += dx * (Game.player.speed * 20);
-				Game.player.y += dy * (Game.player.speed * 20);
-				Game.entities.add(new AE_Rupture(Game.player.getX() - 28 / 2 + 8, Game.player.getY() - 28 / 2 + 8, 28, 28, null, 60, shotDamage + 7));
+				Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, 3.5, 20));
+				Game.shots.add(new Shot(Game.player.getX() + 10, Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage + 4, 4, 20));
+				Game.entities.add(new AE_Rupture(Game.player.getX() - ruptureScale / 2 + 8, Game.player.getY() - ruptureScale / 2 + 8, ruptureScale, ruptureScale, null, 60, shotDamage * 2));
 				combo = 0;
 			break;
 			default: 
@@ -124,7 +125,7 @@ public class Fisical_Weapon extends Weapon {
 		if (md1) {
 			di += 5.0;
 			if (di % 5 == 0) {
-				Game.entities.add(new AE_Animation(Game.player.getX(), Game.player.getY(), 16, 16, null, 20, 0, 1, 192, 128, 16, 16, "goToUp_1", null));
+				Game.entities.add(new AE_Animation(Game.player.getX() + Game.rand.nextInt(17) - 8, Game.player.getY() + Game.rand.nextInt(17) - 8, 16, 16, null, 20, 0, 1, 192, 128, 16, 16, "goToUp_1", null));
 			}
 			if (di < dashDistance) {
 				if (Game.player.right) {
@@ -141,9 +142,6 @@ public class Fisical_Weapon extends Weapon {
 				}
 			}
 			else {
-				Game.entities.add(new AE_Animation(Game.player.getX(), Game.player.getY(), 24, 24, null, 40, 0, 1, 192, 128, 16, 16, "goToUp_2", null));
-				Game.entities.add(new AE_Animation(Game.player.getX() - 8, Game.player.getY(), 24, 24, null, 40, 0, 1, 192, 128, 16, 16, "goToUp_2", null));
-				Game.entities.add(new AE_Animation(Game.player.getX() + 8, Game.player.getY(), 24, 24, null, 40, 0, 1, 192, 128, 16, 16, "goToUp_2", null));
 				di = 0;
 				md1 = false;
 				Game.player.dash = false;

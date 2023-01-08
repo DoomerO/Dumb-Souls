@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import graphics.UI;
 import entities.shots.Enemy_Shot;
@@ -106,6 +107,11 @@ public class Player extends Entity{
 		Game.playerMenu = new Menu_Player();
 		Game.levelUpMenu = new Menu_Level(3);
 		Game.gameState = "MENUINIT";
+		try {
+			Save_Game.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void checkExp() {
@@ -147,6 +153,10 @@ public class Player extends Entity{
 				Game.eShots.remove(e);
 			}
 		}
+	}
+
+	public int getSouls(){
+		return souls;
 	}
 
 	private boolean TickTimer(int frames) {

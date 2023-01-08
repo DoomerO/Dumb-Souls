@@ -1,32 +1,31 @@
 package main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Color;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
-import javax.swing.JFrame;
-
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-
-import graphics.*;
-import entities.*;
-import entities.enemies.*;
-import entities.shots.*;
-import world.*;
-import sounds.*;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import javax.swing.JFrame;
+
+import entities.Entity;
+import entities.Player;
+import entities.enemies.*;
+import entities.shots.*;
+import graphics.Spritesheet;
+import graphics.UI;
+import sounds.SoundPlayer;
+import world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 	

@@ -217,11 +217,11 @@ public class Menu_Player {
 		
 		if (isWeaponBlock()) {
 			g.setColor(new Color(0, 127, 14));
-			g.drawString("Unblocked", 183, 110);
+			g.drawString("Unlocked", 183, 110);
 		}
 		else {
 			g.setColor(new Color(127, 0, 0));
-			g.drawString("Blocked", 183, 110);
+			g.drawString("Locked", 183, 110);
 		}
 		
 		g.setColor(new Color(74, 52, 160));

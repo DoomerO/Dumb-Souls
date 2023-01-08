@@ -75,12 +75,16 @@ public class Enemy extends Entity{
 		this.y += Math.sin(angle) * this.speed;
 	}
 	
+	int[] redoMask = {};
 	protected void spawnAnimation(int frames) {
 		if (contTS == 0) {
+			redoMask = this.getMask();
 			Game.enemies.add(new Enemy_Animation(this.getX() - this.width/2, this.getY() - this.height, this.width*2, this.height*2, null, timeSpawn, frames, 3, 112, 144, 32, 32, "frames_1", null));
 		}
+		this.setMask(0, 0, 0, 0);
 		this.contTS++;
 		if (this.contTS == this.timeSpawn) {
+			this.setMask(redoMask);
 			spawning = false;
 		}
 	}

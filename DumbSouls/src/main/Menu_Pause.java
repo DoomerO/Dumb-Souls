@@ -52,7 +52,7 @@ public class Menu_Pause {
 
 		g.drawString("Life : " + (int)Game.player.life + "/" + Game.player.maxLife, 10, Game.height - 15);
 		g.drawString("Mana : " + (int)Game.player.mana + "/" + Game.player.maxMana, 10, Game.height - 5);
-		g.drawString("Speed : " + Game.player.maxSpeed, Game.width * 2 / 3, Game.height - 15);
+		g.drawString("Souls : " + Game.player.getSouls(), Game.width * 2 / 3, Game.height - 15);
 		g.drawString("EXP : " + Game.player.exp + "/" + Game.player.maxExp, Game.width * 2 / 3, Game.height - 5);
 		
 		if (cur == 0) {

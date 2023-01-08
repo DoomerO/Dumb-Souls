@@ -1,14 +1,13 @@
 package main;
 
 import java.awt.Graphics;
-import java.io.IOException;
 import java.awt.Color;
 import java.awt.Font;
 
 public class Menu_Init {
 	private int cur = 0;
 	public boolean up, down, enter;
-	private String[] options = {"New Game", "Help", "Save", "Exit"};
+	private String[] options = {"New Game", "Help", "Exit"};
 	
 	public void tick() {
 		if (down) {
@@ -36,13 +35,6 @@ public class Menu_Init {
 			else if (options[cur] == "Exit") {
 				System.exit(1);
 			}
-			else if(options[cur] == "Save") {
-				try {
-					Save_Game.save();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 	
@@ -57,7 +49,6 @@ public class Menu_Init {
 		g.drawString(options[0], 120, 60);
 		g.drawString(options[1], 120, 85);
 		g.drawString(options[2], 120, 110);
-		g.drawString(options[3], 120, 135);
 		
 		if (cur == 0) {
 			g.drawString(">", 90, 60);
@@ -67,9 +58,6 @@ public class Menu_Init {
 		}
 		else if (cur == 2) {
 			g.drawString(">", 90, 110);
-		}
-		else if (cur == 3) {
-			g.drawString(">", 90, 135);
 		}
 	}
 }

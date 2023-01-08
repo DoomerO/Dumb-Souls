@@ -79,14 +79,24 @@ public class Entity {
 	public void render(Graphics g) {
 		g.drawImage(sprite, this.getX(), this.getY(), null);
 	}
+
+	protected int[] getMask(){
+		int[] temp = {this.mx, this.my, this.mw, this.mh};
+		return temp;
+	}
 	
 	protected void setMask(int mx, int my, int mw, int mh) {
 		this.mx = mx;
 		this.my = my;
 		this.mw = mw;
 		this.mh = mh;
-		
-		
+	}
+
+	protected void setMask(int[] mask) {
+		this.mx = mask[0];
+		this.my = mask[1];
+		this.mw = mask[2];
+		this.mh = mask[3];
 	}
 	
 	public static boolean isColiding(Entity e1, Entity e2) {

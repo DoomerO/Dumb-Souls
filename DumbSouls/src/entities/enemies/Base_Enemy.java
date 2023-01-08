@@ -15,7 +15,6 @@ public class Base_Enemy extends Enemy{
 	
 	public Base_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
-		
 		this.getAnimation(0, 80, 16, 16, 3);
 		this.expValue = 10;
 		this.soulValue = 1;
