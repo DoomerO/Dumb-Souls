@@ -14,7 +14,7 @@ public class Player extends Entity{
 	private int tickTimer, attackTimer;
 	public boolean up, down, left, right, moving, attack, levelUp, dash, ablt2, ablt3;
 	public int maxLife = 100, exp = 0, maxExp = 100, maxMana = 100;
-	public static int souls = 99999999;
+	public static int souls;
 	public int level = 1;
 	private int index, maxIndex = 4, frames, maxFrames = 10;
 	public int direct = 2;
