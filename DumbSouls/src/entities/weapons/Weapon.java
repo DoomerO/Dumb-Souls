@@ -8,7 +8,7 @@ import java.awt.Graphics;
 
 public class Weapon {
 	
-	public BufferedImage sprite;
+	public BufferedImage sprite, shotFace;
 	protected BufferedImage[] animation;
 	private int frames, maxFrames = 10, index, maxIndex = 3;
 	public int mx, my, attackTimer;
@@ -75,6 +75,10 @@ public class Weapon {
 	
 	public void render(Graphics g) {
 		g.drawImage(this.animation[index], (Game.player.getX() - Camera.x) - 12, (Game.player.getY() - Camera.y) - 8, null);
+	}
+	
+	public void AttackRandom() {
+		
 	}
 	
 	public void Attack() {

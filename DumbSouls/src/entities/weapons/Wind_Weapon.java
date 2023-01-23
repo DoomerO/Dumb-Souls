@@ -14,7 +14,7 @@ public class Wind_Weapon extends Weapon {
 	private int shotDamage = 3, shotSpeed = 6, hrcDamage = 1, ablt3Dmg = 6;
 	private double hrcSpeed = 0.8, ablt3Spd = 5.0;
 	private double di, dashDistance = 40;
-	public static int soulCost = 100;
+	public static int soulCost = 300;
 	public static boolean block = true;
 	
 	public Wind_Weapon() {
@@ -90,6 +90,17 @@ public class Wind_Weapon extends Weapon {
 			}
 			break;
 		}
+	}
+	
+	public void AttackRandom() {
+		int randX = Game.rand.nextInt(10);
+		int randY = Game.rand.nextInt(10);
+		
+		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+		
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
 	}
 	
 	public void Attack() {

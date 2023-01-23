@@ -11,7 +11,7 @@ public class Fisical_Weapon extends Weapon {
 	public static BufferedImage sprite = Game.sheet.getSprite(144, 16, 16, 16);
 	private int shotDamage = 4, ablt2Dmg = 10, ablt2W = 64, ablt2H = 64, ablt3Dmg = 6, tspw, combo;
 	private double di = 0, dashDistance = 30;
-	public static int soulCost = 500;
+	public static int soulCost = 1000;
 	 public static boolean block = true;
 	
 	public Fisical_Weapon() {
@@ -85,6 +85,17 @@ public class Fisical_Weapon extends Weapon {
 				Game.player.lifeRec += 0.004;
 				break;
 		}
+	}
+	
+	public void AttackRandom() {
+		int randX = Game.rand.nextInt(10);
+		int randY = Game.rand.nextInt(10);
+		
+		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+		
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, 2.5, 20));
 	}
 	
 	public void Attack() {

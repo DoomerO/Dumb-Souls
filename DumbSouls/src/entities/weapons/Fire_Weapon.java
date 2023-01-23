@@ -13,8 +13,8 @@ public class Fire_Weapon extends Weapon {
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 16, 16, 16);
 	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60, ablt2Dmg = 1, ablt3Dmg = 16;
 	private double ablt3Spd = 0.8, di = 0;
-	public static int soulCost = 100;
-	 public static boolean block = true;
+	public static int soulCost = 300;
+	public static boolean block = true;
 	
 	public Fire_Weapon() {
 		super(sprite);
@@ -85,8 +85,19 @@ public class Fire_Weapon extends Weapon {
 					ablt3Spd += 0.2;
 				}
 				break;
-			}
 		}
+	}
+	
+	public void AttackRandom() {
+		int randX = Game.rand.nextInt(10);
+		int randY = Game.rand.nextInt(10);
+		
+		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+		
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
+	}
 	
 	public void Attack() {
 		SoundPlayer.PlaySound("fire_atk.wav");

@@ -15,7 +15,7 @@ public class Ice_Weapon extends Weapon{
 	private int shotDamage = 3, shotSpeed = 2, ablt2Dmg = 4, ablt2Quant = 3, ablt3Dmg = 5, dashTime = 300, dt = 0;
 	private double ablt3Spd = 0.5;
 	private static double frost = 5;
-	public static int soulCost = 400;
+	public static int soulCost = 900;
 	 public static boolean block = true;
 	
 	public Ice_Weapon() {
@@ -90,6 +90,17 @@ public class Ice_Weapon extends Weapon{
 				}
 				break;
 		}
+	}
+	
+	public void AttackRandom() {
+		int randX = Game.rand.nextInt(10);
+		int randY = Game.rand.nextInt(10);
+		
+		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+		
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
 	}
 	
 	public void Attack() {

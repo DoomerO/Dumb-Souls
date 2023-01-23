@@ -2,11 +2,13 @@ package entities;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.List;
 import graphics.UI;
 import entities.shots.Enemy_Shot;
 import java.awt.Graphics;
 import entities.weapons.*;
+import entities.runes.*;
 import main.*;
 import world.*;
 
@@ -21,6 +23,9 @@ public class Player extends Entity{
 	public int direct = 2;
 	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 2, life = 100, lifeRec=1.001;
 	public Weapon playerWeapon;
+	public static List<Rune> runesInventory = new ArrayList<Rune>();
+	public List<Rune> runesEquiped;
+	public static final int runeLimit = 3;
 	
 	private BufferedImage[] playerDown;
 	private BufferedImage[] playerRight;
@@ -48,6 +53,8 @@ public class Player extends Entity{
 			playerUp[xsp] = Game.sheet.getSprite(xsp * 16, 16 * 4, 16, 16);
 		}
 		
+		runesEquiped = new ArrayList<Rune>();
+		
 		setMask(4, 1, 8, 15);
 		this.depth = 1;
 	}
@@ -62,6 +69,14 @@ public class Player extends Entity{
 		}
 		if (attackTimer < playerWeapon.attackTimer){
 			attackTimer++;
+		}
+	}
+	
+	private void runesTick() {
+		if (runesEquiped.size() > 0) {
+			for (int i = 0; i < runesEquiped.size(); i++) {
+				runesEquiped.get(i).tick();
+			}
 		}
 	}
 
@@ -107,6 +122,9 @@ public class Player extends Entity{
 		Game.playerMenu = new Menu_Player();
 		Game.levelUpMenu = new Menu_Level(3);
 		Game.gameState = "MENUINIT";
+		for (int i = 0; i < runesInventory.size(); i++) {
+			runesInventory.get(i).equiped = false;
+		}
 		try {
 			Save_Game.save();
 		} catch (IOException e) {
@@ -216,6 +234,7 @@ public class Player extends Entity{
 		playerWeapon.tick();
 		playerWeapon.Effect();
 		
+		runesTick();
 		isAttacking();
 		isMoving();
 		checkExp();

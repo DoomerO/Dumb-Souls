@@ -110,7 +110,18 @@ public class Mana_Weapon extends Weapon {
 			 qntSpcShots--;
 			 Game.entities.add(new AE_Explosion(atck.getX() - 16, atck.getY() - 16, 32, 32, null, 10, ablt2Dmg, ablt2Knck, 5, 2, 160, 128, 16, 16)); 
 		 } 
-	  }
+	 }
+	 
+	 public void AttackRandom() {
+		int randX = Game.rand.nextInt(10);
+		int randY = Game.rand.nextInt(10);
+			
+		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+			
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
+	}
 
 	
 	public void Dash() {
