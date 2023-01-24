@@ -48,6 +48,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static World world;
 	public static Player player;
 	public static Random rand;
+	private static SoundPlayer soundTrack;
 	public static Menu_Level levelUpMenu;
 	public static Menu_Player playerMenu;
 	public static Menu_Init startMenu;
@@ -76,6 +77,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities.add(player);
 		world = new World("/map00.png");
 		ui = new UI();
+		soundTrack = new SoundPlayer("Gurenge.wav");
 		startMenu = new Menu_Init();
 		playerMenu = new Menu_Player();
 		pauseMenu = new Menu_Pause();
@@ -94,7 +96,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static void main(String args[]) {
 		Game game = new Game();
 		game.start();
-		SoundPlayer.PlaySoundTrack("Gurenge.wav");
+		soundTrack.loop();
 	}
 	public void end() {
 		isRuning = false;

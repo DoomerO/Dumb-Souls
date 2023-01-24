@@ -38,6 +38,14 @@ public class Menu_Pause {
 			}
 		}
 	}
+    
+    private boolean playerHasRunes() {
+    	if (Game.player.runesEquiped.size() > 0) {
+    		return true;
+    	}
+    	return false;
+    }
+    
 
     public void render(Graphics g) {
         g.setColor(Color.black); 
@@ -60,6 +68,12 @@ public class Menu_Pause {
 		}
 		else if (cur == 1) {
 			g.drawString(">", 100, 90);
+		}
+		
+		if (playerHasRunes()) {
+			for (int i = 0; i < Game.player.runesEquiped.size(); i ++) {
+				g.drawImage(Game.player.runesEquiped.get(i).sprite, 10 +(16 * i), Game.height - 40, null);
+			}
 		}
     }
 }
