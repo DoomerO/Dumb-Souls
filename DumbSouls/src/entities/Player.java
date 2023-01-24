@@ -25,7 +25,7 @@ public class Player extends Entity{
 	public Weapon playerWeapon;
 	public static List<Rune> runesInventory = new ArrayList<Rune>();
 	public List<Rune> runesEquiped;
-	public static final int runeLimit = 3;
+	public static int runeLimit = 3;
 	
 	private BufferedImage[] playerDown;
 	private BufferedImage[] playerRight;
