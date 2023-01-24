@@ -9,6 +9,7 @@ import entities.AE.*;
 
 public class Wind_Weapon extends Weapon {
 	
+	private SoundPlayer sound1, sound2;
 	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 32, 16, 16);
 	private int shotDamage = 3, shotSpeed = 6, hrcDamage = 1, ablt3Dmg = 6;
@@ -22,6 +23,9 @@ public class Wind_Weapon extends Weapon {
 		shotFace = Game.sheet.getSprite(128, 32, 16, 16);
 		super.setAttackTimer(2);
 		Game.player.push = 5;
+		
+		sound1 = new SoundPlayer("wind_atk.wav");
+		sound2 = new SoundPlayer("wind_ablt2.wav");
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 32, 16, 16, 3);
@@ -104,7 +108,7 @@ public class Wind_Weapon extends Weapon {
 	}
 	
 	public void Attack() {
-		SoundPlayer.PlaySound("wind_atk.wav");
+		sound1.play();
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
@@ -165,7 +169,7 @@ public class Wind_Weapon extends Weapon {
 		int manaCost = 36;
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md3) {
-				SoundPlayer.PlaySound("wind_ablt2.wav");
+				sound2.play();
 				md3 = true;
 				Game.player.mana -= manaCost;
 			}

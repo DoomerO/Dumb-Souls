@@ -9,6 +9,7 @@ import sounds.SoundPlayer;
 
 public class Fire_Weapon extends Weapon {
 	
+	private SoundPlayer sound1, sound2, sound3;
 	public static BufferedImage shotFace, light;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 16, 16, 16);
 	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60, ablt2Dmg = 1, ablt3Dmg = 16;
@@ -20,6 +21,10 @@ public class Fire_Weapon extends Weapon {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 16, 16, 16);
 		super.setAttackTimer(3);
+		
+		sound1 = new SoundPlayer("fire_atk.wav");
+		sound2 = new SoundPlayer("fire_ablt1.wav");
+		sound3 = new SoundPlayer("fire_ablt2.wav");
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 16, 16, 16, 3);
@@ -64,7 +69,7 @@ public class Fire_Weapon extends Weapon {
 					dashAva = true;
 				}
 				else {
-					dashDistance += 15;
+					dashDistance += 10;
 				}
 				break;
 			case "Blaze":
@@ -100,7 +105,7 @@ public class Fire_Weapon extends Weapon {
 	}
 	
 	public void Attack() {
-		SoundPlayer.PlaySound("fire_atk.wav");
+		sound1.play();
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
@@ -115,7 +120,7 @@ public class Fire_Weapon extends Weapon {
 			if (!md1) {
 				md1 = true;
 				Game.player.mana -= manaCost;
-				SoundPlayer.PlaySound("fire_ablt2.wav");
+				sound3.play();
 			}
 			if (md1) {
 				if (Game.player.right) {
@@ -154,7 +159,7 @@ public class Fire_Weapon extends Weapon {
 		int manaCost = 34;
 		if (ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md2) {
-				SoundPlayer.PlaySound("fire_ablt1.wav");
+				sound2.play();;
 				md2 = true;
 				Game.player.mana -= manaCost;
 			}
@@ -172,6 +177,7 @@ public class Fire_Weapon extends Weapon {
 				tspw2 = 0;
 				Game.player.ablt2 = false;
 				md2 = false;
+				sound2.stop();
 			}
 		}
 	}
@@ -181,7 +187,7 @@ public class Fire_Weapon extends Weapon {
 		
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md3) {
-				SoundPlayer.PlaySound("fire_ablt2.wav");
+				sound3.play();
 				md3 = true;
 				Game.player.mana -= manaCost;
 			}

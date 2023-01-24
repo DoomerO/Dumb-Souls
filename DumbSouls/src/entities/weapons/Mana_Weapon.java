@@ -11,7 +11,7 @@ public class Mana_Weapon extends Weapon {
 	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 64, 16, 16);
 	private int shotDamage = 5, shotSpeed = 4, contUpgrades, spcShotsGain = 5, timeDash, maxTimeD = 120, timeAblt3 = 100, ablt3Dmg = 4;
-	private double dashPercent = 0.25;
+	private double dashPercent = 0.20;
 	private static int ablt2Dmg = 25, ablt2Knck = 8, qntSpcShots, grafEfcCont;
 	public static int soulCost = 0;
 	public static boolean block = false;
@@ -76,8 +76,8 @@ public class Mana_Weapon extends Weapon {
 				break;
 			case "Mana Step":
 				if (dashAva) {
-					maxTimeD += 60;
-					dashPercent += 0.25;
+					maxTimeD += 30;
+					dashPercent += 0.10;
 				}
 				else {
 					dashAva = true;
