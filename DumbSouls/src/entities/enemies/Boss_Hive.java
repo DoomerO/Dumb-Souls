@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import main.Game;
 import world.Camera;
 import entities.*;
+import entities.orbs.Rune_Orb;
 import world.World;
 
 public class Boss_Hive extends Enemy{
@@ -71,6 +72,7 @@ public class Boss_Hive extends Enemy{
 		Game.enemies.remove(this);
 		Game.player.exp += this.expValue;
 		Player.souls +=  this.soulValue;
+		Game.entities.add(new Rune_Orb(this.getX(), this.getY(), 16, 16));
 		World.bossTime = false;
 		World.bossName = "";
 	}

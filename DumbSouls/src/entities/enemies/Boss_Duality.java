@@ -6,6 +6,7 @@ import world.Camera;
 import world.World;
 import entities.*;
 import entities.shots.*;
+import entities.orbs.*;
 import entities.AE.BAE_Spike;
 import java.awt.Graphics;
 
@@ -51,6 +52,7 @@ public class Boss_Duality extends Enemy{
 	private void die() {
 		Game.enemies.remove(this);
 		Game.player.exp += this.expValue;
+		Game.entities.add(new Rune_Orb(this.getX(), this.getY(), 16, 16));
 		Player.souls +=  this.soulValue;
 		World.bossTime = false;
 		World.bossName = "";
