@@ -15,11 +15,11 @@ public class Trapper_Enemy extends Enemy{
 	public Trapper_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 		this.getAnimation(240, 80, 16, 16, 3);
-		this.expValue = 37;
-		this.soulValue = 5;
-		this.maxLife = 40 + (int)(40 * 0.01 * World.wave);
+		this.expValue = 37 * specialMult;
+		this.soulValue = 5 * specialMult;
+		this.maxLife = 40 + (int)(0.4 * World.wave);
 		this.life = maxLife;
-		this.maxSpeed = 1;
+		this.maxSpeed = 1 + (specialMult - 1)/3;
 		this.frost = 0;
 		this.speed = this.maxSpeed;
 		xP = Game.player.getX();
@@ -40,13 +40,13 @@ public class Trapper_Enemy extends Enemy{
 	}
 	
 	private void attack() {
-		Game.player.life -= 48;
+		Game.player.life -= 48 * specialMult + 0.48 * World.wave;
 		timer = 0;
 	}
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.entities.add(new EXP_Orb(this.getX(), this.getY(), 16, 16, Enemy.baseSprite, this.expValue));
+		Game.entities.add(new EXP_Orb(this.getX(), this.getY(), 16, 16, Enemy.baseSprite, this.expValue, this.specialRare));
 		Player.souls += this.soulValue;
 	}
 	private void stage2() {

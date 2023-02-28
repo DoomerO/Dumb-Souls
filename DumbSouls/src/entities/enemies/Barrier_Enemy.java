@@ -14,13 +14,16 @@ public class Barrier_Enemy extends Enemy{
 	
 	public Barrier_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
-		
+		if (specialRare){
+			specialMult = 2;
+			hue = 199;
+		}
 		this.getAnimation(144, 80, 48, 32, 2);
-		this.expValue = 30;
-		this.soulValue = 12;
-		this.maxLife = 250 + (int)(250 * 0.01 * World.wave);
+		this.expValue = 30 * specialMult;
+		this.soulValue = 12 * specialMult;
+		this.maxLife = 250 * specialMult + (int)(2.5 * World.wave);
 		this.life = maxLife;
-		this.maxSpeed = 0.6;
+		this.maxSpeed = 0.6 + (specialMult - 1)/3;
 		this.speed = this.maxSpeed;
 		this.frost = 0;
 		this.setMask(1, 1, 46, 30);
@@ -40,15 +43,15 @@ public class Barrier_Enemy extends Enemy{
 	}
 	
 	private void attack() {
-		Game.player.life -= 82;
+		Game.player.life -= 82 * specialMult + 0.82 * World.wave;
 		timer = 0;
 	}
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.enemies.add(new Mimic_Enemy(this.getX(), this.getY() - 16, 16, 16, Enemy.baseSprite, this.expValue));
-		Game.enemies.add(new Mimic_Enemy(this.getX() - 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue));
-		Game.enemies.add(new Mimic_Enemy(this.getX() + 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue));
+		Game.enemies.add(new Mimic_Enemy(this.getX(), this.getY() - 16, 16, 16, Enemy.baseSprite, this.expValue, this.specialRare));
+		Game.enemies.add(new Mimic_Enemy(this.getX() - 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue, this.specialRare));
+		Game.enemies.add(new Mimic_Enemy(this.getX() + 16, this.getY() + 16, 16, 16, Enemy.baseSprite, this.expValue, this.specialRare));
 		Player.souls += this.soulValue;
 	}
 	

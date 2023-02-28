@@ -10,15 +10,16 @@ import java.awt.Graphics;
 public class Mimic_Enemy extends Enemy{
     private int index, maxIndex = 3, frames, maxFrames = 6, timer = 0;
 	
-	public Mimic_Enemy(int x, int y, int width, int height, BufferedImage sprite, int expValue) {
+	public Mimic_Enemy(int x, int y, int width, int height, BufferedImage sprite, int expValue, boolean specialRare) {
 		super(x, y, width, height, sprite);
-		
+		this.specialRare = specialRare;
+		if (specialRare){specialMult = 3;}
 		this.getAnimation(48, 144, 16, 16, 3);
         this.expValue = expValue;
-        this.maxLife = 8 + (int)(8 * 0.01 * World.wave);
+        this.maxLife = 8 * specialMult + (int)(0.08 * World.wave);
         this.life = this.maxLife;
 		this.expValue = expValue;
-        this.maxSpeed = 0.2;
+        this.maxSpeed = 0.2 + (specialMult - 1)/3;
         this.speed = this.maxSpeed;
         this.frost = 0;
 		this.setMask(1, 1, 14, 14);
@@ -36,7 +37,7 @@ public class Mimic_Enemy extends Enemy{
 	}
 
     private void attack() {
-		Game.player.life -= 6;
+		Game.player.life -= 6 * specialMult + 0.06 * World.wave;
 		timer = 0;
 	}
 

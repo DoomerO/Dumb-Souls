@@ -11,7 +11,7 @@ public class Mana_Weapon extends Weapon {
 	public static BufferedImage shotFace;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 64, 16, 16);
 	private int shotDamage = 5, shotSpeed = 4, contUpgrades, spcShotsGain = 5, timeDash, maxTimeD = 120, timeAblt3 = 100, ablt3Dmg = 4;
-	private double dashPercent = 0.20;
+	private double dashPercent = 0.25;
 	private static int ablt2Dmg = 25, ablt2Knck = 8, qntSpcShots, grafEfcCont;
 	public static int soulCost = 0;
 	public static boolean block = false;
@@ -76,8 +76,8 @@ public class Mana_Weapon extends Weapon {
 				break;
 			case "Mana Step":
 				if (dashAva) {
-					maxTimeD += 30;
-					dashPercent += 0.10;
+					maxTimeD += 60;
+					dashPercent += 0.25;
 				}
 				else {
 					dashAva = true;
@@ -110,18 +110,7 @@ public class Mana_Weapon extends Weapon {
 			 qntSpcShots--;
 			 Game.entities.add(new AE_Explosion(atck.getX() - 16, atck.getY() - 16, 32, 32, null, 10, ablt2Dmg, ablt2Knck, 5, 2, 160, 128, 16, 16)); 
 		 } 
-	 }
-	 
-	 public void AttackRandom() {
-		int randX = Game.rand.nextInt(10);
-		int randY = Game.rand.nextInt(10);
-			
-		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
-		double dx = Math.cos(ang);
-		double dy =  Math.sin(ang);
-			
-		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
-	}
+	  }
 
 	
 	public void Dash() {

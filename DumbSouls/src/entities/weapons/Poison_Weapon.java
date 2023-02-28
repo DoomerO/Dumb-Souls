@@ -15,7 +15,7 @@ public class Poison_Weapon extends Weapon{
     private int dsW = 18, dsH= 18, dsD = 5, dsT = 120;
     private int tspw, maxTspw = 180;
     private double ablt3D = 0.05;
-    public static int soulCost = 1500;
+    public static int soulCost = 700;
     public static boolean block = true;
 	
     public Poison_Weapon() {
@@ -98,17 +98,6 @@ public class Poison_Weapon extends Weapon{
     public static void poisonEffect(Shot atck) {
        Game.entities.add(new AE_PoisonPool(atck.getX() - poisonPoolW/3, atck.getY() - poisonPoolH/3, poisonPoolW, poisonPoolH, null, 120, poisonPoolD));
     }
-    
-    public void AttackRandom() {
-		int randX = Game.rand.nextInt(10);
-		int randY = Game.rand.nextInt(10);
-		
-		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
-		double dx = Math.cos(ang);
-		double dy =  Math.sin(ang);
-		
-		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, 0, 3, 35));
-	}
 
     public void Attack() {
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));

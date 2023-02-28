@@ -16,13 +16,16 @@ public class Eye_Enemy extends Enemy{
 	
 	public Eye_Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
-		
+		if (specialRare){
+			this.specialMult = 2;
+			hue = 384;
+		}
 		this.getAnimation(48, 80, 16, 16, 3);
-		this.expValue = 25;
-		this.soulValue = 3;
-		this.maxLife = 15 + (int)(15 * 0.01 * World.wave);
+		this.expValue = 25 * specialMult;
+		this.soulValue = 3 * specialMult;
+		this.maxLife = 15 * specialMult + (int)(15 * 0.01 * World.wave);
 		this.life = maxLife;
-		this.maxSpeed = 0.8;
+		this.maxSpeed = 0.8 + (specialMult - 1)/3;
 		this.frost = 0;
 		this.speed = this.maxSpeed;
 		this.setMask(3, 3, 12, 11);
@@ -43,7 +46,7 @@ public class Eye_Enemy extends Enemy{
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.entities.add(new EXP_Orb((int)this.x, (int)this.y, 16, 16, Enemy.baseSprite, this.expValue));
+		Game.entities.add(new EXP_Orb((int)this.x, (int)this.y, 16, 16, Enemy.baseSprite, this.expValue, this.specialRare));
 		Player.souls += this.soulValue;
 	}
 	
@@ -54,7 +57,7 @@ public class Eye_Enemy extends Enemy{
 			double dx = Math.cos(ang);
 			double dy =  Math.sin(ang);
 			
-			atk = new Enemy_Shot(this.getX(), this.getY(), 6, 3, spriteAtk, dx, dy, 15, 3, 35, "straight");
+			atk = new Enemy_Shot(this.getX(), this.getY(), 6, 3, spriteAtk, dx, dy, 15 * specialMult + (int)(0.15 * World.wave), 3, 35, "straight");
 			Game.eShots.add(atk);
 			timeAtk = 0;
 		}

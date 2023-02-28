@@ -48,13 +48,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static World world;
 	public static Player player;
 	public static Random rand;
-	private static SoundPlayer soundTrack;
 	public static Menu_Level levelUpMenu;
 	public static Menu_Player playerMenu;
 	public static Menu_Init startMenu;
 	public static Menu_Help helpMenu;
 	public static Menu_Pause pauseMenu;
-	public static Menu_Runes runesMenu;
+	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<Shot> shots;
@@ -77,13 +76,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities.add(player);
 		world = new World("/map00.png");
 		ui = new UI();
-		soundTrack = new SoundPlayer("Gurenge.wav");
 		startMenu = new Menu_Init();
 		playerMenu = new Menu_Player();
 		pauseMenu = new Menu_Pause();
 		levelUpMenu = new Menu_Level(3);
 		helpMenu = new Menu_Help();
-		runesMenu = new Menu_Runes();
 		Save_Game.loadSave();
 	}
 	
@@ -96,7 +93,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static void main(String args[]) {
 		Game game = new Game();
 		game.start();
-		soundTrack.loop();
+		SoundPlayer.PlaySoundTrack("Gurenge.wav");
 	}
 	public void end() {
 		isRuning = false;
@@ -167,9 +164,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		case "MENUPAUSE":
 			pauseMenu.tick();
 			break;
-		case "MENURUNES":
-			runesMenu.tick();
-			break;
 		}
 	}
 	
@@ -234,12 +228,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g = bs.getDrawGraphics();
 			g.drawImage(image, 0, 0, width * scale, height * scale, null);
 			break;
-		case "MENURUNES":
-			runesMenu.render(g);
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			break;
 		}
 		bs.show();
 	}
@@ -273,7 +261,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
+		if (e.getKeyCode() == KeyEvent.VK_W) {
 			switch(gameState){
 				case "NORMAL":
 					player.up = true;
@@ -291,12 +279,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPAUSE":
 					pauseMenu.up = true;
 					break;
-				case "MENURUNES":
-					runesMenu.up = true;
-					break;
 			}
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
+		else if (e.getKeyCode() == KeyEvent.VK_S) {
 			switch(gameState){
 				case "NORMAL":
 					player.down = true;
@@ -314,12 +299,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPAUSE":
 					pauseMenu.down = true;
 					break;
-				case "MENURUNES":
-					runesMenu.down = true;
-					break;
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_A) {
 			switch(gameState){
 				case "NORMAL":
 					player.left = true;
@@ -328,12 +310,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPLAYER":
 					playerMenu.left = true;
 					break;
-				case "MENURUNES":
-					runesMenu.left = true;
-					break;
 			}
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		else if (e.getKeyCode() == KeyEvent.VK_D) {
 			switch(gameState){
 				case "NORMAL":
 					player.right = true;
@@ -341,9 +320,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					break;
 				case "MENUPLAYER":
 					playerMenu.right = true;
-					break;
-				case "MENURUNES":
-					runesMenu.right = true;
 					break;
 			}
 		}
@@ -363,9 +339,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					break;
 				case "MENUPAUSE":
 					pauseMenu.enter = true;
-					break;
-				case "MENURUNES":
-					runesMenu.enter = true;
 					break;
 			}
 		}
@@ -409,7 +382,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
+		if (e.getKeyCode() == KeyEvent.VK_W) {
 			switch(gameState){
 				case "NORMAL":
 					player.up = false;
@@ -423,12 +396,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPLAYER":
 					playerMenu.up = false;
 					break;
-				case "MENURUNES":
-					runesMenu.up = false;
-					break;
 		}
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
+		else if (e.getKeyCode() == KeyEvent.VK_S) {
 			switch(gameState){
 				case "NORMAL":
 					player.down = false;
@@ -442,12 +412,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPLAYER":
 					playerMenu.down = false;
 					break;
-				case "MENURUNES":
-					runesMenu.down = false;
-					break;
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_A) {
 			switch(gameState){
 				case "NORMAL":
 					player.left = false;
@@ -455,21 +422,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPLAYER":
 					playerMenu.left = false;
 					break;
-				case "MENURUNES":
-					runesMenu.left = false;
-					break;
 				}
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		else if (e.getKeyCode() == KeyEvent.VK_D) {
 			switch(gameState){
 				case "NORMAL":
 					player.right = false;
 					break;
 				case "MENUPLAYER":
 					playerMenu.right = false;
-					break;
-				case "MENURUNES":
-					runesMenu.right = false;
 					break;
 				}
 		}
@@ -486,9 +447,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				break;
 			case "MENUHELP":
 				helpMenu.enter = false;
-				break;
-			case "MENURUNES":
-				runesMenu.up = false;
 				break;
 			}
 		}

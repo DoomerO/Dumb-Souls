@@ -9,22 +9,17 @@ import sounds.SoundPlayer;
 
 public class Fire_Weapon extends Weapon {
 	
-	private SoundPlayer sound1, sound2, sound3;
 	public static BufferedImage shotFace, light;
 	public static BufferedImage sprite = Game.sheet.getSprite(64, 16, 16, 16);
 	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60, ablt2Dmg = 1, ablt3Dmg = 16;
 	private double ablt3Spd = 0.8, di = 0;
-	public static int soulCost = 300;
-	public static boolean block = true;
+	public static int soulCost = 100;
+	 public static boolean block = true;
 	
 	public Fire_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 16, 16, 16);
 		super.setAttackTimer(3);
-		
-		sound1 = new SoundPlayer("fire_atk.wav");
-		sound2 = new SoundPlayer("fire_ablt1.wav");
-		sound3 = new SoundPlayer("fire_ablt2.wav");
 		
 		setOptionsNames(9);
 		this.getAnimation(80, 16, 16, 16, 3);
@@ -69,7 +64,7 @@ public class Fire_Weapon extends Weapon {
 					dashAva = true;
 				}
 				else {
-					dashDistance += 10;
+					dashDistance += 15;
 				}
 				break;
 			case "Blaze":
@@ -90,22 +85,11 @@ public class Fire_Weapon extends Weapon {
 					ablt3Spd += 0.2;
 				}
 				break;
+			}
 		}
-	}
-	
-	public void AttackRandom() {
-		int randX = Game.rand.nextInt(10);
-		int randY = Game.rand.nextInt(10);
-		
-		double ang = Math.atan2(my + randY - (Game.player.getY() + 8 - Camera.y) , mx + randX - (Game.player.getX() + 8 - Camera.x));
-		double dx = Math.cos(ang);
-		double dy =  Math.sin(ang);
-		
-		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
-	}
 	
 	public void Attack() {
-		sound1.play();
+		SoundPlayer.PlaySound("fire_atk.wav");
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
@@ -120,7 +104,7 @@ public class Fire_Weapon extends Weapon {
 			if (!md1) {
 				md1 = true;
 				Game.player.mana -= manaCost;
-				sound3.play();
+				SoundPlayer.PlaySound("fire_ablt2.wav");
 			}
 			if (md1) {
 				if (Game.player.right) {
@@ -159,7 +143,7 @@ public class Fire_Weapon extends Weapon {
 		int manaCost = 34;
 		if (ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md2) {
-				sound2.play();;
+				SoundPlayer.PlaySound("fire_ablt1.wav");
 				md2 = true;
 				Game.player.mana -= manaCost;
 			}
@@ -177,7 +161,6 @@ public class Fire_Weapon extends Weapon {
 				tspw2 = 0;
 				Game.player.ablt2 = false;
 				md2 = false;
-				sound2.stop();
 			}
 		}
 	}
@@ -187,7 +170,7 @@ public class Fire_Weapon extends Weapon {
 		
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md3) {
-				sound3.play();
+				SoundPlayer.PlaySound("fire_ablt2.wav");
 				md3 = true;
 				Game.player.mana -= manaCost;
 			}

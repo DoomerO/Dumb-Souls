@@ -3,6 +3,7 @@ package entities.orbs;
 import java.awt.image.BufferedImage;
 
 import world.Camera;
+import world.World;
 import main.*;
 import entities.enemies.*;
 import entities.*;
@@ -11,9 +12,12 @@ import java.awt.Graphics;
 public class EXP_Orb extends Enemy{
     private int index, maxIndex = 3, frames, maxFrames = 6;
 	
-	public EXP_Orb(int x, int y, int width, int height, BufferedImage sprite, int expValue) {
+	public EXP_Orb(int x, int y, int width, int height, BufferedImage sprite, int expValue, boolean specialRare) {
 		super(x, y, width, height, sprite);
-		
+		if (World.wave % 11 == 0){
+			Game.entities.remove(this);
+		}
+		this.specialRare = specialRare;
 		this.getAnimation(0, 144, 16, 16, 3);
 		this.expValue = expValue;
 		this.speed = 0.4;

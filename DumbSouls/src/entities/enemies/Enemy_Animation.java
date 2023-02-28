@@ -12,9 +12,10 @@ public class Enemy_Animation extends Enemy {
 	private Entity followEntity;
 	
 	public Enemy_Animation(int x, int y, int width, int height, BufferedImage sprite, int time, 
-			int maxFrames, int maxIndex, int xSprite,int ySprite, int wSprite, int hSprite, String style, Entity entity) {
+			int maxFrames, int maxIndex, int xSprite,int ySprite, int wSprite, int hSprite, String style, Entity entity, boolean specialRare) {
 		super(x, y, width, height, sprite);
 		this.timeLife = time;
+		this.specialRare = specialRare;
 		this.getAnimation(xSprite, ySprite, wSprite, hSprite, maxIndex);
 		this.maxFrames = maxFrames;
 		this.maxIndex = maxIndex;
