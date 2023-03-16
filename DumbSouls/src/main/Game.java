@@ -53,6 +53,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Menu_Init startMenu;
 	public static Menu_Help helpMenu;
 	public static Menu_Pause pauseMenu;
+	public static Menu_Runes runesMenu;
+	private static SoundPlayer soundtrack;
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
@@ -71,16 +73,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		eShots = new ArrayList<Enemy_Shot>();
 		rand = new Random();
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		sheet = new Spritesheet("/spritesheet.png");
+		sheet = new Spritesheet("spritesheet.png");
 		player = new Player(0, 0, 16, 16, sheet.getSprite(0, 16, 16, 16));
 		entities.add(player);
-		world = new World("/map00.png");
+		world = new World("map00.png");
 		ui = new UI();
+		soundtrack = new SoundPlayer("Gurenge.wav");
 		startMenu = new Menu_Init();
 		playerMenu = new Menu_Player();
 		pauseMenu = new Menu_Pause();
 		levelUpMenu = new Menu_Level(3);
 		helpMenu = new Menu_Help();
+		runesMenu = new Menu_Runes();
 		Save_Game.loadSave();
 	}
 	
@@ -93,7 +97,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static void main(String args[]) {
 		Game game = new Game();
 		game.start();
-		SoundPlayer.PlaySoundTrack("Gurenge.wav");
+		soundtrack.LoopSound();
 	}
 	public void end() {
 		isRuning = false;
@@ -164,6 +168,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		case "MENUPAUSE":
 			pauseMenu.tick();
 			break;
+		case "MENURUNES":
+			runesMenu.tick();
+			break;
 		}
 	}
 	
@@ -228,6 +235,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g = bs.getDrawGraphics();
 			g.drawImage(image, 0, 0, width * scale, height * scale, null);
 			break;
+		case "MENURUNES":
+			runesMenu.render(g);
+			g.dispose();
+			g = bs.getDrawGraphics();
+			g.drawImage(image, 0, 0, width * scale, height * scale, null);
+			break;
 		}
 		bs.show();
 	}
@@ -261,7 +274,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_W) {
+		if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
 			switch(gameState){
 				case "NORMAL":
 					player.up = true;
@@ -279,9 +292,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPAUSE":
 					pauseMenu.up = true;
 					break;
+				case "MENURUNES":
+					runesMenu.up = true;
+					break;
 			}
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_S) {
+		else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
 			switch(gameState){
 				case "NORMAL":
 					player.down = true;
@@ -299,9 +315,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPAUSE":
 					pauseMenu.down = true;
 					break;
+				case "MENURUNES":
+					runesMenu.down = true;
+					break;
 			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_A) {
+		if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
 			switch(gameState){
 				case "NORMAL":
 					player.left = true;
@@ -310,9 +329,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				case "MENUPLAYER":
 					playerMenu.left = true;
 					break;
+				case "MENURUNES":
+					runesMenu.left = true;
+					break;
 			}
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_D) {
+		else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			switch(gameState){
 				case "NORMAL":
 					player.right = true;
@@ -320,6 +342,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					break;
 				case "MENUPLAYER":
 					playerMenu.right = true;
+					break;
+				case "MENURUNES":
+					runesMenu.right = true;
 					break;
 			}
 		}
@@ -339,6 +364,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					break;
 				case "MENUPAUSE":
 					pauseMenu.enter = true;
+					break;
+				case "MENURUNES":
+					runesMenu.enter = true;
 					break;
 			}
 		}

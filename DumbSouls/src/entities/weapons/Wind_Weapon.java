@@ -16,13 +16,15 @@ public class Wind_Weapon extends Weapon {
 	private double di, dashDistance = 40;
 	public static int soulCost = 100;
 	public static boolean block = true;
+	private SoundPlayer sound1, sound2;
 	
 	public Wind_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 32, 16, 16);
 		super.setAttackTimer(2);
 		Game.player.push = 5;
-		
+		sound1 = new SoundPlayer("wind_atk.wav");
+		sound2 = new SoundPlayer("wind_ablt2.wav");
 		setOptionsNames(9);
 		this.getAnimation(80, 32, 16, 16, 3);
 	}
@@ -93,12 +95,34 @@ public class Wind_Weapon extends Weapon {
 	}
 	
 	public void Attack() {
-		SoundPlayer.PlaySound("wind_atk.wav");
+		sound1.PlaySound();
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
 		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 6, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
+	}
+	
+	public void AttackRandom() {
+		int xdir = Game.rand.nextInt(1);
+		int ydir = Game.rand.nextInt(1);
+		
+		int xoff = Game.rand.nextInt(20);
+		int yoff = Game.rand.nextInt(20);
+		
+		if (xdir == 1) {
+			xoff *= -1;
+		}
+		
+		if (ydir == 1) {
+			yoff *= -1;
+		}
+		
+		double ang = Math.atan2(my + yoff - (Game.player.getY() + 8 - Camera.y) , mx + xoff - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+		
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
 	}
 	
 	public void Dash() {
@@ -154,7 +178,7 @@ public class Wind_Weapon extends Weapon {
 		int manaCost = 36;
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md3) {
-				SoundPlayer.PlaySound("wind_ablt2.wav");
+				sound2.PlaySound();
 				md3 = true;
 				Game.player.mana -= manaCost;
 			}

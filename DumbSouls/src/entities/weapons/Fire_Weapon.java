@@ -14,13 +14,16 @@ public class Fire_Weapon extends Weapon {
 	private int shotDamage = 5, shotSpeed = 3, dashDistance = 30, tspw, tspw2, maxtspw2 = 60, ablt2Dmg = 1, ablt3Dmg = 16;
 	private double ablt3Spd = 0.8, di = 0;
 	public static int soulCost = 100;
-	 public static boolean block = true;
+	public static boolean block = true;
+	private SoundPlayer sound1, sound2, sound3;
 	
 	public Fire_Weapon() {
 		super(sprite);
 		shotFace = Game.sheet.getSprite(128, 16, 16, 16);
 		super.setAttackTimer(3);
-		
+		sound1 = new SoundPlayer("fire_atk.wav");
+		sound2 = new SoundPlayer("fire_ablt1.wav");
+		sound3 = new SoundPlayer("fire_ablt2.wav");
 		setOptionsNames(9);
 		this.getAnimation(80, 16, 16, 16, 3);
 	}
@@ -89,8 +92,30 @@ public class Fire_Weapon extends Weapon {
 		}
 	
 	public void Attack() {
-		SoundPlayer.PlaySound("fire_atk.wav");
+		sound1.PlaySound();
 		double ang = Math.atan2(my - (Game.player.getY() + 8 - Camera.y) , mx - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+		
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, shotSpeed, 35));
+	}
+	
+	public void AttackRandom() {
+		int xdir = Game.rand.nextInt(1);
+		int ydir = Game.rand.nextInt(1);
+		
+		int xoff = Game.rand.nextInt(20);
+		int yoff = Game.rand.nextInt(20);
+		
+		if (xdir == 1) {
+			xoff *= -1;
+		}
+		
+		if (ydir == 1) {
+			yoff *= -1;
+		}
+		
+		double ang = Math.atan2(my + yoff - (Game.player.getY() + 8 - Camera.y) , mx + xoff - (Game.player.getX() + 8 - Camera.x));
 		double dx = Math.cos(ang);
 		double dy =  Math.sin(ang);
 		
@@ -104,7 +129,7 @@ public class Fire_Weapon extends Weapon {
 			if (!md1) {
 				md1 = true;
 				Game.player.mana -= manaCost;
-				SoundPlayer.PlaySound("fire_ablt2.wav");
+				sound3.PlaySound();
 			}
 			if (md1) {
 				if (Game.player.right) {
@@ -143,7 +168,7 @@ public class Fire_Weapon extends Weapon {
 		int manaCost = 34;
 		if (ablt2Ava && Game.player.mana >= manaCost) {
 			if (!md2) {
-				SoundPlayer.PlaySound("fire_ablt1.wav");
+				sound2.PlaySound();
 				md2 = true;
 				Game.player.mana -= manaCost;
 			}
@@ -161,6 +186,7 @@ public class Fire_Weapon extends Weapon {
 				tspw2 = 0;
 				Game.player.ablt2 = false;
 				md2 = false;
+				sound2.StopSound();
 			}
 		}
 	}
@@ -170,7 +196,7 @@ public class Fire_Weapon extends Weapon {
 		
 		if (ablt3Ava && Game.player.mana >= manaCost) {
 			if (!md3) {
-				SoundPlayer.PlaySound("fire_ablt2.wav");
+				sound3.PlaySound();
 				md3 = true;
 				Game.player.mana -= manaCost;
 			}

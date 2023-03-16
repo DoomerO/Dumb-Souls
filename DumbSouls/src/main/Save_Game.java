@@ -11,6 +11,7 @@ import entities.Player;
 import entities.weapons.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import entities.runes.*;
 
 public class Save_Game {
 	
@@ -38,7 +39,12 @@ public class Save_Game {
 			 writer.write("" + fisicalBlock);
 			 writer.newLine();
 			 writer.write("" + poisonBlock);
+			 writer.newLine();
+			 for (int i = 0; i < Player.runesInventory.size(); i++) {
+				 writer.write(Player.runesInventory.get(i).name + ";");
+			 }
 		     writer.flush();
+		     writer.close();
 		 }
 	}
 	
@@ -52,6 +58,7 @@ public class Save_Game {
 			w3 = Integer.parseInt(reader.readLine());
 			w4 = Integer.parseInt(reader.readLine());
 			w5 = Integer.parseInt(reader.readLine());
+			String[] runes = reader.readLine().split(";");
 			
 			reader.close();
 			
@@ -60,9 +67,31 @@ public class Save_Game {
 			Ice_Weapon.block = booleanReader(w3);
 			Fisical_Weapon.block = booleanReader(w4);
 			Poison_Weapon.block = booleanReader(w5);
+			if (runes.length > 0) {
+				for (int i = 0; i < runes.length; i++) {
+					Player.runesInventory.add(InventoryMaker(runes[i]));
+				}
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private static Rune InventoryMaker(String name) {
+		switch(name) {
+		case "Rune of Life":
+			return new Life_Rune();
+		case "Rune of Mana":
+			return new Mana_Rune();
+		case "Rune of Speed":
+			return new Speed_Rune();
+		case "Double Attack Rune":
+			return new MultiAttack_Rune();
+		case "Rune of Expirience":
+			return new EXP_Rune();
+		default:
+			return null;
 		}
 	}
 	

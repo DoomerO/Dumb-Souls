@@ -9,6 +9,9 @@ import java.awt.Graphics;
 import entities.weapons.*;
 import main.*;
 import world.*;
+import entities.runes.Rune;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Player extends Entity{
 	
@@ -21,6 +24,9 @@ public class Player extends Entity{
 	public int direct = 2;
 	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 2, life = 100, lifeRec=1.001;
 	public Weapon playerWeapon;
+	public static List<Rune> runesInventory;
+	public List<Rune> runesEquiped;
+	public static int runeLimit = 3;
 	
 	private BufferedImage[] playerDown;
 	private BufferedImage[] playerRight;
@@ -34,6 +40,9 @@ public class Player extends Entity{
 		playerRight = new BufferedImage[4];
 		playerLeft = new BufferedImage[4];
 		playerUp = new BufferedImage[4];
+		
+		runesInventory = new ArrayList<Rune>();
+		runesEquiped = new ArrayList<Rune>();
 		
 		for (int xsp = 0; xsp < 4; xsp++) {
 			playerDown[xsp] = Game.sheet.getSprite(xsp * 16, 16, 16, 16);
@@ -70,6 +79,14 @@ public class Player extends Entity{
 		Game.player.right = false;
 		Game.player.down = false;
 		Game.player.left = false;
+	}
+	
+	private void runeTick() {
+		if (runesEquiped.size() > 0) {
+			for(int i = 0; i < runesEquiped.size(); i++) {
+				runesEquiped.get(i).tick();
+			}
+		}
 	}
 	
 	private void dashing() {
@@ -223,6 +240,7 @@ public class Player extends Entity{
 		ablt2Using();
 		ablt3Using();
 		shotDamage();
+		runeTick();
 		
 		if (playerWeapon instanceof Mana_Weapon) {
 			Mana_Weapon.graficEffect();

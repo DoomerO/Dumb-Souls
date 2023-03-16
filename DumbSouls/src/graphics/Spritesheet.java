@@ -1,6 +1,7 @@
 package graphics;
 
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -11,7 +12,7 @@ public class Spritesheet {
 	
 	public Spritesheet(String patch) {
 		try {
-			spritesheet = ImageIO.read(getClass().getResource(patch));
+			spritesheet = ImageIO.read(new FileInputStream("res/" + patch));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

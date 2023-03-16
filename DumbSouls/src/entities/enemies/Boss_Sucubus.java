@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import main.Game;
 import world.Camera;
 import entities.*;
+import entities.orbs.Rune_Orb;
 import entities.shots.*;
 import world.World;
 
@@ -52,6 +53,7 @@ public class Boss_Sucubus extends Enemy {
 		Player.souls +=  this.soulValue;
 		World.bossTime = false;
 		World.bossName = "";
+		Game.enemies.add(new Rune_Orb(this.getX(), this.getY(), 16, 16));
 	}
 	
 	private void attack1() {

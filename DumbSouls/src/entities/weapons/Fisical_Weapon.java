@@ -113,6 +113,28 @@ public class Fisical_Weapon extends Weapon {
 		}
 	}
 	
+	public void AttackRandom() {
+		int xdir = Game.rand.nextInt(1);
+		int ydir = Game.rand.nextInt(1);
+		
+		int xoff = Game.rand.nextInt(20);
+		int yoff = Game.rand.nextInt(20);
+		
+		if (xdir == 1) {
+			xoff *= -1;
+		}
+		
+		if (ydir == 1) {
+			yoff *= -1;
+		}
+		
+		double ang = Math.atan2(my + yoff - (Game.player.getY() + 8 - Camera.y) , mx + xoff - (Game.player.getX() + 8 - Camera.x));
+		double dx = Math.cos(ang);
+		double dy =  Math.sin(ang);
+		
+		Game.shots.add(new Shot(Game.player.getX(), Game.player.getY(), 3, 3, shotFace, dx, dy, ang, shotDamage, 2.5, 35));
+	}
+	
 	public void Dash() {
 		int manaCost = 4;
 		

@@ -8,7 +8,7 @@ import entities.weapons.*;
 
 public class Menu_Player {
 	private int cur, curW;
-	private String[] weapons = {"Mana Weapon", "Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"}, options = {"Books", "Start", "Back"};
+	private String[] weapons = {"Mana Weapon", "Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"}, options = {"Books", "Start", "Runes", "Back"};
 	public boolean up, down, left, right, enter;
 	private boolean clickR, clickL;
 	private int weaponCost;
@@ -64,6 +64,17 @@ public class Menu_Player {
 					}
 					Game.gameState = "NORMAL";
 					weaponVerification();
+				}
+			}
+		}
+		
+		if (options[cur] == "Runes") {
+			clickR = false;
+			clickL = false;
+			if (enter) {
+				enter = false;
+				if (Player.runesInventory.size() > 0) {
+					Game.gameState = "MENURUNES";
 				}
 			}
 		}
@@ -185,7 +196,8 @@ public class Menu_Player {
 		
 		g.setFont(new Font("arial", Font.BOLD, 9));
 		g.drawString(weapons[curW], 30, 70);
-		g.drawString("Start", 30, 100);
+		g.drawString("Start", 30, 90);
+		g.drawString("Runes", 30, 110);
 		g.drawString("Back", 30, 130);
 		
 		if (cur == 0) {
@@ -201,9 +213,12 @@ public class Menu_Player {
 			}
 		}
 		else if (cur == 1) {
-			g.drawString(">", 20, 100);
+			g.drawString(">", 20, 90);
 		}
 		else if (cur == 2) {
+			g.drawString(">", 20, 110);
+		}
+		else if (cur == 3) {
 			g.drawString(">", 20, 130);
 		}
 		

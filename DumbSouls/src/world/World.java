@@ -2,7 +2,7 @@ package world;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
-
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -19,7 +19,7 @@ public class World {
 	
 	public World(String path) {
 		try {
-			BufferedImage map = ImageIO.read(getClass().getResource(path));
+			BufferedImage map = ImageIO.read(new FileInputStream("res/" + path));
 			int[] pixels = new int[map.getWidth() * map.getHeight()];
 			tiles = new Tile[map.getWidth() * map.getHeight()];
 			WIDTH = map.getWidth();
