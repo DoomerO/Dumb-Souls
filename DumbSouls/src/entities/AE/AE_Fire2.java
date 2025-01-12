@@ -1,12 +1,10 @@
 package entities.AE;
 
-import java.awt.image.BufferedImage;
 import entities.enemies.Enemy;
-import main.Game;
-import java.awt.Graphics;
-import world.Camera;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
 
-public class AE_Fire2 extends Attack_Entity{
+public class AE_Fire2 extends AE_Attack_Entity{
 	
 	private double speed;
 	private double dx, dy, damage;
@@ -14,36 +12,28 @@ public class AE_Fire2 extends Attack_Entity{
 	
 	public AE_Fire2(int x, int y, int height, int width, double spd, double dirx, double diry, int dmg, BufferedImage sprite, int time) {
 		super(x, y, height, width, sprite, time);
-		this.speed = spd;
-		this.dx = dirx;
-		this.dy = diry;
-		this.damage = dmg;
-		this.getAnimation(0, 128, 16, 16, 1);
-		this.setMask(2, 2, 3, 3);
-		this.depth = 2;
+		speed = spd;
+		dx = dirx;
+		dy = diry;
+		damage = dmg;
+		getAnimation(0, 128, 16, 16, 1);
+		setMask(2, 2, 3, 3);
+		depth = 2;
 	}
+
+	Function<Enemy, Void> attackCollision = (target) -> { 
+		target.life -= damage;
+        return null;
+	};
 	
 	public void tick() {
 		x += dx * speed;
 		y += dy * speed;
 		time++;
-		if (time == this.timeLife) {
-			this.die();
+		if (time == life) {
+			die();
 		}
 		
-		colidingEnemy();
-	}
-	
-	private void colidingEnemy() {
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if(isColiding(this, e)) {
-				e.life -= damage;
-			}
-		}
-	}
-	
-	public void render(Graphics g) {
-		g.drawImage(animation[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
+		collisionEnemy(false, 0, attackCollision);
 	}
 }

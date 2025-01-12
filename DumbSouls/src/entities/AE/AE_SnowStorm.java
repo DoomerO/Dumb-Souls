@@ -1,25 +1,24 @@
 package entities.AE;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import entities.*;
 import entities.enemies.Enemy;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
 import main.Game;
 import world.Camera;
 
-public class AE_SnowStorm extends Attack_Entity {
+public class AE_SnowStorm extends AE_Attack_Entity {
 	
 	private double speed, damage;
 	private int frames, maxFrames = 10, index, maxIndex = 2, time;
 	
 	public AE_SnowStorm(int x, int y, int width, int height, BufferedImage sprite, int time, double spd, int dmg) {
 		super(x, y, width, height, sprite, time);
-		this.speed = spd;
-		this.damage = dmg;
-		this.timeLife = time;
-		this.depth = 3;
-		this.getAnimation(96, 112, 16, 16, maxIndex);
-		this.setMask(0, 24, 64, 40);
+		speed = spd;
+		damage = dmg;
+		life = time;
+		depth = 3;
+		getAnimation(96, 112, 16, 16, maxIndex);
+		setMask(0, 24, 64, 40);
 	}
 	
 	public void tick() {
@@ -28,14 +27,16 @@ public class AE_SnowStorm extends Attack_Entity {
 		
 		double destX = Game.mx / Game.scale;
 		double destY = Game.my / Game.scale;
-		double startX = this.x + 26 - Camera.x;
-		double startY = this.y + 16 - Camera.y;
-
-		double ang = getAngle(destY, startY, destX, startX);
+		double startX = x + 26 - Camera.getX();
+		double startY = y + 16 - Camera.getY();
 
 		if (calculateDistance((int)destX, (int)destY, (int)startX, (int)startY) > 1){
-			this.x += Math.cos(ang) * this.speed;
-			this.y += Math.sin(ang) * this.speed;
+			double deltaX = destX - startX;
+			double deltaY = destY - startY;
+			double mag = Math.hypot(deltaX, deltaY) + 10;
+			if(mag == 0) mag = 1;
+			x += deltaX / mag * (speed + mag / 50);
+			y += deltaY / mag * (speed + mag / 50);
 		}
 		
 		if (frames == maxFrames) {
@@ -46,26 +47,22 @@ public class AE_SnowStorm extends Attack_Entity {
 			}
 		}
 		
-		if (time == this.timeLife) {
-			this.die();
+		if (time == life) {
+			die();
 		}
 		
-		enemyCollision();
+		collisionEnemy(true, 20, attackCollision);
 		refreshTick();
 	}
+
+	Function<Enemy, Void> attackCollision = (target) -> { 
+		target.life -= damage;
+		target.slowness += 2;
+		return null;
+	};
 	
-	public void enemyCollision() {
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if (Entity.isColiding(this, e) && TickTimer(20)) {
-				e.life -= this.damage;
-				e.frost += 2;
-			}
-		}
-	}
-	
-	public void render(Graphics g) {
-		g.drawImage(this.animation[index], this.getX() - Camera.x, this.getY() - Camera.y, 64, 64, null);
+	public void render() {
+		Game.gameGraphics.drawImage(animation[index], getX() - Camera.getX(), getY() - Camera.getY(), 64, 64, null);
 	}
 	
 }

@@ -1,12 +1,12 @@
 package entities.AE;
 
+import entities.enemies.Enemy;
 import java.awt.image.BufferedImage;
+import java.util.function.Function;
 import main.Game;
 import world.Camera;
-import java.awt.Graphics;
-import entities.enemies.Enemy;
 
-public class AE_HellFlame extends Attack_Entity {
+public class AE_HellFlame extends AE_Attack_Entity {
 	
 	private double speed;
 	private double dx, dy, damage;
@@ -15,13 +15,13 @@ public class AE_HellFlame extends Attack_Entity {
 	
 	public AE_HellFlame(int x, int y, int width, int height, double spd, double dx, double dy, int dmg, BufferedImage sprite, int time) {
 		super(x, y, height, width, sprite, time);
-		this.speed = spd;
+		speed = spd;
 		this.dx = dx;
 		this.dy = dy;
-		this.damage = dmg;
-		this.getAnimation(144, 112, 16, 16, 2);
-		this.setMask(0, 0, 48, 48);
-		this.depth = 3;
+		damage = dmg;
+		getAnimation(144, 112, 16, 16, 2);
+		setMask(0, 0, 48, 48);
+		depth = 3;
 	}
 	
 	public void tick() {
@@ -36,34 +36,30 @@ public class AE_HellFlame extends Attack_Entity {
 				index = 0;
 			}
 		}
-		if (time == this.timeLife) {
-			this.die();
+		if (time == life) {
+			die();
 		}
 		
-		colidingEnemy();
+		collisionEnemy(true, 15, attackCollision);
 		refreshTick();
 		spawnFire();
 	}
+
+	Function<Enemy, Void> attackCollision = (target) -> { 
+		target.life -= damage;
+        return null;
+	};
 	
 	private void spawnFire() {
 		spawntime++;
 		if (spawntime == 4) {
 			spawntime = 0;
-			Game.entities.add(new AE_Fire(this.getX(), this.getY() + 32, 16, 16, null, 40));
-			Game.entities.add(new AE_Fire(this.getX() + 32, this.getY() + 32, 16, 16, null, 40));
+			Game.entities.add(new AE_Fire(getX(), getY() + 32, 16, 16, null, 40));
+			Game.entities.add(new AE_Fire(getX() + 32, getY() + 32, 16, 16, null, 40));
 		}
 	}
 	
-	private void colidingEnemy() {
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if(isColiding(this, e) && TickTimer(15)) {
-				e.life -= damage;
-			}
-		}
-	}
-	
-	public void render(Graphics g) {
-		g.drawImage(this.animation[index], this.getX() - Camera.x, this.getY() - Camera.y, 48, 48, null);
+	public void render() {
+		Game.gameGraphics.drawImage(animation[index], getX() - Camera.getX(), getY() - Camera.getY(), 48, 48, null);
 	}
 }

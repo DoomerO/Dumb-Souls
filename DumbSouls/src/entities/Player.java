@@ -1,31 +1,29 @@
 package entities;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import graphics.UI;
-import entities.shots.Enemy_Shot;
-import java.awt.Graphics;
+import entities.runes.Rune;
+import entities.shots.Shot;
 import entities.weapons.*;
+import graphics.UI;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import main.*;
 import world.*;
-import entities.runes.Rune;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Player extends Entity{
 	
-	private int tickTimer, attackTimer;
-	public boolean up, down, left, right, moving, attack, levelUp, dash, ablt2, ablt3;
+	private int tickTimer, attackTimer, camXOffset, camYOffset;
+	public boolean moving, levelUp;
+	public short abltCooldown;
 	public int maxLife = 100, exp = 0, maxExp = 100, maxMana = 100;
 	public static int souls;
 	public int level = 1;
-	private int index, maxIndex = 4, frames, maxFrames = 10;
+	private int frames, maxFrames = 40;
 	public int direct = 2;
-	public double maxSpeed = 1.5, speed = maxSpeed, mana = 100, manaRec = 2, life = 100, lifeRec=1.001;
+	public double moveX, moveY, maxSpeed = 1.5, speed = maxSpeed, speedBoost = 1, mana = 100, manaRec = 2, lifeRec=1.001;
 	public Weapon playerWeapon;
 	public static List<Rune> runesInventory;
-	public List<Rune> runesEquiped;
+	public List<Rune> runesEquipped;
 	public static int runeLimit = 3;
 	
 	private BufferedImage[] playerDown;
@@ -33,16 +31,18 @@ public class Player extends Entity{
 	private BufferedImage[] playerLeft;
 	private BufferedImage[] playerUp;
 	
-	public Player(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public Player(int x, int y) {
+		super(x, y, 16, 16, Game.sheet.getSprite(0, 16, 16, 16));
 		
+		this.life = 100;
+
 		playerDown = new BufferedImage[4];
 		playerRight = new BufferedImage[4];
 		playerLeft = new BufferedImage[4];
 		playerUp = new BufferedImage[4];
 		
-		runesInventory = new ArrayList<Rune>();
-		runesEquiped = new ArrayList<Rune>();
+		runesInventory = runesInventory == null ? new ArrayList<Rune>() : runesInventory;
+		runesEquipped = new ArrayList<Rune>();
 		
 		for (int xsp = 0; xsp < 4; xsp++) {
 			playerDown[xsp] = Game.sheet.getSprite(xsp * 16, 16, 16, 16);
@@ -58,16 +58,16 @@ public class Player extends Entity{
 		}
 		
 		setMask(4, 1, 8, 15);
-		this.depth = 1;
+		depth = 1;
+		camXOffset = (width - Game.width) >> 1;
+		camYOffset = (height - Game.height) >> 1;
 	}
 	
 	private void isAttacking() {
-		if (attackTimer == playerWeapon.attackTimer) {
-			if (attack) {
-			attack = false;
+		if (attackTimer == playerWeapon.attackTimer && !Game.clickController.isEmpty()) {
 			attackTimer = 0;
 			playerWeapon.Attack();
-			}
+			Game.clickController.clear();
 		}
 		if (attackTimer < playerWeapon.attackTimer){
 			attackTimer++;
@@ -75,60 +75,39 @@ public class Player extends Entity{
 	}
 
 	public void stopMoving(){
-		Game.player.up = false;
-		Game.player.right = false;
-		Game.player.down = false;
-		Game.player.left = false;
+		moveX = moveY = 0;
 	}
 	
 	private void runeTick() {
-		if (runesEquiped.size() > 0) {
-			for(int i = 0; i < runesEquiped.size(); i++) {
-				runesEquiped.get(i).tick();
-			}
+		if (runesEquipped.size() == 0) return;
+		for(int i = 0; i < runesEquipped.size(); i++) {
+			runesEquipped.get(i).tick();
 		}
 	}
-	
-	private void dashing() {
-		if (dash) {
-			playerWeapon.Dash();
-		}
-	}
-	
-	private void ablt2Using() {
-		if (ablt2) {
-			playerWeapon.Ablt2();
-		}
-	}
-	
-	private void ablt3Using() {
-		if (ablt3) {
-			playerWeapon.Ablt3();
-		}
-	}
+
 	
 	public static void die() {
+		try {
+			Save_Game.save();
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
 		Game.entities.clear();
 		Game.shots.clear();
 		Game.enemies.clear();
 		Game.eShots.clear();
-		Game.player = new Player(0, 0, 16, 16, Game.sheet.getSprite(0, 16, 16, 16));
+		Game.player = new Player(0, 0);
 		Game.entities.add(Game.player);
 		World.maxEnemies = 5;
 		World.wave = 1;
 		World.bossName = "";
 		World.bossTime = false;
-		Game.world = new World("/map00.png");
+		Game.world = new World("res/map00.png");
 		Game.ui = new UI();
 		Game.startMenu = new Menu_Init();
 		Game.playerMenu = new Menu_Player();
 		Game.levelUpMenu = new Menu_Level(3);
-		Game.gameState = "MENUINIT";
-		try {
-			Save_Game.save();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Game.gameStateHandler = Game.gameState.MENUINIT;
 	}
 	
 	private void checkExp() {
@@ -136,38 +115,24 @@ public class Player extends Entity{
 			levelUp = true;
 			level ++;
 			exp -= maxExp;
-			down = false;
-			up = false;
-			left = false;
-			right = false;
-			maxExp += (maxExp * 20) / 100;
-			Game.gameState = "LEVELUP";
+			moveX = moveY = 0;
+			maxExp *= 1.2;
+			Game.gameStateHandler = Game.gameState.MENULEVEL;
 		}
 	}
 	
 	private void isMoving() {
-		if (moving) {
-			frames++;
-			if (frames == maxFrames) {
-				index ++;
-				frames = 0;
-				if (index == maxIndex) {
-					index = 0;
-				}
-			}
-		}
-		
-		if (up == false && down == false && right == false && left == false) {
-			moving = false;
-		}
+		if(!moving) return;
+		frames++;
+		if (frames == maxFrames) frames = 0;
 	}
 	
 	private void shotDamage() {
 		for (int i = 0;  i < Game.eShots.size(); i++) {
-			Enemy_Shot e = Game.eShots.get(i);
-			if (isColiding(this, e)) {
-				life -= e.damage;
-				Game.eShots.remove(e);
+			Shot eSh = Game.eShots.get(i);
+			if (isColiding(eSh)) {
+				life -= eSh.damage;
+				Game.eShots.remove(eSh);
 			}
 		}
 	}
@@ -177,114 +142,114 @@ public class Player extends Entity{
 	}
 
 	private boolean TickTimer(int frames) {
-		if (this.tickTimer % frames == 0) {
+		if (tickTimer % frames == 0)
 			return true;
-		}
-		else{
-			return false;
-		}
+		return false;
 	}
 
 	private void refreshTick(){
-		this.tickTimer++;
-		if (this.tickTimer >= 60){
-			this.tickTimer = 0;
+		tickTimer++;
+		if (tickTimer >= 60)
+			tickTimer = 0;
+	}
+
+	private void castAblt(){
+		if (playerWeapon.md1) playerWeapon.Dash();
+		if (playerWeapon.md2) playerWeapon.Ablt2();
+		if (playerWeapon.md3) playerWeapon.Ablt3();
+		if(abltCooldown == 0){
+			if (Game.keyController.contains(32)){
+				playerWeapon.Dash();
+				abltCooldown = 30;
+			}
+			if (Game.keyController.contains(16)){
+				playerWeapon.Ablt2();
+				abltCooldown = 30;
+			}
+			if (Game.keyController.contains(17)){
+				playerWeapon.Ablt3();
+				abltCooldown = 30;
+			}
+		} else {
+			abltCooldown--;
 		}
 	}
 	
 	public void tick() {
-		if (up) {
-			this.y -= speed;
-			direct = 3;
-		}else if(down) {
-			this.y += speed;
-			direct = 2;
+		if (Game.keyController.contains(87) || Game.keyController.contains(38))//W UP
+			moveY--;
+		if (Game.keyController.contains(83) || Game.keyController.contains(40))//S DOWN
+			moveY++;
+		if (Game.keyController.contains(68) || Game.keyController.contains(39))//A LEFT
+			moveX++;
+		if (Game.keyController.contains(65) || Game.keyController.contains(37))//D RIGHT
+			moveX--;
+		moving = true;
+		double magnitude = Math.hypot(moveX, moveY);
+		if(magnitude == 0){
+			moving = false;
+		} else {
+			moveX /= magnitude;
+			moveY /= magnitude;
 		}
+
+		if (moveX > 0) direct = 0;
+		else if (moveX < 0) direct = 1;
+		else if (moveY > 0) direct = 2;
+		else if (moveY < 0) direct = 3;
+
+		castAblt();
+
 		
-		if (right) {
-			this.x += speed;
-			direct = 0;
-		} else if (left) {
-			this.x -= speed;
-			direct = 1;
-		}
+		if (mana < maxMana && TickTimer(20))
+		mana = Math.min(maxMana, mana + manaRec);
 		
-		if (mana < maxMana && TickTimer(20)) {
-			mana += manaRec;
-			if (mana > maxMana){
-				mana = maxMana;
-			}
-		}
-
-		if (Game.player.life < Game.player.maxLife && TickTimer(10)) {
-
-			Game.player.life *= Game.player.lifeRec;
-			if (Game.player.life > Game.player.maxLife){
-				Game.player.life = Game.player.maxLife;
-			}
-		}
-
+		if (Game.player.life < Game.player.maxLife && TickTimer(10))
+		Game.player.life = Math.min(Game.player.maxLife, Game.player.life * Game.player.lifeRec);
+		
 		refreshTick();
-
-		if (life <= 0) {
-			die();
-		}
+		
+		if (life <= 0)
+		die();
 		
 		playerWeapon.tick();
 		playerWeapon.Effect();
+		runeTick();
+
+		x += speed * speedBoost * moveX;
+		y += speed * speedBoost * moveY;
+		clampBounds(outOfBounds());
+		isMoving();
+		speedBoost = 1;
+
 		
 		isAttacking();
-		isMoving();
 		checkExp();
-		dashing();
-		ablt2Using();
-		ablt3Using();
 		shotDamage();
-		runeTick();
 		
-		if (playerWeapon instanceof Mana_Weapon) {
-			Mana_Weapon.graficEffect();
+		if (playerWeapon instanceof Weapon_Mana) {
+			Weapon_Mana.grafficEffect();
 		}
-		if (!playerWeapon.md1) {
-			dash = false;
-		}
-		if (!playerWeapon.md2) {
-			ablt2 = false;
-		}
-		if (!playerWeapon.md3) {
-			ablt3 = false;
-		}
-		
-		Camera.x = Camera.Clamp(this.getX() - (Game.width / 2), 0, World.WIDTH * 16 - Game.width);
-		Camera.y = Camera.Clamp(this.getY() - (Game.height / 2), 0, World.HEIGHT * 16 - Game.height);
+
+		final int MED = 2; //Mouse-Efectiveness-Denominator
+		Camera.Clamp(getX() + camXOffset + (Game.mx / Game.scale - Game.width / 2) / MED, getY() + camYOffset + (Game.my / Game.scale - Game.height / 2) / MED);
 	}
 	
-	public void render(Graphics g) {
-		if (right) {
-			g.drawImage(playerRight[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+	public void render() {
+		switch(direct){
+		case 0:
+			Game.gameGraphics.drawImage(playerRight[moving ? frames / 10 : 0], getX() - Camera.getX(), getY() - Camera.getY(), null);
+			break;
+		case 1:
+			Game.gameGraphics.drawImage(playerLeft[moving ? frames / 10 : 0], getX() - Camera.getX(), getY() - Camera.getY(), null);
+			break;
+		case 2:
+			Game.gameGraphics.drawImage(playerDown[moving ? frames / 10 : 0], getX() - Camera.getX(), getY() - Camera.getY(), null);
+			break;
+		case 3:
+			Game.gameGraphics.drawImage(playerUp[moving ? frames / 10 : 0], getX() - Camera.getX(), getY() - Camera.getY(), null);
+			break;
 		}
-		else if (left) {
-			g.drawImage(playerLeft[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		}
-		else if (down) {
-			g.drawImage(playerDown[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		}
-		else if (up) {
-			g.drawImage(playerUp[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		} else {
-			if (direct == 0) {
-				g.drawImage(playerRight[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
-			}
-			else if (direct == 1) {
-				g.drawImage(playerLeft[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
-			}
-			else if (direct == 2) {
-				g.drawImage(playerDown[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
-			}
-			else if (direct == 3) {
-				g.drawImage(playerUp[0], this.getX() - Camera.x, this.getY() - Camera.y, null);			
-			}
-		}
-		playerWeapon.render(g);
+		playerWeapon.render();
 	}
 }

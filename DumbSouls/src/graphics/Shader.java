@@ -3,7 +3,6 @@ package graphics;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-
 public class Shader {
 
 	public static BufferedImage reColor(BufferedImage sprite, int hue){
@@ -11,13 +10,12 @@ public class Shader {
 		int h = sprite.getHeight();
 		BufferedImage recolored = new BufferedImage(w, h, sprite.getType());
 		Graphics2D graphic = recolored.createGraphics();
-		 for(int x = 0; x < w; x++){
-			for(int y = 0; y < h; y++){
-				int color = sprite.getRGB(x, y);
-				int setColor = color + hue;
-				recolored.setRGB(x, y, setColor);
-			}
-		 }
+		int[] pixels = new int[w * h];
+		sprite.getRGB(0, 0, w, h, pixels, 0, w);
+		for (int i = 0; i < pixels.length; i++) {
+			pixels[i] ^= hue;
+		}
+		recolored.setRGB(0, 0, w, h, pixels, 0, w);
 		graphic.drawImage(recolored, null, 0, 0);
 		graphic.dispose();
 		return recolored;

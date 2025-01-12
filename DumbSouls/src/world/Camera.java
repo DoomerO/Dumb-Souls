@@ -1,16 +1,41 @@
 package world;
 
+import main.Game;
+
 public class Camera {
-	public static int x;
-	public static int y;
+	protected static int x = World.WIDTH, y = World.HEIGHT;
 	
-	public static int Clamp(int xAtual, int xmin, int xmax) { 
-		if (xAtual < xmin) {
-			xAtual = xmin;
+	public static void Clamp(int targetX, int targetY) { 
+		if (targetX < 0) {
+			targetX = 0;
 		} 
-		if (xAtual > xmax) {
-			xAtual = xmax;
+		else if (targetX > World.WIDTH * 16 - Game.width) {
+			targetX = World.WIDTH * 16 - Game.width;
 		}
-		return xAtual;
+		if (targetY < 0) {
+			targetY = 0;
+		} 
+		else if (targetY > World.HEIGHT * 16 - Game.height) {
+			targetY = World.HEIGHT * 16 - Game.height;
+		}
+		final int deltaX = targetX - x, deltaY = targetY - y;
+		double magnitude = Math.hypot(deltaX, deltaY);
+		if(magnitude == 0.0) magnitude = 1.0;
+
+		x += deltaX / magnitude * Math.ceil(magnitude / 10);
+		y += deltaY / magnitude * Math.ceil(magnitude / 10);
+	}
+
+	public static int getX(){
+		return x;
+	}
+
+	public static int getY(){
+		return y;
+	}
+
+	public static void centerPlayer(){
+		x = Game.player.getX();
+		y = Game.player.getY();
 	}
 }

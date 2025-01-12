@@ -1,42 +1,32 @@
 package entities.AE;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import entities.enemies.Enemy;
-import main.Game;
-import world.Camera;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
 
-public class AE_IceDs extends Attack_Entity {
+public class AE_IceDs extends AE_Attack_Entity {
 	
 	public int damage;
 	private int time = 0;
 	
 	public AE_IceDs(int x, int y, int width, int height, BufferedImage sprite, int time) {
 		super(x, y, width, height, sprite, time);
-		this.setMask(0, 0, 16, 16);
-		this.getAnimation(32, 112, 16, 16, 1);
-		this.depth = 0;
+		setMask(0, 0, 16, 16);
+		getAnimation(32, 112, 16, 16, 1);
+		depth = 0;
 	}
+
+	Function<Enemy, Void> attackCollision = (target) -> { 
+		target.slowness = Math.max(target.slowness, 4);
+		return null;
+	};
 	
 	public void tick() {
 		time ++;
-		if (time == this.timeLife) {
-			this.die();
+		if (time == life) {
+			die();
 		}
-		Collision();
+		collisionEnemy(true, 5, attackCollision);
 		refreshTick();
-	}
-	
-	private void Collision() {
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if(isColiding(e, this) && TickTimer(5)) {
-				e.frost += 0.25;
-			}
-		}
-	}
-	
-	public void render(Graphics g) {
-		g.drawImage(this.animation[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 }

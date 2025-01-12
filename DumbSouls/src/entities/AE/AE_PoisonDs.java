@@ -1,23 +1,22 @@
 package entities.AE;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import main.Game;
-import entities.*;
 import entities.enemies.Enemy;
-import entities.shots.Enemy_Shot;
+import entities.shots.Shot;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
+import main.Game;
 import world.Camera;
 
-public class AE_PoisonDs extends Attack_Entity{
+public class AE_PoisonDs extends AE_Attack_Entity{
 	
 	private int time, frames, maxFrames = 10, index, maxIndex = 2, dmg;
 	
 	public AE_PoisonDs(int x, int y, int width, int height, BufferedImage sprite, int time, int dmg) {
 		super(x, y, width, height, sprite, time);
 		this.dmg = dmg;
-		this.setMask(0, 0, width, height);
-		this.getAnimation(64, 112, 16, 16, 2);
-		this.depth = 2;
+		setMask(0, 0, width, height);
+		getAnimation(64, 112, 16, 16, 2);
+		depth = 2;
 	}
 	
 	public void tick() {
@@ -30,33 +29,28 @@ public class AE_PoisonDs extends Attack_Entity{
 				index = 0;
 			}
 		}
-		x = Game.player.getX() - width / 2 + 8;
-		y = Game.player.getY() - height / 2 + 8;
-		if (time == this.timeLife) {
-			this.die();
+		x = Game.player.centerX();
+		y = Game.player.centerY();
+		if (time == life) {
+			die();
 		}
-		Collision();
+		collisionEnemiesShots(false, false, 0, enemyCollision, shotCollision);
 	}
-	
-	private void Collision() {
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if(Entity.isColiding(e, this)) {
-				if (time % 5 == 0) {
-					e.frost = e.maxSpeed * 0.8;
-					e.life -= dmg;
-				}
-			}
+
+	Function<Enemy, Void> enemyCollision = (target) -> { 
+		if (time % 5 == 0) {
+			target.slowness = Math.max(target.slowness, dmg);
+			target.life -= dmg;
 		}
-		for (int i = 0; i < Game.eShots.size(); i++) {
-			Enemy_Shot e = Game.eShots.get(i);
-			if(Entity.isColiding(e, this)) {
-				Game.eShots.remove(e);
-			}
-		}
-	}
+		return null;
+	};
+
+	Function<Shot, Void> shotCollision = (target) -> { 
+		Game.eShots.remove(target);
+		return null;
+	};
 	
-	public void render(Graphics g) {
-		g.drawImage(this.animation[index], this.getX() - Camera.x, this.getY() - Camera.y, this.width, this.height, null);
+	public void render() {
+		Game.gameGraphics.drawImage(animation[index], getX() - Camera.getX(), getY() - Camera.getY(), width, height, null);
 	}
 }

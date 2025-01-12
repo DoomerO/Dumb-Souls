@@ -1,26 +1,32 @@
 package entities.AE;
 
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
-import world.Camera;
 import entities.enemies.Enemy;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
 import main.Game;
+import world.Camera;
 
-public class AE_Hurricane extends Attack_Entity{
+public class AE_Hurricane extends AE_Attack_Entity{
 	
 	private double speed, damage;
 	private int frames, maxFrames = 10, index, maxIndex = 2, time;
 	
 	public AE_Hurricane(int x, int y, int width, int height, BufferedImage sprite, int time, double spd, int dmg) {
 		super(x, y, width, height, sprite, time);
-		this.speed = spd;
-		this.damage = dmg;
-		this.timeLife = time;
-		this.push = - 2;
-		this.depth = 2;
-		this.getAnimation(16, 128, 16, 16, maxIndex);
-		this.setMask(6, 0, 52, 32);
+		speed = spd;
+		damage = dmg;
+		life = time;
+		push = -2;
+		depth = 2;
+		getAnimation(16, 128, 16, 16, maxIndex);
+		setMask(6, 0, 52, 32);
 	}
+
+	Function<Enemy, Void> attackCollision = (target) -> { 
+		target.life -= damage;
+		target.receiveKnockback(this);
+        return null;
+	};
 	
 	public void tick() {
 		frames ++;
@@ -28,14 +34,17 @@ public class AE_Hurricane extends Attack_Entity{
 		
 		double destX = Game.mx / Game.scale;
 		double destY = Game.my / Game.scale;
-		double startX = this.x + 26 - Camera.x;
-		double startY = this.y + 16 - Camera.y;
+		double startX = x + 28 - Camera.getX();
+		double startY = y + 18 - Camera.getY();
 
-		double ang = getAngle(destY, startY, destX, startX);
-
+		
 		if (calculateDistance((int)destX, (int)destY, (int)startX, (int)startY) > 1){
-			this.x += Math.cos(ang) * this.speed;
-			this.y += Math.sin(ang) * this.speed;
+			double deltaX = destX - startX;
+			double deltaY = destY - startY;
+			double mag = Math.hypot(deltaX, deltaY) + 10;
+			if(mag == 0) mag = 1;
+			x += deltaX / mag * (speed + mag / 50);
+			y += deltaY / mag * (speed + mag / 50);
 		}
 		
 		if (frames == maxFrames) {
@@ -46,26 +55,16 @@ public class AE_Hurricane extends Attack_Entity{
 			}
 		}
 		
-		if (time == this.timeLife) {
-			this.die();
+		if (time == life) {
+			die();
 		}
 		
-		enemyCollision();
+		collisionEnemy(false, 0, attackCollision);
 		refreshTick();
 	}
 	
-	public void enemyCollision() {
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if (isColiding(this, e)) {
-				e.life -= this.damage;
-				knockBack(this, e);
-			}
-		}
-	}
-	
-	public void render(Graphics g) {
-		g.drawImage(this.animation[index], this.getX() - Camera.x, this.getY() - Camera.y, 64, 32, null);
+	public void render() {
+		Game.gameGraphics.drawImage(animation[index], getX() - Camera.getX(), getY() - Camera.getY(), 64, 32, null);
 	}
 	
 }

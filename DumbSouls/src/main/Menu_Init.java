@@ -1,63 +1,79 @@
 package main;
 
-import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 
+import graphics.TextObject;
+
 public class Menu_Init {
-	private int cur = 0;
-	public boolean up, down, enter;
-	private String[] options = {"New Game", "Help", "Exit"};
+	private static int cur = 0;
+	private static TextObject
+	newGameBox = new TextObject("arial", Font.BOLD, 10, "New Game", 120, 60, Color.white),
+	helpBox = new TextObject("arial", Font.BOLD, 10, "Help", 120, 85, Color.white),
+	exitBox = new TextObject("arial", Font.BOLD, 10, "Exit", 120, 110, Color.white);
 	
-	public void tick() {
-		if (down) {
+	public static void tick() {
+		if(newGameBox.hover()){
+			cur = 0;
+		}
+		if(newGameBox.click()){
+			Game.gameStateHandler = Game.gameState.MENUPLAYER;
+		}
+		if(helpBox.hover()){
+			cur = 1;
+		}
+		if(helpBox.click()){
+			Game.gameStateHandler = Game.gameState.MENUHELP;
+			cur = 0;
+		}
+		if(exitBox.hover()){
+			cur = 2;
+		}
+		if(exitBox.click()){
+			System.exit(1);
+		}
+		if (Game.keyController.contains(83) || Game.keyController.contains(40)) {//S DOWN
 			cur++;
-			down = false;
-			if (cur > options.length - 1) {
-				cur = 0;
-			}
+			if (cur > 2) cur = 0;
 		}
-		else if (up) {
+		if (Game.keyController.contains(87) || Game.keyController.contains(38)) {//W UP
 			cur--;
-			up = false;
-			if (cur < 0) {
-				cur = options.length - 1;
-			}
+			if (cur < 0) cur = 2;
 		}
-		if (enter) {
-			enter = false;
-			if (options[cur] == "New Game") {
-				Game.gameState = "MENUPLAYER";
-			}
-			else if (options[cur] == "Help") {
-				Game.gameState = "MENUHELP";
-			}
-			else if (options[cur] == "Exit") {
-				System.exit(1);
-			}
-		}
+		Game.keyController.clear();
+		Game.clickController.clear();
 	}
 	
-	public void render(Graphics g) {
-		g.setColor(Color.black); 
-		g.fillRect(0, 0, Game.width, Game.height);
-		g.setColor(Color.white);
-		g.setFont(new Font("arial", Font.BOLD, 30));
-		g.drawString("Dumb Souls", 70, 30);
-		g.setFont(new Font("arial",  Font.BOLD, 10));
+	public static void render() {
+		Game.gameGraphics.setColor(Color.black); 
+		Game.gameGraphics.fillRect(0, 0, Game.width, Game.height);
+		Game.gameGraphics.setColor(Color.white);
+		Game.gameGraphics.setFont(new Font("arial", Font.BOLD, 30));
+		Game.gameGraphics.drawString("Dumb Souls", 70, 30);
 		
-		g.drawString(options[0], 120, 60);
-		g.drawString(options[1], 120, 85);
-		g.drawString(options[2], 120, 110);
-		
+		newGameBox.render();
+		helpBox.render();
+		exitBox.render();
+
 		if (cur == 0) {
-			g.drawString(">", 90, 60);
+			Game.gameGraphics.drawString(">", 90, 60);
+			if (Game.keyController.contains(10)){
+				Game.keyController.clear();
+				Game.gameStateHandler = Game.gameState.MENUPLAYER;
+			}
 		}
 		else if (cur == 1) {
-			g.drawString(">", 90, 85);
+			Game.gameGraphics.drawString(">", 90, 85);
+			if (Game.keyController.contains(10)){
+				Game.keyController.clear();
+				Game.gameStateHandler = Game.gameState.MENUHELP;
+			}
 		}
 		else if (cur == 2) {
-			g.drawString(">", 90, 110);
+			Game.gameGraphics.drawString(">", 90, 110);
+			if (Game.keyController.contains(10)){
+				System.exit(1);
+			}
 		}
 	}
 }

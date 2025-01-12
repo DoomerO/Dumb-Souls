@@ -4,24 +4,22 @@ import java.awt.image.BufferedImage;
 import main.Game;
 import world.Camera;
 
-import java.awt.Graphics;
-
 public class Weapon {
 	
-	public BufferedImage sprite;
+	public BufferedImage sprite, dashImg, ablt2Img, ablt3Img;
 	protected BufferedImage[] animation;
 	private int frames, maxFrames = 10, index, maxIndex = 3;
-	public int mx, my, attackTimer;
+	public int attackTimer;
 	public String[] listNames;
 	public boolean md1, md2, md3;
-	protected boolean dashAva, ablt2Ava, ablt3Ava;
+	public boolean dashAva, ablt2Ava, ablt3Ava;
 	
-	public Weapon(BufferedImage sprite) {
-		this.sprite = sprite;
+	public Weapon(BufferedImage baseSprite) {
+		sprite = baseSprite;
 	}
 	
 	protected void getAnimation(int x, int y, int width, int height, int frames) {
-		this.animation = new BufferedImage[frames];
+		animation = new BufferedImage[frames];
 		
 		for(int i = 0; i < animation.length; i++ ) {
 			animation[i] = Game.sheet.getSprite(x , y, width, height);
@@ -30,7 +28,7 @@ public class Weapon {
 	}
 	
 	protected void setAttackTimer(int frames){
-		this.attackTimer = frames;
+		attackTimer = frames;
 	}
 
 	public void checkOptions(String opt) {
@@ -40,23 +38,23 @@ public class Weapon {
 	public String checkOptionName(int opt) {
 		switch(opt){
 			case 0:
-				return this.listNames[0];
+				return listNames[0];
 			case 1:
-				return this.listNames[1];
+				return listNames[1];
 			case 2:
-				return this.listNames[2];
+				return listNames[2];
 			case 3:
-				return this.listNames[3];
+				return listNames[3];
 			case 4:
-				return this.listNames[4];
+				return listNames[4];
 			case 5:
-				return this.listNames[5];
+				return listNames[5];
 			case 6:
-				return this.listNames[6];
+				return listNames[6];
 			case 7:
-				return this.listNames[7];
+				return listNames[7];
 			case 8:
-				return this.listNames[8];
+				return listNames[8];
 			default:
 				return "";
 		}
@@ -73,15 +71,11 @@ public class Weapon {
 		}
 	}
 	
-	public void render(Graphics g) {
-		g.drawImage(this.animation[index], (Game.player.getX() - Camera.x) - 12, (Game.player.getY() - Camera.y) - 8, null);
+	public void render() {
+		Game.gameGraphics.drawImage(animation[index], (Game.player.getX() - Camera.getX()) - 12, (Game.player.getY() - Camera.getY()) - 8, null);
 	}
 	
 	public void Attack() {
-		
-	}
-	
-	public void AttackRandom() {
 		
 	}
 	

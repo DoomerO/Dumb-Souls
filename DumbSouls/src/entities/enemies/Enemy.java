@@ -1,21 +1,18 @@
 package entities.enemies;
 
-import java.awt.image.BufferedImage;
 import entities.*;
 import entities.shots.*;
-import entities.weapons.*;
-import main.*;
 import graphics.Shader;
+import java.awt.image.BufferedImage;
+import main.*;
+import world.Camera;
 
 public class Enemy extends Entity{
 	
 	protected BufferedImage[] animation;
-	public static BufferedImage baseSprite = Game.sheet.getSprite(0, 80, 16, 16);
-	public int maxLife, expValue, soulValue;
-	public double speed, maxSpeed, frost, life;
-	protected boolean spawning, specialRare;
-	protected int timeSpawn, contTS, specialMult = 1;
-	protected static int hue = 0;
+	public int expValue, soulValue;
+	protected boolean spawning = true, specialRare;
+	protected int attackTimer = 0, timeSpawn = 0, contTS, specialMult = 1, hue = 0, frames, maxFrames = 10, index, maxIndex = 3;
 	
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -23,10 +20,8 @@ public class Enemy extends Entity{
 	}
 
 	void isSpecial(){
-		int temp = Game.rand.nextInt(1024);
-		if (temp == 1){
-			this.specialRare = true;
-		}
+		if (Game.rand.nextInt(256) == 0)
+			specialRare = true;
 	}
 	
 	protected void getAnimation(int x, int y, int width, int height, int frames) {
@@ -34,71 +29,91 @@ public class Enemy extends Entity{
 		
 		for(int i = 0; i < animation.length; i++ ) {
 			animation[i] = Game.sheet.getSprite(x , y, width, height);
-			if (specialRare){
-				animation[i] = Shader.reColor(animation[i], hue);
-			}
+			animation[i] = Shader.reColor(animation[i], hue);
 			x += width;
 		}
 	}
 
-	protected void frostEffect(double measure) {
-		speed = maxSpeed - frost;
-		if (speed < 0) {
-			speed = 0;
+	protected void animate() {
+		frames++;
+		if (frames == maxFrames) {
+			frames = 0;
+			index++;
+			if (index == maxIndex) {
+				index = 0;
+			}
 		}
-		frost *= measure;
+	}
+
+	protected void slownessEffect(double thaw) {
+		speed = maxSpeed / (1 + slowness);
+		slowness = slowness < 0.01 ? 0 : slowness * thaw;
 	}
 	
 	protected void shotDamage() {
 		for (int i = 0;  i < Game.shots.size(); i++) {
-			Shot e = Game.shots.get(i);
-			if (isColiding(this, e)) {
-				this.life -= e.damage;
-				knockBack(Game.player, this);
-				e.die();
-				if (Game.player.playerWeapon instanceof Ice_Weapon) {
-					Ice_Weapon.IceAffect(this, e);
-				}
+			Shot sh = Game.shots.get(i);
+			if (isColiding(sh)) {
+				life -= sh.damage;
+				receiveKnockback(Game.player);
+				sh.die(this);
 			}
 		}
 	}
 
 	protected void movement() {
-		int xP = Game.player.getX();
-		int yP = Game.player.getY();
-		double angle = getAngle(yP, this.y, xP, this.x);
+		double deltaX = Game.player.centerX() - centerX();
+		double deltaY = Game.player.centerY() - centerY();
+		double mag = Math.hypot(deltaX, deltaY);
+		if(mag == 0) mag = 1;
 
-		this.x += Math.cos(angle) * this.speed;
-		this.y += Math.sin(angle) * this.speed;
+		x += deltaX * speed / mag;
+		y += deltaY * speed / mag;
 	}
 
 	protected void reverseMovement() {
-		int xP = Game.player.getX();
-		int yP = Game.player.getY();
-		double angle = getAngle(yP, this.y, xP, this.x);
+		double deltaX = Game.player.centerX() - centerX();
+		double deltaY = Game.player.centerY() - centerY();
+		double mag = Math.hypot(deltaX, deltaY);
+		if(mag == 0) mag = 1;
 
-		this.x -= Math.cos(angle) * this.speed;
-		this.y -= Math.sin(angle) * this.speed;
+		x += deltaX * -speed / mag;
+		y += deltaY * -speed / mag;
 	}
 	
 	protected void objectiveMovement(int xObjct, int yObjct) {
-		double angle = getAngle(yObjct, this.y, xObjct, this.x);
-		
-		this.x += Math.cos(angle) * this.speed;
-		this.y += Math.sin(angle) * this.speed;
+		double deltaX = xObjct - centerX();
+		double deltaY = yObjct - centerY();
+		double mag = Math.hypot(deltaX, deltaY);
+		if(mag == 0) mag = 1;
+
+		x += deltaX * speed / mag;
+		y += deltaY * speed / mag;
 	}
 	
 	int[] redoMask = {};
 	protected void spawnAnimation(int frames) {
 		if (contTS == 0) {
-			redoMask = this.getMask();
-			Game.enemies.add(new Enemy_Animation(this.getX() - this.width/2, this.getY() - this.height, this.width*2, this.height*2, null, timeSpawn, frames, 3, 112, 144, 32, 32, "frames_1", null, specialRare));
+			redoMask = getMask();
+			Game.enemies.add(new Enemy_SpawnPod(centerX(), centerY(), (int)(width * 1.5), (int)(height * 1.5), timeSpawn, specialRare));
 		}
-		this.setMask(0, 0, 0, 0);
-		this.contTS++;
-		if (this.contTS == this.timeSpawn) {
-			this.setMask(redoMask);
+		setMask(0, 0, 0, 0);
+		contTS++;
+		if (contTS >= timeSpawn) {
+			setMask(redoMask);
 			spawning = false;
 		}
+	}
+
+	public void render() {
+		Game.gameGraphics.drawImage(animation[index], getX() - Camera.getX(), getY() - Camera.getY(), getWidth(), getHeight(), null);
+	}
+
+	protected void giveCollisionDamage(Entity target, int attackTimerLimit, int attackTimerIncrease) {
+		if (this.attackTimer % attackTimerLimit == 0) {
+			target.life -= this.damage;
+			this.attackTimer = 0;
+		}
+		this.attackTimer += attackTimerIncrease;
 	}
 }

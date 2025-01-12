@@ -11,18 +11,18 @@ public class SoundPlayer{
 	
 	public SoundPlayer(String sound) {
 		try {
-			File file = new File("res/sounds/" + sound);
+			File file = new File(sound);
 			if (file.exists()) {
 				AudioInputStream audioInp = AudioSystem.getAudioInputStream(file.toURI().toURL());
-				this.clip = AudioSystem.getClip();
+				clip = AudioSystem.getClip();
 				clip.open(audioInp);
 				
 			}
 			else {
-				System.out.println("!!!This sound file does not exists: " + sound);
+				System.out.println("!!!This sound file does not exist: " + sound);
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(Exception exc) {
+			exc.printStackTrace();
 		}
 	}
 	

@@ -1,93 +1,90 @@
 package main;
 
-import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 import entities.*;
 import entities.weapons.*;
+import graphics.TextObject;
+import world.Camera;
 
 public class Menu_Player {
-	private int cur, curW;
-	private String[] weapons = {"Mana Weapon", "Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"}, options = {"Books", "Start", "Runes", "Back"};
-	public boolean up, down, left, right, enter;
-	private boolean clickR, clickL;
-	private int weaponCost;
-	private boolean weaponBlock;
+	private static int cur, curW, weaponCost;
+	private static String[] weapons = {"Mana Weapon", "Fire Weapon", "Wind Weapon", "Ice Weapon", "Fisical Weapon", "Poison Weapon"};
+	private static boolean clickR, clickL, weaponBlock;
+	private static TextObject
+	bookBox = new TextObject("arial", Font.BOLD, 9, weapons[0], 30, 70, Color.white),
+	startBox = new TextObject("arial", Font.BOLD, 9, "Start", 30, 90, Color.white),
+	runesBox = new TextObject("arial", Font.BOLD, 9, "Runes", 30, 110, Color.white),
+	backBox = new TextObject("arial", Font.BOLD, 9, "Back", 30, 130, Color.white);
 	
-	public void tick() {
-		
-		if (up) {
-			up = false;
+	public static void tick() {
+		boolean enter = Game.keyController.contains(10);
+
+		if(bookBox.hover()) cur = 0;
+		if(startBox.hover()) cur = 1;
+		if(runesBox.hover()) cur = 2;
+		if(backBox.hover()) cur = 3;
+
+		if (Game.keyController.contains(87) || Game.keyController.contains(38)) {//W UP
 			cur --;
-			if (cur < 0) {
-				cur = options.length - 1;
+			if (cur < 0) cur = 3;
+		}
+		if (Game.keyController.contains(83) || Game.keyController.contains(40)) {//S DOWN
+			cur ++;
+			if (cur > 3) cur = 0;
+		}
+		
+		if (cur == 0) {
+			if (Game.keyController.contains(68) || Game.keyController.contains(39) || Game.scrollNum > 0) {//D RIGHT
+				clickR = true;
+				clickL = false;
+				curW++;
+				if (curW > weapons.length - 1) curW = 0;
+			}
+			if (Game.keyController.contains(65) || Game.keyController.contains(37) || Game.scrollNum < 0) {//A LEFT
+				clickR = false;
+				clickL = true;
+				curW--;
+				if (curW < 0) curW = weapons.length - 1;
+			}
+			costWeapon();
+		}
+		Game.scrollNum = 0;
+		
+		if (cur == 1) {
+			clickR = false;
+			clickL = false;
+			if (enter || startBox.click()) {
+				if (costPossible() || isWeaponBlock()) {
+					if (!isWeaponBlock()) Player.souls -= weaponCost;
+					Game.gameStateHandler = Game.gameState.NORMAL;
+					Camera.centerPlayer();
+					weaponVerification();
+					cur = 0;
+				}
 			}
 		}
-		else if (down) {
-			down = false;
-			cur ++;
-			if (cur > options.length - 1) {
+		
+		if (cur == 2) {
+			clickR = false;
+			clickL = false;
+			if ((enter || runesBox.click()) && !Player.runesInventory.isEmpty()){
+				Game.gameStateHandler = Game.gameState.MENURUNES;
 				cur = 0;
 			}
 		}
 		
-		if (options[cur] == "Books") {
-			if (right) {
-				clickR = true;
-				clickL = false;
-				right = false;
-				curW++;
-				if (curW > weapons.length - 1) {
-					curW = 0;
-				}
-			}
-			else if (left) {
-				left = false;
-				clickR = false;
-				clickL = true;
-				curW--;
-				if (curW < 0) {
-					curW = weapons.length - 1;
-				}
-			}
-			costWeapon();
-		}
-		
-		if (options[cur] == "Start") {
-			clickR = false;
-			clickL = false;
-			if (enter) {
-				enter = false;
-				if (costPossible() || isWeaponBlock()) {
-					if (!isWeaponBlock()) {
-						Player.souls -= weaponCost;
-					}
-					Game.gameState = "NORMAL";
-					weaponVerification();
-				}
-			}
-		}
-		
-		if (options[cur] == "Runes") {
-			clickR = false;
-			clickL = false;
-			if (enter) {
-				enter = false;
-				if (Player.runesInventory.size() > 0) {
-					Game.gameState = "MENURUNES";
-				}
-			}
-		}
-		
-		if (options[cur] == "Back") {
-			if (enter) {
-				enter = false;
-				Game.gameState = "MENUINIT";
+		if (cur == 3) {
+			if(enter || backBox.click()){
+				Game.gameStateHandler = Game.gameState.MENUINIT;
+				cur = 0;
 			}	
 		}
+		Game.keyController.clear();
+		Game.clickController.clear();
 	}
 	
-	private boolean isWeaponBlock() {
+	private static boolean isWeaponBlock() {
 		if (weaponBlock == false) {
 			return true;
 		}
@@ -96,7 +93,7 @@ public class Menu_Player {
 		}
 	}
 	
-	private boolean costPossible() {
+	private static boolean costPossible() {
 		if (Player.souls >= weaponCost) {
 			return true;
 		}
@@ -105,146 +102,139 @@ public class Menu_Player {
 		}
 	}
 	
-	private void weaponVerification() {
-		switch(weapons[curW]){
-			case "Mana Weapon": 
-				Game.player.playerWeapon = new Mana_Weapon();
-				Mana_Weapon.block = false;
+	private static void weaponVerification() {
+		switch(curW){
+			case 0: 
+				Game.player.playerWeapon = new Weapon_Mana();
+				Weapon_Mana.block = false;
 				break;
-			case "Fire Weapon":
-				Game.player.playerWeapon = new Fire_Weapon();
-				Fire_Weapon.block = false;
+			case 1:
+				Game.player.playerWeapon = new Weapon_Fire();
+				Weapon_Fire.block = false;
 				break;
-			case "Wind Weapon":
-				Game.player.playerWeapon = new Wind_Weapon();
-				Wind_Weapon.block = false;
+			case 2:
+				Game.player.playerWeapon = new Weapon_Wind();
+				Weapon_Wind.block = false;
 				break;
-			case "Ice Weapon":
-				Game.player.playerWeapon = new Ice_Weapon();
-				Ice_Weapon.block = false;
+			case 3:
+				Game.player.playerWeapon = new Weapon_Ice();
+				Weapon_Ice.block = false;
 				break;
-			case "Fisical Weapon":
-				Game.player.playerWeapon = new Fisical_Weapon();
-				Fisical_Weapon.block = false;
+			case 4:
+				Game.player.playerWeapon = new Weapon_Fisical();
+				Weapon_Fisical.block = false;
 				break;
-			case "Poison Weapon":
-				Game.player.playerWeapon = new Poison_Weapon();
-				Poison_Weapon.block = false;
+			case 5:
+				Game.player.playerWeapon = new Weapon_Poison();
+				Weapon_Poison.block = false;
 				break;
 		}
 	}
 	
-	private void costWeapon() {
+	private static void costWeapon() {
 		switch(curW) {
 		case 0:
-			weaponCost = Mana_Weapon.soulCost;
-			weaponBlock = Mana_Weapon.block;
+			weaponCost = Weapon_Mana.soulCost;
+			weaponBlock = Weapon_Mana.block;
 			break;
 		case 1:
-			weaponCost = Fire_Weapon.soulCost;
-			weaponBlock = Fire_Weapon.block;
+			weaponCost = Weapon_Fire.soulCost;
+			weaponBlock = Weapon_Fire.block;
 			break;
 		case 2:
-			weaponCost = Wind_Weapon.soulCost;
-			weaponBlock = Wind_Weapon.block;
+			weaponCost = Weapon_Wind.soulCost;
+			weaponBlock = Weapon_Wind.block;
 			break;
 		case 3:
-			weaponCost = Ice_Weapon.soulCost;
-			weaponBlock = Ice_Weapon.block;
+			weaponCost = Weapon_Ice.soulCost;
+			weaponBlock = Weapon_Ice.block;
 			break;
 		case 4:
-			weaponCost = Fisical_Weapon.soulCost;
-			weaponBlock = Fisical_Weapon.block;
+			weaponCost = Weapon_Fisical.soulCost;
+			weaponBlock = Weapon_Fisical.block;
 			break;
 		case 5:
-			weaponCost = Poison_Weapon.soulCost;
-			weaponBlock = Poison_Weapon.block;
+			weaponCost = Weapon_Poison.soulCost;
+			weaponBlock = Weapon_Poison.block;
 			break;
 		}
 	}
 	
-	private void imgWeapon(Graphics g) {
+	private static void imgWeapon() {
 		switch(curW){
 		case 0: 
-			g.drawImage(Mana_Weapon.sprite, 200, 54, 32, 32, null);
+			Game.gameGraphics.drawImage(Weapon_Mana.sprite, 200, 54, 32, 32, null);
 			break;
 		case 1:
-			g.drawImage(Fire_Weapon.sprite, 200, 54, 32, 32, null);
+			Game.gameGraphics.drawImage(Weapon_Fire.sprite, 200, 54, 32, 32, null);
 			break;
 		case 2:
-			g.drawImage(Wind_Weapon.sprite, 200, 54, 32, 32, null);
+			Game.gameGraphics.drawImage(Weapon_Wind.sprite, 200, 54, 32, 32, null);
 			break;
 		case 3:
-			g.drawImage(Ice_Weapon.sprite, 200, 54, 32, 32, null);
+			Game.gameGraphics.drawImage(Weapon_Ice.sprite, 200, 54, 32, 32, null);
 			break;
 		case 4:
-			g.drawImage(Fisical_Weapon.sprite, 200, 54, 32, 32, null);
+			Game.gameGraphics.drawImage(Weapon_Fisical.sprite, 200, 54, 32, 32, null);
 			break;
 		case 5:
-			g.drawImage(Poison_Weapon.sprite, 200, 54, 32, 32, null);
+			Game.gameGraphics.drawImage(Weapon_Poison.sprite, 200, 54, 32, 32, null);
 			break;
 		}
 	}
 	
-	public void render(Graphics g) {
-		g.setColor(Color.black);
-		g.fillRect(0, 0, Game.width, Game.height);
+	public static void render() {
+		Game.gameGraphics.setColor(Color.black);
+		Game.gameGraphics.fillRect(0, 0, Game.width, Game.height);
 		
-		g.setColor(Color.white);
-		g.setFont(new Font("arial", Font.BOLD, 15));
-		g.drawString("Player Configuration", 90, 20);
+		Game.gameGraphics.setColor(Color.white);
+		Game.gameGraphics.setFont(new Font("arial", Font.BOLD, 15));
+		Game.gameGraphics.drawString("Player Configuration", 90, 20);
 		
-		g.setFont(new Font("arial", Font.BOLD, 9));
-		g.drawString(weapons[curW], 30, 70);
-		g.drawString("Start", 30, 90);
-		g.drawString("Runes", 30, 110);
-		g.drawString("Back", 30, 130);
+		bookBox.render();
+		startBox.render();
+		runesBox.updateColor(Player.runesInventory.isEmpty() ? Color.darkGray : Color.white);
+		runesBox.render();
+		backBox.render();
 		
 		if (cur == 0) {
-			g.drawString("<", 20, 70);
-			g.drawString(">", 100, 70);
+			bookBox.updateText(weapons[curW]);
+			Game.gameGraphics.drawString("<", 20, 70);
+			Game.gameGraphics.drawString(">", bookBox.getWidth() + 35, 70);
 			if (clickR) {
-				g.setColor(Color.red);
-				g.drawString(">", 100, 70);
+				Game.gameGraphics.setColor(Color.red);
+				Game.gameGraphics.drawString(">", bookBox.getWidth() + 35, 70);
 			}
-			if (clickL) {
-				g.setColor(Color.red);
-				g.drawString("<", 20, 70);
+			else if (clickL) {
+				Game.gameGraphics.setColor(Color.red);
+				Game.gameGraphics.drawString("<", 20, 70);
 			}
-		}
-		else if (cur == 1) {
-			g.drawString(">", 20, 90);
-		}
-		else if (cur == 2) {
-			g.drawString(">", 20, 110);
-		}
-		else if (cur == 3) {
-			g.drawString(">", 20, 130);
-		}
-		
-		if (costPossible()) {
-			g.setColor(new Color(0, 127, 14));
 		}
 		else {
-			g.setColor(new Color(127, 0, 0));
+			Game.gameGraphics.drawString(">", 20, 70 + 20 * cur);
 		}
-		g.drawString("Soul Cost: " + weaponCost, 183, 100);
 		
 		if (isWeaponBlock()) {
-			g.setColor(new Color(0, 127, 14));
-			g.drawString("Unlocked", 183, 110);
+			Game.gameGraphics.setColor(new Color(0, 127, 14));
+			Game.gameGraphics.drawString("Unlocked", 194, 100);
 		}
 		else {
-			g.setColor(new Color(127, 0, 0));
-			g.drawString("Locked", 183, 110);
+			if (costPossible()) {
+				Game.gameGraphics.setColor(new Color(0, 127, 14));
+			}
+			else {
+				Game.gameGraphics.setColor(new Color(127, 0, 0));
+			}
+			Game.gameGraphics.drawString("Locked", 183, 110);
+			Game.gameGraphics.drawString("Soul Cost: " + weaponCost, 183, 100);
 		}
 		
-		g.setColor(new Color(74, 52, 160));
-		g.drawString("Souls : " + Player.souls, 255, 150);
+		Game.gameGraphics.setColor(new Color(74, 52, 160));
+		Game.gameGraphics.drawString("Souls : " + Player.souls, 255, 150);
 		
-		g.setColor(new Color(50, 50, 50));
-		g.fillRect(200, 54, 32, 32);
+		Game.gameGraphics.setColor(new Color(50, 50, 50));
+		Game.gameGraphics.fillRect(200, 54, 32, 32);
 		
-		imgWeapon(g);
+		imgWeapon();
 	}
 }

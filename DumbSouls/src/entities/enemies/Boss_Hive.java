@@ -1,104 +1,87 @@
 package entities.enemies;
 
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
 import main.Game;
-import world.Camera;
 import entities.*;
 import entities.orbs.Rune_Orb;
 import world.World;
 
 public class Boss_Hive extends Enemy{
 	
-	private int frames, maxFrames = 40, index, maxIndex = 3, timeAtk, spawnX, spawnY, contPosition;
+	private int spawnX, spawnY, contPosition;
 	private boolean balance;
 			
-	public Boss_Hive(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
-		this.spawnX = x;
-		this.spawnY = y;
-		this.getAnimation(160, 192, 32, 32, 3);
-		this.expValue = 1800;
-		this.soulValue = 30;
-		this.maxLife = 600;
-		this.life = maxLife;
-		this.setMask(2, 4, 30, 28);
-	}
-	
-	private void animate() {
-		frames++;
-		if (frames == maxFrames) {
-			frames = 0;
-			index++;
-			if (index == maxIndex) {
-				index = 0;
-			}
-		}
+	public Boss_Hive(int x, int y) {
+		super(x, y, 32, 32, Game.sheet.getSprite(160, 192, 32, 32));
+		spawnX = x;
+		spawnY = y;
+		getAnimation(160, 192, 32, 32, 3);
+		expValue = 1800;
+		soulValue = 30;
+		maxLife = 600;
+		life = maxLife;
+		maxFrames = 40;
+		setMask(2, 4, 30, 28);
 	}
 	
 	private void attack() {
-		timeAtk ++;
-		if (timeAtk % 120 == 0) {
-			Game.enemies.add(new Base_Enemy(this.getX() + 80, this.getY() + 60, 16, 16, null));
-			Game.enemies.add(new Base_Enemy(this.getX() - 80, this.getY() + 60, 16, 16, null));
-			Game.enemies.add(new Base_Enemy(this.getX() + 16, this.getY() - 60, 16, 16, null));
+		attackTimer ++;
+		if (attackTimer % 120 == 0) {
+			Game.enemies.add(new Enemy_Stain(centerX() + 80, centerY() + 60));
+			Game.enemies.add(new Enemy_Stain(centerX() - 80, centerY() + 60));
+			Game.enemies.add(new Enemy_Stain(centerX() + 16, centerY() - 60));
 		}
 		
-		if (timeAtk % 160 == 0) {
-			Game.enemies.add(new Eye_Enemy(this.getX() + 80, this.getY() - 60, 16, 16, null));
-			Game.enemies.add(new Eye_Enemy(this.getX() - 80, this.getY() - 60, 16, 16, null));
+		if (attackTimer % 160 == 0) {
+			Game.enemies.add(new Enemy_Eye(centerX() + 80, centerY() - 60));
+			Game.enemies.add(new Enemy_Eye(centerX() - 80, centerY() - 60));
 		}
 		
-		if (timeAtk % 240 == 0) {
-			Game.enemies.add(new Mouth_Enemy(this.getX() + 16, this.getY() + 60, 16, 16, null));
+		if (attackTimer % 240 == 0) {
+			Game.enemies.add(new Enemy_Mouth(centerX() + 16, centerY() + 60));
 		}
 		
-		if (timeAtk % 320 == 0) {
-			Game.enemies.add(new Base_Enemy(Game.player.getX() + 80, Game.player.getY() + 40, 16, 16, null));
-			Game.enemies.add(new Base_Enemy(Game.player.getX() - 80, Game.player.getY() + 40, 16, 16, null));
-			Game.enemies.add(new Base_Enemy(Game.player.getX() + 8, Game.player.getY() - 40, 16, 16, null));
+		if (attackTimer % 320 == 0) {
+			Game.enemies.add(new Enemy_Stain(Game.player.centerX() + 80, Game.player.centerY() + 40));
+			Game.enemies.add(new Enemy_Stain(Game.player.centerX() - 80, Game.player.centerY() + 40));
+			Game.enemies.add(new Enemy_Stain(Game.player.centerX(), Game.player.centerY() - 40));
 		}
 	}
 	
-	private void balanceStatus() {
-		this.maxLife =  800 * World.wave / 10;
-		this.expValue = 1500 * World.wave / 10;
-		this.soulValue = 20 * World.wave / 10; 
-		this.life = this.maxLife;
+	private void balanceStats() {
+		maxLife =  800 * World.wave / 10;
+		expValue = 1500 * World.wave / 10;
+		soulValue = 20 * World.wave / 10; 
+		life = maxLife;
 		balance = true;
 	}
 	
 	private void die() {
 		Game.enemies.remove(this);
-		Game.player.exp += this.expValue;
-		Player.souls +=  this.soulValue;
+		Game.player.exp += expValue;
+		Player.souls +=  soulValue;
 		World.bossTime = false;
-		Game.enemies.add(new Rune_Orb(this.getX(), this.getY(), 16, 16));
+		Game.enemies.add(new Rune_Orb(centerX(), centerY(), 16, 16));
 		World.bossName = "";
 	}
 	
 	public void tick() {
 		if (!balance) {
-			balanceStatus();
+			balanceStats();
 		}
 		animate();
 		attack();
-		this.shotDamage();
+		shotDamage();
 		 
-		if (this.getX() != spawnX && this.getY() != spawnY) {
+		if (centerX() != spawnX && centerY() != spawnY) {
 			contPosition++;
 			if (contPosition == 120) {
-				this.x = spawnX;
-				this.y = spawnY;
+				x = spawnX;
+				y = spawnY;
 			}
 		}
 		 
-		if (this.life <= 0) {
-			this.die();
+		if (life <= 0) {
+			die();
 		}
-	}
-	
-	public void render(Graphics g) {
-		g.drawImage(this.animation[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 }

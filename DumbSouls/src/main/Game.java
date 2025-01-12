@@ -9,12 +9,15 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JFrame;
 
@@ -27,23 +30,37 @@ import graphics.UI;
 import sounds.SoundPlayer;
 import world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener{
-	
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
 	private static final long serialVersionUID = 1L;
-	private Thread thread;
-	private boolean isRuning = false;
+	private static Thread thread;
+	private static boolean isRuning = false;
 	
+	public static HashSet<Integer> keyController = new HashSet<Integer>();
+	public static HashSet<Integer> clickController = new HashSet<Integer>();
 	public static JFrame frame;
 	public static final int width = 320;
 	public static final int height = 160;
 	public static final int scale = 3;
-	public static int mx;
-	public static int my;
+	public static int mx, my, amountTicks, scrollNum;
 	
-	private BufferedImage image;
+	private static BufferedImage image;
 	public static Spritesheet sheet;
-	
-	public static String gameState = "MENUINIT";
+	public static enum gameState{
+		NORMAL(() -> tick(), () -> render()),
+		MENULEVEL(() -> Menu_Level.tick(), () -> Menu_Level.render()),
+    	MENUINIT(() -> Menu_Init.tick(), () -> Menu_Init.render()),
+		MENUPLAYER(() -> Menu_Player.tick(), () -> Menu_Player.render()),
+		MENUHELP(() -> Menu_Help.tick(), () -> Menu_Help.render()),
+		MENUPAUSE(() -> Menu_Pause.tick(), () -> {render(); Menu_Pause.render();}),
+		MENURUNES(() -> Menu_Runes.tick(), () -> Menu_Runes.render());
+
+		private Runnable stateTick, stateRender;
+		gameState(Runnable stateTick, Runnable stateRender){
+			this.stateTick = stateTick;
+			this.stateRender = stateRender;
+		}
+	} public static gameState gameStateHandler;
+
 	public static UI ui;
 	public static World world;
 	public static Player player;
@@ -58,33 +75,36 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
-	public static List<Shot> shots;
-	public static List<Enemy_Shot> eShots;
+	public static List<Shot> shots, eShots;
+	public static Graphics gameGraphics;
 
 	public Game() {
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addMouseWheelListener(this);
 		setPreferredSize(new Dimension(width * scale, height * scale));
 		initFrame();
 		entities = new ArrayList<Entity>();
 		shots = new ArrayList<Shot>();
 		enemies = new ArrayList<Enemy>();
-		eShots = new ArrayList<Enemy_Shot>();
+		eShots = new ArrayList<Shot>();
 		rand = new Random();
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		sheet = new Spritesheet("spritesheet.png");
-		player = new Player(0, 0, 16, 16, sheet.getSprite(0, 16, 16, 16));
+		gameGraphics = image.getGraphics();
+		sheet = new Spritesheet("res/spritesheet.png");
+		player = new Player(0, 0);
 		entities.add(player);
-		world = new World("map00.png");
+		world = new World("res/map00.png");
 		ui = new UI();
-		soundtrack = new SoundPlayer("Gurenge.wav");
+		soundtrack = new SoundPlayer("res/sounds/sndTrack.wav");
 		startMenu = new Menu_Init();
 		playerMenu = new Menu_Player();
 		pauseMenu = new Menu_Pause();
 		levelUpMenu = new Menu_Level(3);
 		helpMenu = new Menu_Help();
 		runesMenu = new Menu_Runes();
+		gameStateHandler = gameState.MENUINIT;
 		Save_Game.loadSave();
 	}
 	
@@ -103,8 +123,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		isRuning = false;
 		try {
 			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (InterruptedException exc) {
+			exc.printStackTrace();
 		}
 		
 	}
@@ -117,407 +137,170 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.createBufferStrategy(3);
 	}
 	
-	private void spawnEnemies() {
-		if (enemies.size() == 0) {
-			if (World.wave % 10 != 0) {
-				world.rizeMaxEnemies();
-				World.wave++;
-				for (int c = 0; c <= World.maxEnemies; c++) {
-					world.spawnEnemy();
-				}
+	private static void spawnEnemies() {
+		if (enemies.size() > 0) return;
+		World.wave++;
+		if (World.wave % 10 != 0) {
+			world.raiseMaxEnemies();
+			for (int c = 0; c <= World.maxEnemies; c++) {
+				world.spawnEnemy();
 			}
-			else {
-				world.spawnBoss();
-				World.wave++;
-			}
-		}
-	}
-	
-	public void tick() {
-		switch(gameState){
-		case "NORMAL":
-			for(int i = 0; i < entities.size(); i++) {
-				entities.get(i).tick();
-			}
-			for(int i = 0; i < shots.size(); i++) {
-				shots.get(i).tick();
-			}
-			for(int i = 0; i < enemies.size(); i++) {
-				enemies.get(i).tick();
-			}
-			for(int i = 0; i < eShots.size(); i++) {
-				eShots.get(i).tick();
-			}
-			
-			spawnEnemies();
-			break;
-		case "LEVELUP":
-			levelUpMenu.tick();
-			break;
-		case "MENUINIT":
-			startMenu.tick();
-			break;
-		case "MENUPLAYER":
-			playerMenu.tick();
-			break;
-		case "MENUHELP":
-			helpMenu.tick();
-			break;
-		case "MENUPAUSE":
-			pauseMenu.tick();
-			break;
-		case "MENURUNES":
-			runesMenu.tick();
-			break;
-		}
-	}
-	
-	public void render() {
-		BufferStrategy bs = this.getBufferStrategy();
-		if (bs == null) {
-			this.createBufferStrategy(3);
 			return;
 		}
-		Graphics g = image.getGraphics();
-		switch(gameState){
-		case "NORMAL":
-			g.setColor(new Color(0, 0, 0));
-			g.fillRect(0, 0, width, height);
-			world.render(g);
-			Collections.sort(entities, Entity.entityDepth);
-			Collections.sort(enemies, Entity.entityDepth);
-			for(int i = 0; i < entities.size(); i++) {
-				entities.get(i).render(g);
-			}
-			for(int i = 0; i < enemies.size(); i++) {
-				enemies.get(i).render(g);
-			}
-			for(int i = 0; i < shots.size(); i++) {
-				shots.get(i).render(g);
-			}
-			for(int i = 0; i < eShots.size(); i++) {
-				eShots.get(i).render(g);
-			}
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			ui.render(g);
-			break;
-		case "LEVELUP":
-			levelUpMenu.render(g);
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			break;
-		case "MENUINIT":
-			startMenu.render(g);
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			break;
-		case "MENUPLAYER":
-			playerMenu.render(g);
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			break;
-		case "MENUHELP":
-			helpMenu.render(g);
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			break;
-		case "MENUPAUSE":
-			pauseMenu.render(g);
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			break;
-		case "MENURUNES":
-			runesMenu.render(g);
-			g.dispose();
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			break;
+		world.spawnBoss();
+	}
+
+	private void baseRender(){
+		BufferStrategy bs = getBufferStrategy();
+		if (bs == null) {
+			createBufferStrategy(3);
+			return;
 		}
+		gameGraphics = Game.image.getGraphics();
+		gameStateHandler.stateRender.run();
+		gameGraphics.dispose();
+		gameGraphics = bs.getDrawGraphics();
+		gameGraphics.drawImage(image, 0, 0, width * scale, height * scale, null);
+		if(gameStateHandler == gameState.NORMAL) ui.render();
 		bs.show();
+	}
+
+	private static void tick() {
+		player.moveX = player.moveY = 0;
+		for(int i = 0; i < entities.size(); i++) {
+			entities.get(i).tick();
+		}
+		for(int i = 0; i < shots.size(); i++) {
+			shots.get(i).tick();
+		}
+		for(int i = 0; i < enemies.size(); i++) {
+			Enemy ene = enemies.get(i);
+			ene.tick();
+			for(int j = i + 1; j < enemies.size(); j++){
+				Enemy other = enemies.get(j);
+				if(ene.isColiding(other)){
+					ene.receiveKnockback(other, 1);
+					other.receiveKnockback(ene, 1);
+				}
+			}
+		}
+		for(int i = 0; i < eShots.size(); i++) {
+			eShots.get(i).tick();
+		}
+		spawnEnemies();
+	}
+
+	private static void render() {
+		gameGraphics.setColor(new Color(0, 0, 0));
+		gameGraphics.fillRect(0, 0, width, height);
+		world.render();
+		Collections.sort(entities, Entity.entityDepth);
+		Collections.sort(enemies, Entity.entityDepth);
+		for(Entity ent : entities) {
+			ent.render();
+		}
+		for(Enemy ene : enemies) {
+			ene.render();
+		}
+		for(Shot sh : shots) {
+			sh.render();
+		}
+		for(Shot eSh : eShots) {
+			eSh.render();
+		}
 	}
 	
 	public void run() {
 		requestFocus();
-		long lastTime = System.nanoTime();
-		double amountTicks = 60.0;
-		double ns = 1000000000 / amountTicks;
-		double delta = 0;
+		long lastTime = System.currentTimeMillis();
 		
 		while(isRuning) {
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
-			
-			if(delta >= 1) {
-				tick();
-				delta --;
+			long now = System.currentTimeMillis();
+			if((now - lastTime) / 1000.0 >= 1f / 60) {
+				gameStateHandler.stateTick.run();
+				lastTime = now;
 			}
-			render();
+			baseRender();
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException exc) {
+				exc.printStackTrace();
+			}
 		}
 		end();
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void keyTyped(KeyEvent eve) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
-			switch(gameState){
-				case "NORMAL":
-					player.up = true;
-					player.moving = true;
-					break;
-				case "LEVELUP":
-					levelUpMenu.up = true;
-					break;
-				case "MENUINIT":
-					startMenu.up = true;
-					break;
-				case "MENUPLAYER":
-					playerMenu.up = true;
-					break;
-				case "MENUPAUSE":
-					pauseMenu.up = true;
-					break;
-				case "MENURUNES":
-					runesMenu.up = true;
-					break;
-			}
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
-			switch(gameState){
-				case "NORMAL":
-					player.down = true;
-					player.moving = true;
-					break;
-				case "LEVELUP":
-					levelUpMenu.down = true;
-					break;
-				case "MENUINIT":
-					startMenu.down = true;
-					break;
-				case "MENUPLAYER":
-					playerMenu.down = true;
-					break;
-				case "MENUPAUSE":
-					pauseMenu.down = true;
-					break;
-				case "MENURUNES":
-					runesMenu.down = true;
-					break;
-			}
-		}
-		if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
-			switch(gameState){
-				case "NORMAL":
-					player.left = true;
-					player.moving = true;
-					break;
-				case "MENUPLAYER":
-					playerMenu.left = true;
-					break;
-				case "MENURUNES":
-					runesMenu.left = true;
-					break;
-			}
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			switch(gameState){
-				case "NORMAL":
-					player.right = true;
-					player.moving = true;
-					break;
-				case "MENUPLAYER":
-					playerMenu.right = true;
-					break;
-				case "MENURUNES":
-					runesMenu.right = true;
-					break;
-			}
-		}
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			switch(gameState){
-				case "LEVELUP":
-					levelUpMenu.enter = true;
-					break;
-				case "MENUINIT":
-					startMenu.enter = true;
-					break;
-				case "MENUPLAYER":
-					playerMenu.enter = true;
-					break;
-				case "MENUHELP":
-					helpMenu.enter = true;
-					break;
-				case "MENUPAUSE":
-					pauseMenu.enter = true;
-					break;
-				case "MENURUNES":
-					runesMenu.enter = true;
-					break;
-			}
-		}
+	public void keyPressed(KeyEvent eve) {
+		keyController.add(eve.getKeyCode());
 
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			switch(gameState) {
-				case "NORMAL":
-					gameState = "MENUPAUSE";
-					break;
-				case "MENUPAUSE":
-					player.stopMoving();
-					gameState = "NORMAL";
-					break;
-			}
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			switch(gameState){
-				case "NORMAL":
-					player.dash = true;
-					break;
-				case "LEVELUP":
-					levelUpMenu.space = true;
-					break;
-			}
-		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_1) {
-			if (gameState == "NORMAL") {
-				player.ablt2 = true;
-			}
-		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_2) {
-			if (gameState == "NORMAL") {
-				player.ablt3 = true;
-			}
-		}
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_W) {
-			switch(gameState){
-				case "NORMAL":
-					player.up = false;
-					break;
-				case "LEVELUP":
-					levelUpMenu.up = false;
-					break;
-				case "MENUINIT":
-					startMenu.up = false;
-					break;
-				case "MENUPLAYER":
-					playerMenu.up = false;
-					break;
-		}
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_S) {
-			switch(gameState){
-				case "NORMAL":
-					player.down = false;
-					break;
-				case "LEVELUP":
-					levelUpMenu.down = false;
-					break;
-				case "MENUINIT":
-					startMenu.down = false;
-					break;
-				case "MENUPLAYER":
-					playerMenu.down = false;
-					break;
-			}
-		}
-		if (e.getKeyCode() == KeyEvent.VK_A) {
-			switch(gameState){
-				case "NORMAL":
-					player.left = false;
-					break;
-				case "MENUPLAYER":
-					playerMenu.left = false;
-					break;
-				}
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_D) {
-			switch(gameState){
-				case "NORMAL":
-					player.right = false;
-					break;
-				case "MENUPLAYER":
-					playerMenu.right = false;
-					break;
-				}
-		}
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			switch(gameState){
-			case "LEVELUP":
-				levelUpMenu.enter = false;
+		if (keyController.contains(KeyEvent.VK_ESCAPE)) {
+			switch(gameStateHandler) {
+			case NORMAL:
+				gameStateHandler = gameState.MENUPAUSE;
 				break;
-			case "MENUINIT":
-				startMenu.enter = false;
+			case MENUPAUSE:
+				player.stopMoving();
+				gameStateHandler = gameState.NORMAL;
 				break;
-			case "MENUPLAYER":
-				playerMenu.enter = false;
-				break;
-			case "MENUHELP":
-				helpMenu.enter = false;
-				break;
+			default: break;
 			}
 		}
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void keyReleased(KeyEvent eve) {
+		keyController.remove(eve.getKeyCode());
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent eve) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mousePressed(MouseEvent eve) {
+		clickController.add(eve.getButton());
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent eve) {
+		clickController.remove(eve.getButton());
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent eve) {
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		player.attack = true;
-		player.playerWeapon.mx = e.getX() / scale;
-		player.playerWeapon.my = e.getY() / scale;
+	public void mouseExited(MouseEvent eve) {
+		clickController.clear();
+		keyController.clear();
+		if(gameStateHandler == gameState.NORMAL) gameStateHandler = gameState.MENUPAUSE;
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		player.attack = false;
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
+	public void mouseDragged(MouseEvent eve) {
 		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mouseMoved(MouseEvent eve) {
+		mx = eve.getX();
+		my = eve.getY();
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		
-		
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		mx = e.getX();
-		my = e.getY();
+	public void mouseWheelMoved(MouseWheelEvent eve){
+		scrollNum = eve.getWheelRotation();
 	}
 }

@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 
 import main.Game;
 
-import java.awt.Graphics;
-
 public class Tile {
 	
 	public static BufferedImage[] floor_sprite = {Game.sheet.getSprite(0, 0, 16, 16),
@@ -22,7 +20,7 @@ public class Tile {
 		this.sprite = sprite;
 	}
 	
-	public void render(Graphics g) {
-		g.drawImage(this.sprite, this.x - Camera.x, this.y - Camera.y, null);
+	public void render() {
+		Game.gameGraphics.drawImage(sprite, x - Camera.getX(), y - Camera.getY(), null);
 	}
 }
